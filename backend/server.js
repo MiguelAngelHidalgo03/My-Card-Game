@@ -1,21 +1,43 @@
-// Importamos Express
-const express = require('express');
+// server.js
+import dotenv from 'dotenv'; // Asegúrate de cargar las variables de entorno al inicio
+import express from 'express';
+import userRoutes from './routes/userRoutes.js';
+import avatarRoutes from './routes/avatarRoutes.js';
+import cors from "cors";
+import resetPasswordRoutes from "./routes/resetPassword.js"; // Cambiar require por import
+dotenv.config(); // Cargar las variables de entorno
 
-// Creamos una instancia de la aplicación Express
 const app = express();
-
-// Definimos el puerto
 const port = process.env.PORT || 5000;
 
-// Middleware para manejar las solicitudes JSON
-app.use(express.json());
+app.use(cors({
+  origin: 'http://localhost:3000', // Cambia esto por la URL de tu frontend
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+}));
+app.use(express.json());  // Para parsear los cuerpos de solicitud en formato JSON
 
-// Ruta básica para verificar que el servidor está funcionando
-app.get('/', (req, res) => {
-  res.send('Hello, 1pa1 backend is working!');
+// Usar las rutas de usuarios
+app.use('/api', userRoutes, avatarRoutes);
+
+// Configurar CORS
+app.use("/api", resetPasswordRoutes);
+
+// Iniciar servidor
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
 });
 
-// Iniciamos el servidor
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.get('/', (req, res) => {
+    res.send('¡Backend de 1pa1 está corriendo!');
+  });
+  
+app.use((req, res) => {
+    res.status(404).json({ message: 'Ruta no encontrada' });
+  });
+
+// Middleware para manejar errores
+app.use((err, req, res, next) => {
+    console.error(err.stack); // Log del error
+    res.status(500).json({ message: 'Error interno del servidor' });
 });

@@ -1,0 +1,56 @@
+.register-container {
+    max-width: 500px;
+    margin: 3rem auto;
+    padding: 3rem 2rem;
+    border-radius: 15px;
+    background: linear-gradient(145deg, #ffffff, #f1f1f1);
+    box-shadow: 0 8px 20px rgba(100, 80, 245, 0.15);
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .register-container h1 {
+    text-align: center;
+    color: #6450F5;
+    margin-bottom: 1.5rem;
+  }
+  
+  .register-container input,
+  .register-container select {
+    width: 100%;
+    padding: 12px;
+    margin: 0.5rem 0;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: border 0.3s;
+  }
+  
+  .register-container input:focus,
+  .register-container select:focus {
+    border-color: #6450F5;
+    outline: none;
+  }
+  
+  .register-container button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 1rem;
+    background-color: #F54A67;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .register-container button:hover {
+    background-color: #C86BF5;
+  }
+  
+  .register-container p {
+    margin-top: 1rem;
+    text-align: center;
+    color: #F54A67;
+  }
+  
