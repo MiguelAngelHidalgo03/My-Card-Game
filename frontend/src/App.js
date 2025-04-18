@@ -6,6 +6,7 @@ import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import Account from './pages/Account/Account';
+import Profile from './pages/Profile/profile';
 
 function App() {
   return (
@@ -21,6 +22,9 @@ function App() {
 
         {/* Ruta para la página de inicio de sesión */}
         <Route path="/login" element={<Login />} />
+       
+        {/* Ruta para la página de Perfil */}
+        <Route path="/profile" element={<Profile />} />
 
         {/* Ruta para la página de perfil de usuario */}
         <Route path="/account" element={<Account />} />
