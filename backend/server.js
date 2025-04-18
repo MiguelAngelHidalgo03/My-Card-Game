@@ -5,7 +5,7 @@ import userRoutes from './routes/userRoutes.js';
 import avatarRoutes from './routes/avatarRoutes.js';
 import cors from "cors";
 import resetPasswordRoutes from "./routes/resetPassword.js"; // Cambiar require por import
-dotenv.Config(); // Cargar las variables de entorno
+dotenv.config(); // Cargar las variables de entorno
 
 const app = express();
 const port = process.env.PORT || 5000;
