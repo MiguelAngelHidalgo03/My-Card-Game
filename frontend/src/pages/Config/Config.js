@@ -1,8 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../../context/UserContext';
-import './Account.css';
+import './Config.css';
 
-function Account() {
+function Config() {
   const { user, setUser } = useContext(UserContext);  // Asegúrate de tener un setter para el usuario en el contexto
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -132,10 +132,10 @@ function Account() {
     }
   };
 
-  if (!user) return <p className="account-loading">Cargando datos de usuario...</p>;
+  if (!user) return <p className="Config-loading">Cargando datos de usuario...</p>;
 
   return (
-    <div className="account-page">
+    <div className="Config-page">
       <h2>Editar cuenta</h2>
       <form onSubmit={handleProfileSubmit}>
         <label>Nombre de usuario</label>
@@ -187,4 +187,4 @@ function Account() {
   );
 }
 
-export default Account;
+export default Config;
