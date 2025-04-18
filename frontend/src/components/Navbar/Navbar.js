@@ -26,7 +26,7 @@ function Navbar() {
 
             {showMenu && (
               <ul className="dropdown-menu">
-                <li><Link to="/profile">Profile</Link></li>
+                <li><Link to="/profile">Perfil</Link></li>
                 <li><Link to="/config">Configuración</Link></li>
                 <li><button onClick={logout}>Salir</button></li>
               </ul>
