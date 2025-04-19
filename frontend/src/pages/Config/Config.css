@@ -1,4 +1,4 @@
-.account-page {
+.Config-page {
     max-width: 500px;
     margin: 3rem auto;
     padding: 2rem;
@@ -9,7 +9,7 @@
     font-family: 'Segoe UI', sans-serif;
   }
   
-  .account-page h2 {
+  .Config-page h2 {
     text-align: center;
     margin-bottom: 2rem;
     color: #D2F567;
@@ -17,20 +17,20 @@
     letter-spacing: 1px;
   }
   
-  .account-page form {
+  .Config-page form {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
   }
   
-  .account-page label {
+  .Config-page label {
     font-size: 0.95rem;
     font-weight: 500;
     color: #C86BF5;
   }
   
-  .account-page input,
-  .account-page select {
+  .Config-page input,
+  .Config-page select {
     padding: 0.8rem;
     border-radius: 8px;
     border: none;
@@ -41,12 +41,12 @@
     transition: border 0.2s ease;
   }
   
-  .account-page input:focus,
-  .account-page select:focus {
+  .Config-page input:focus,
+  .Config-page select:focus {
     border: 2px solid #6450F5;
   }
   
-  .account-page button {
+  .Config-page button {
     padding: 0.8rem;
     border: none;
     border-radius: 8px;
@@ -58,7 +58,7 @@
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
   
-  .account-page button:hover {
+  .Config-page button:hover {
     transform: scale(1.03);
     box-shadow: 0 0 10px #D2F567;
   }

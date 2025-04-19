@@ -1,69 +1,51 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import './Profile.css';
 
 const Profile = () => {
-  // Obtenemos el usuario del localStorage (el guardado tras login)
-  const storedUser = JSON.parse(localStorage.getItem('user'));
-  const userId = storedUser?.userId;
+  const [selectedImage, setSelectedImage] = useState('/assests/img/avatar1.png'); // Imagen por defecto
+  const [stats, setStats] = useState({
+    gamesPlayed: 123,
+    wins: 45,
+    losses: 78,
+  });
 
-  const [profile, setProfile] = useState(null);
-  const [loading, setLoading] = useState(true); // Para manejar el estado de carga
-  const [error, setError] = useState(null); // Para manejar el error de la carga
+  const availableImages = [
+    '/assests/img/avatar1.png',
+    '/assests/img/avatar2.png',
+    '/assests/img/avatar3.png',
+    '/assests/img/avatar4.png',
+  ];
 
-  useEffect(() => {
-    if (userId) {
-      fetchProfile();
-    }
-  }, [userId]);
-
-  // Función para obtener el perfil del usuario usando fetch
-  const fetchProfile = async () => {
-    if (!userId) {
-      setError('No se pudo encontrar el ID del usuario.');
-      setLoading(false);
-      return;
-    }
-
-    try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/profile/${userId}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        setProfile(data.user); // Guardamos los datos del perfil
-      } else {
-        const data = await res.json();
-        setError(data.error || 'Hubo un error al cargar tu perfil. Inténtalo nuevamente.');
-      }
-    } catch (error) {
-      console.error('Error al cargar el perfil:', error);
-      setError('Hubo un error al cargar tu perfil. Inténtalo nuevamente.');
-    } finally {
-      setLoading(false); // Dejar de cargar una vez que se ha terminado la solicitud
-    }
+  const handleImageChange = (image) => {
+    setSelectedImage(image);
   };
 
-  // Mostrar loading mientras no hay perfil cargado
-  if (loading) {
-    return <p>Cargando perfil...</p>;
-  }
-
-  // Mostrar error si ocurrió
-  if (error) {
-    return <p>{error}</p>;
-  }
-
-  // Mostrar el perfil una vez cargado
   return (
-    <div>
-      <h2>Perfil de Usuario</h2>
-      <p><strong>Nombre:</strong> {profile?.username}</p>
-      {profile?.profile_picture && (
-        <img src={profile.profile_picture} alt="Avatar" width={100} />
-      )}
+    <div className="profile-container">
+      <h1>Perfil del Usuario</h1>
+      <div className="profile-content">
+        <div className="profile-image-section">
+          <img src={selectedImage} alt="Avatar" className="profile-image" />
+          <h3>Selecciona tu avatar:</h3>
+          <div className="avatar-options">
+            {availableImages.map((image, index) => (
+              <img
+                key={index}
+                src={image}
+                alt={`Avatar ${index + 1}`}
+                className={`avatar-option ${selectedImage === image ? 'selected' : ''}`}
+                onClick={() => handleImageChange(image)}
+              />
+            ))}
+          </div>
+        </div>
+        <div className="profile-stats">
+          <h2>Estadísticas</h2>
+          <p>Partidas jugadas: {stats.gamesPlayed}</p>
+          <p>Victorias: {stats.wins}</p>
+          <p>Derrotas: {stats.losses}</p>
+        </div>
+      </div>
     </div>
   );
 };

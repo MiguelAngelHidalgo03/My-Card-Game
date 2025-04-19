@@ -10,9 +10,13 @@ function Navbar() {
 
   return (
     <nav className="navbar">
-      <h1 className="logo">1pa1</h1>
+      {/* Logo como botón de inicio */}
+      <Link to="/" className="logo">
+        <img src="/assests/img/logo.jpg" alt="Logo" className="logo-image" />
+      </Link>
       <ul className="nav-links">
-        <li><Link to="/">Inicio</Link></li>
+        <li><Link to="/rules">Reglas</Link></li>
+        <li><Link to="/about">Sobre Nosotros</Link></li>
 
         {user ? (
           <li className="user-menu">
@@ -25,6 +29,7 @@ function Navbar() {
               <ul className="dropdown-menu">
                 <li><Link to="/profile">Perfil</Link></li>
                 <li><Link to="/account">Cuenta</Link></li>
+                <li><Link to="/config">Configuración</Link></li>
                 <li><button onClick={logout}>Salir</button></li>
               </ul>
             )}
