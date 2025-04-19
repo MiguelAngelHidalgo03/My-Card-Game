@@ -2,22 +2,18 @@ import supabase from '../utils/supabaseClient.js';
 
 // Actualizar el avatar del usuario
 export const updateAvatar = async (req, res) => {
-  const { userId, avatarId } = req.body;
+  const { userId, profile_picture } = req.body; // Recibimos la ruta de la imagen
 
   // Validar que ambos campos estén presentes
-  if (!userId || !avatarId) {
-    return res.status(400).json({ error: 'El ID del usuario y el ID del avatar son obligatorios' });
+  if (!userId || !profile_picture) {
+    return res.status(400).json({ error: 'El ID del usuario y la ruta del avatar son obligatorios' });
   }
-  const validAvatarIds = [1, 2, 3, 4, 5, 6, 7, 8, 9]; // Lista de IDs válidos
 
-  if (!validAvatarIds.includes(avatarId)) {
-    return res.status(400).json({ error: 'El ID del avatar no es válido' });
-  }
   try {
     // Actualizar el avatar en la base de datos
     const { error } = await supabase
       .from('users')
-      .update({ profile_picture: avatarId })
+      .update({ profile_picture })  // Usamos directamente la ruta de la imagen
       .eq('user_id', userId);
 
     if (error) {
