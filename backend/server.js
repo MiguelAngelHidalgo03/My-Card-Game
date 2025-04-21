@@ -3,6 +3,7 @@ import dotenv from 'dotenv'; // Asegúrate de cargar las variables de entorno al
 import express from 'express';
 import userRoutes from './routes/userRoutes.js';
 import avatarRoutes from './routes/avatarRoutes.js';
+import recordRoutes from './routes/recordRoutes.js';
 import cors from "cors";
 import resetPasswordRoutes from "./routes/resetPassword.js"; // Cambiar require por import
 dotenv.config(); // Cargar las variables de entorno
@@ -19,6 +20,9 @@ app.use(express.json());  // Para parsear los cuerpos de solicitud en formato JS
 
 // Usar las rutas de usuarios
 app.use('/api', userRoutes, avatarRoutes);
+
+//usar las rutas de players
+app.use('/api', recordRoutes);
 
 // Configurar CORS
 app.use("/api", resetPasswordRoutes);
