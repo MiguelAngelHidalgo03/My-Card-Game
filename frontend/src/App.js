@@ -6,7 +6,7 @@ import Footer from './components/Footer/Footer'; // Importar el Footer
 import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
-import Profile from './pages/Profile/Profile';
+import Profile from './pages/Profile/profile';
 import Config from './pages/Config/Config'; // Importación correcta
 import Rules from './pages/Rules/Rules'; // Importar la página de reglas
 import About from './pages/About/About'; // Importar la página de sobre nosotros

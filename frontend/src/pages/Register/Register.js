@@ -5,12 +5,13 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
+  const randomAvatar = Math.floor(Math.random() * 4) + 1;
+
   const [formData, setFormData] = useState({
     username: '',
     email: '',
     password: '',
-    profile_picture: '',
-    language: 'es', // predeterminado a español
+    profile_picture: `/assets/img/avatar${randomAvatar}.png`,    language: 'es', // predeterminado a español
   });
 
   const [message, setMessage] = useState('');
@@ -63,14 +64,7 @@ const Register = () => {
           onChange={handleChange}
           required
         />
-        <input
-          type="text"
-          name="profile_picture"
-          placeholder="URL de imagen de perfil"
-          value={formData.profile_picture}
-          onChange={handleChange}
-          required
-        />
+      
         <select
           name="language"
           value={formData.language}
