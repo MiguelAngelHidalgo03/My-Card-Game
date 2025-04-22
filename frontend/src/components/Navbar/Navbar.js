@@ -3,7 +3,6 @@ import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../../context/UserContext';
 import './Navbar.css';
-
 function Navbar() {
   const { user, logout } = useContext(UserContext);
   const [showMenu, setShowMenu] = useState(false);
@@ -19,11 +18,18 @@ function Navbar() {
         <li><Link to="/about">Sobre Nosotros</Link></li>
 
         {user ? (
+          
           <li className="user-menu">
+             <img
+                src={user.profile_picture }
+                alt="Avatar"
+                className="navbar-avatar"
+              />
             <div onClick={() => setShowMenu(!showMenu)} className="username-button">
             {user.username} 
               <span className="arrow">{showMenu ? '▲' : '▼'}</span>
             </div>
+            
 
             {showMenu && (
               <ul className="dropdown-menu">

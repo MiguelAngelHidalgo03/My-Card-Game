@@ -41,7 +41,6 @@ function Config() {
         // Actualiza el contexto y el estado del componente
         setUser(data.user);  // Supón que `setUser` actualiza el estado global del contexto
         setUsername(data.user.username);
-        setEmail(data.user.email);
         setLanguage(data.user.language);
       } else {
         alert(`Error al obtener los datos: ${data.error}`);

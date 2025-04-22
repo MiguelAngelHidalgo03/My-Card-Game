@@ -1,78 +1,87 @@
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #1a1a1a;
-    padding: 0.5rem 2rem;
-    color: white;
-  }
-  
-  .logo {
-    font-size: 1.5rem;
-  }
-  
-  .nav-links {
-    list-style: none;
-    display: flex;
-    gap: 1rem;
-  }
-  
-  .nav-links li a {
-    color: white;
-    text-decoration: none;
-  }
-  .user-menu {
-    position: relative;
-    cursor: pointer;
-  }
-  
-  .username-button {
-    background: none;
-    border: none;
-    color: white;
-    font-weight: bold;
-  }
-  
-  .dropdown-menu {
-    position: absolute;
-    top: 100%;
-    width: 100%;
-    /* margin-left: 2rem; */
-    right: 0;
-    background: #1a1a1a;
-    padding: 0.5rem;
-    border-radius: 6px;
-    box-shadow: 0px 4px 8px rgba(0,0,0,0.3);
-    z-index: 1000;
-    list-style: none;
-    display: flex;
-    padding: 0.5rem 0rem 0rem 0.5rem;
-    flex-direction: column;
-    /* text-align: left; */
-  }
-  
-  .dropdown-menu li {
-    margin: 0.5rem 0;
-    text-align: left;
-  }
-  .dropdown-menu a
-    {
-        text-decoration: none;
-        color: white;
-        padding: 0rem 0.3rem;
-    }
-  .dropdown-menu a,
-  .dropdown-menu button {
-    color: white;
-    font-size: 1rem;
-    background: none;
-    border: none;
-    /* text-align: center; */
-    cursor: pointer;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1a1a1a;
+  padding: 0.5rem 2rem;
+  color: white;
+}
 
-  .logo-image {
-    height: 50px; /* Ajusta el tamaño según sea necesario */
-    width: auto;
-    cursor: pointer;
-  }
+.logo {
+  font-size: 1.5rem;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+}
+
+.nav-links li a {
+  color: white;
+  text-decoration: none;
+}
+
+.user-menu {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column; /* Organiza los elementos en columna */
+  align-items: center; /* Centra los elementos horizontalmente */
+  justify-content: center; /* Asegura que los elementos estén centrados */
+}
+
+.username-button {
+  background: none;
+  border: none;
+  color: white;
+  font-weight: bold;
+  margin-bottom: 0.5rem; 
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #1a1a1a;
+  padding: 0.5rem;
+  border-radius: 6px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  list-style: none;
+  display: flex;
+  padding: 0.5rem 0rem 0rem 0.5rem;
+  flex-direction: column;
+}
+
+.dropdown-menu li {
+  margin: 0.5rem 0;
+  text-align: left;
+}
+
+.dropdown-menu a {
+  text-decoration: none;
+  color: white;
+  padding: 0rem 0.3rem;
+}
+
+.dropdown-menu a,
+.dropdown-menu button {
+  color: white;
+  font-size: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.logo-image {
+  height: 50px; /* Ajusta el tamaño según sea necesario */
+  width: auto;
+  cursor: pointer;
+}
+
+.navbar-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}

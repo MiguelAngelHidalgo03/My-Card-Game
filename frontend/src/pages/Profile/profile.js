@@ -93,6 +93,12 @@ const Profile = () => {
         console.log('Avatar guardado exitosamente');
         fetchProfile();
         setProfile(data.user);
+        // Aquí actualizas localStorage con la nueva imagen
+      localStorage.setItem('user', JSON.stringify({
+        ...storedUser,
+        profile_picture: selectedImage, 
+      }));
+      window.location.reload();
       } else {
         const data = await res.json();
         setError(data.error || 'Hubo un error al guardar el avatar.');

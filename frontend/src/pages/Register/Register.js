@@ -11,12 +11,10 @@ const Register = () => {
     username: '',
     email: '',
     password: '',
-    profile_picture: `/assets/img/avatar${randomAvatar}.png`,    language: 'es', // predeterminado a español
+    profile_picture: `/assests/img/avatar${randomAvatar}.png`, 
   });
-
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
-
   const handleChange = (e) => {
     setFormData({ 
       ...formData, 

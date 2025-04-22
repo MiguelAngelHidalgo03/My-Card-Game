@@ -45,7 +45,12 @@ export const loginUser = async (req, res) => {
     return res.status(200).json({
       message: 'Inicio de sesión exitoso',
       session, // Contiene el token JWT y otros datos útiles
-      user: userData, // Datos adicionales del usuario (sin contraseña)
+      user: {
+        user_id: userData.user_id,
+        username: userData.username,
+        profile_picture: userData.profile_picture,
+        language: userData.language,
+      },
     });
   } catch (err) {
     // Si ocurre un error en cualquier parte del proceso, capturamos el error general
