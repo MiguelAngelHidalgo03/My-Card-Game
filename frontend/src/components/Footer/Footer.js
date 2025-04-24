@@ -32,6 +32,11 @@ function Footer() {
       <div className="footer-bottom">
         <p>© 2025 1pa1. Todos los derechos reservados.</p>
         <p>Creado con ❤️ por el equipo.</p>
+        <div className="footer-links">
+          <a href="/privacy-policy" className="footer-link">Privacy Policy</a>
+          <span> | </span>
+          <a href="/manage-cookies" className="footer-link">Manage Cookies</a>
+        </div>
       </div>
     </footer>
   );
