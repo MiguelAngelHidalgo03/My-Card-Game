@@ -27,8 +27,14 @@ const Home = () => {
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="modal-close" onClick={closeModal}>×</button>
             <h2 className="modal-title">Elige una opción</h2>
-            <button className="modal-button">Crear sala</button>
-            <button className="modal-button">Unirse a una sala</button>
+            <div className="modal-options">
+              <div className="modal-option" onClick={() => console.log('Crear sala')}>
+                <img src={require('../../img/crear_sala.webp')} alt="Crear sala" className="modal-image" />
+              </div>
+              <div className="modal-option" onClick={() => console.log('Unirse a una sala')}>
+                <img src={require('../../img/unirse_sala.webp')} alt="Unirse a una sala" className="modal-image" />
+              </div>
+            </div>
           </div>
         </div>
       )}

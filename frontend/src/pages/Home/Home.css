@@ -223,6 +223,45 @@
   transform: scale(1.05);
 }
 
+/* Contenedor de opciones en el modal */
+.modal-options {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* Cada opción (imagen + texto) */
+.modal-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  flex: none;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out, background-color 0.3s;
+}
+
+.modal-option:hover {
+  transform: scale(1.05);
+}
+
+/* Imagen en el modal */
+.modal-image {
+  width: 12rem;
+  height: auto;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease-in-out;
+}
+
+.modal-image:hover {
+  transform: scale(1.1);
+}
+
+
+
 /* Animaciones modal */
 @keyframes fadeIn {
   from {
@@ -239,5 +278,67 @@
   }
   to {
     transform: scale(1);
+  }
+}
+
+/* Media query para pantallas pequeñas (móviles) */
+@media (max-width: 768px) {
+  /* Ajustar el modal */
+  .modal-overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+  }
+
+  .modal-content {
+    width: 70%;
+    max-width: 500px;
+    padding: 1.5rem;
+    border-radius: 15px;
+    background-color: rgba(60, 60, 60, 0.7);
+    margin: 0;
+    position: relative;
+  }
+
+  .modal-options {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .modal-option {
+    width: 45%;
+  }
+
+  .modal-image {
+    width: 100%;
+    height: auto;
+  }
+
+  /* Ajustar el video */
+  .home-video video,
+  .video-placeholder {
+    width: 100%;
+    height: 15rem;
+  }
+
+  /* Ajustar la sección de reglas */
+  .home-rules {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .rules-image img {
+    width: 100%;
+    max-height: none;
+    margin-left: 0;
+  }
+
+  .rules-text {
+    max-width: 100%;
+    margin-right: 0;
+    text-align: center;
   }
 }
