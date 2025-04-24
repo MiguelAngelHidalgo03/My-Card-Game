@@ -1,8 +1,25 @@
+/* Asegúrate de que el body y html ocupen toda la altura */
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* El contenedor principal debe ocupar todo el espacio disponible */
+#root {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Footer siempre al final */
 .footer {
   background-color: #1a1a1a;
   color: white;
   padding: 2rem;
   text-align: center;
+  margin-top: auto; /* Empuja el footer hacia abajo */
 }
 
 .footer-content {
@@ -45,4 +62,20 @@
   margin-top: 2rem;
   font-size: 0.9rem;
   color: #ccc;
+  text-align: center;
+}
+
+.footer-links {
+  margin-top: 1rem;
+}
+
+.footer-link {
+  color: #C86BF5;
+  text-decoration: none;
+  margin: 0 0.5rem;
+  transition: color 0.3s;
+}
+
+.footer-link:hover {
+  color: #D2F567;
 }
