@@ -29,7 +29,7 @@ export const getUserProfile = async (req, res) => {
   };
 
   export const updateUserProfile = async (req, res) => {
-    const { userId, username, email, language } = req.body;
+    const { userId, username, language ,email} = req.body;
   
     if (!userId) {
       return res.status(400).json({ error: 'El ID del usuario es obligatorio' });
@@ -38,8 +38,8 @@ export const getUserProfile = async (req, res) => {
     try {
       const updates = {};
       if (username) updates.username = username;
-      if (email) updates.email = email;
       if (language) updates.language = language;
+      if (email) updates.email = email;
       if (Object.keys(updates).length === 0) {
         return res.status(400).json({ error: 'No se proporcionaron campos para actualizar' });
       }
@@ -95,6 +95,39 @@ export const getUserProfile = async (req, res) => {
     } catch (err) {
       console.error('Error general en changePassword:', err);
       return res.status(500).json({ error: 'Error inesperado al cambiar la contraseña' });
+    }
+  };
+
+  export const changeUserEmail = async (req, res) => {
+    const { email, access_token } = req.body;
+  
+    if (!email || !access_token) {
+      return res.status(400).json({ error: 'Email y token son obligatorios' });
+    }
+  
+    try {
+      // Verificar la sesión del usuario con el access_token
+      const { data: session, error: sessionError } = await supabase.auth.getUser(access_token);
+  
+      if (sessionError || !session) {
+        return res.status(401).json({ error: 'Sesión no válida o expiró' });
+      }
+  
+      // Actualizar el email del usuario
+      const { user, error } = await supabase.auth.updateUser({ email });
+  
+      if (error) {
+        console.error('Error al actualizar el email:', error.message);
+        return res.status(500).json({ error: 'Error al actualizar el email' });
+      }
+  
+      return res.status(200).json({
+        message: 'Revisa tu correo para confirmar el cambio',
+      });
+  
+    } catch (err) {
+      console.error('Error general:', err);
+      return res.status(500).json({ error: 'Error inesperado' });
     }
   };
 

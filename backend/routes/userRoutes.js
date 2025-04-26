@@ -2,7 +2,7 @@
 import express from 'express';
 import { createUser } from '../controllers/userController.js';
 import  { loginUser, logoutUser } from '../controllers/loginUserController.js';
-import { getUserProfile, updateUserProfile, changePassword } from '../controllers/userProfileController.js';
+import { getUserProfile, updateUserProfile, changePassword,changeUserEmail } from '../controllers/userProfileController.js';
 const router = express.Router();
 
 // Ruta para crear un usuario
@@ -20,6 +20,9 @@ router.put('/profile', updateUserProfile);
 
 // Ruta para cambiar la contraseña del usuario
 router.post('/change-password', changePassword);
+
+// Ruta para cambiar la el correo del usuario
+router.post('/change-email', changeUserEmail);
 
 
 
