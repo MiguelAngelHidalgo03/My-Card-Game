@@ -20,13 +20,13 @@ function Navbar() {
         {user ? (
           
           <li className="user-menu">
-             <img
+            <div onClick={() => setShowMenu(!showMenu)} className="username-button">
+            {user.username} 
+            <img
                 src={user.profile_picture }
                 alt="Avatar"
                 className="navbar-avatar"
               />
-            <div onClick={() => setShowMenu(!showMenu)} className="username-button">
-            {user.username} 
               <span className="arrow">{showMenu ? '▲' : '▼'}</span>
             </div>
             
@@ -34,8 +34,7 @@ function Navbar() {
             {showMenu && (
               <ul className="dropdown-menu">
                 <li><Link to="/profile">Perfil</Link></li>
-                <li><Link to="/account">Cuenta</Link></li>
-                <li><Link to="/config">Configuración</Link></li>
+                <li><Link to="/config">Cuenta</Link></li>
                 <li><button onClick={logout}>Salir</button></li>
               </ul>
             )}

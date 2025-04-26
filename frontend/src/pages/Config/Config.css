@@ -1,5 +1,5 @@
 .Config-page {
-    max-width: 500px;
+    min-width: 500px;
     margin: 3rem auto;
     padding: 2rem;
     background: #1a1a1f;

@@ -51,7 +51,7 @@ const Profile = () => {
 
     } catch (error) {
       console.error('Error al cargar el perfil:', error);
-      setError(error.message || 'Hubo un error al cargar tu perfil.');
+      // setError(error.message || 'Hubo un error al cargar tu perfil.');
     } finally {
       setLoading(false);
     }
