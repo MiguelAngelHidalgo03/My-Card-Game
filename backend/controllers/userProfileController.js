@@ -1,69 +1,90 @@
 import { createClient } from '@supabase/supabase-js';
-import supabase from '../utils/supabaseClient.js';
 
+const adminClient = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+);
+
+
+export function makeSupabaseWithToken(req) {
+  const auth = req.headers.authorization;
+  if (!auth?.startsWith('Bearer ')) {
+    throw new Error('No se proporcionó token de autorización');
+  }
+  const token = auth.split(' ')[1];
+
+  const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY,
+    {
+      global: {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    }
+  );
+
+  return supabase;
+}
 
 export const getUserProfile = async (req, res) => {
-    const { userId } = req.params;
-  
-    if (!userId) {
-      return res.status(400).json({ error: 'El ID del usuario es obligatorio' });
-    }
-  
-    try {
-      const { data: user, error } = await supabase
-        .from('users')
-        .select('user_id, username, email, profile_picture, language')
-        .eq('user_id', userId)
-        .single();
-  
-      if (error || !user) {
-        console.error('Error al obtener el perfil del usuario:', error?.message);
-        return res.status(404).json({ error: 'Usuario no encontrado' });
-      }
-  
-      return res.status(200).json({ user });
-    } catch (err) {
-      console.error('Error general en getUserProfile:', err);
-      return res.status(500).json({ error: 'Error al obtener el perfil del usuario' });
-    }
-  };
+  const supabase = makeSupabaseWithToken(req); 
+  const { userId } = req.params;
 
-  export const updateUserProfile = async (req, res) => {
-    const { userId, username, language ,email} = req.body;
-  
-    if (!userId) {
-      return res.status(400).json({ error: 'El ID del usuario es obligatorio' });
+  if (!userId) {
+    return res.status(400).json({ error: 'El ID del usuario es obligatorio' });
+  }
+
+  try {
+    const { data: user, error } = await supabase
+      .from('users')
+      .select('user_id, username, email, profile_picture, language')
+      .eq('user_id', userId)
+      .single();
+
+    if (error || !user) {
+      console.error('Error al obtener el perfil del usuario:', error?.message);
+      return res.status(404).json({ error: 'Usuario no encontrado' });
     }
-  
-    try {
-      const updates = {};
-      if (username) updates.username = username;
-      if (language) updates.language = language;
-      if (email) updates.email = email;
-      if (Object.keys(updates).length === 0) {
-        return res.status(400).json({ error: 'No se proporcionaron campos para actualizar' });
-      }
-      const { error } = await supabase
-        .from('users')
-        .update(updates)
-        .eq('user_id', userId);
-  
-      if (error) {
-        console.error('Error al actualizar el perfil del usuario:', error.message);
-        return res.status(500).json({ error: 'Error al actualizar el perfil del usuario' });
-      }
-  
-      return res.status(200).json({ message: 'Perfil actualizado exitosamente' });
-    } catch (err) {
-      console.error('Error general en updateUserProfile:', err);
-      return res.status(500).json({ error: 'Error inesperado al actualizar el perfil del usuario' });
+
+    return res.status(200).json({ user });
+  } catch (err) {
+    console.error('Error general en getUserProfile:', err);
+    return res.status(500).json({ error: 'Error al obtener el perfil del usuario' });
+  }
+};
+
+export const updateUserProfile = async (req, res) => {
+  try {
+    const supabase = makeSupabaseWithToken(req);
+
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    if (userError || !user) return res.status(401).json({ error: 'Usuario no autenticado' });
+
+    const updates = {};
+    ['username', 'language', 'email'].forEach(f => {
+      if (req.body[f]) updates[f] = req.body[f];
+    });
+
+    if (!Object.keys(updates).length) {
+      return res.status(400).json({ error: 'Nada que actualizar' });
     }
-  };
+
+    await supabase.from('users').update(updates).eq('user_id', user.id);
+
+    res.json({ message: 'Perfil actualizado' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 
 
   export const changePassword = async (req, res) => {
     const { email, currentPassword, newPassword } = req.body;
-  
+    const supabase = makeSupabaseWithToken(req);
+
     // Validar que todos los campos estén presentes
     if (!email || !currentPassword || !newPassword) {
       return res.status(400).json({ error: 'El correo, la contraseña actual y la nueva contraseña son obligatorios' });
@@ -99,35 +120,30 @@ export const getUserProfile = async (req, res) => {
   };
 
   export const changeUserEmail = async (req, res) => {
-    const { email, access_token } = req.body;
-  
-    if (!email || !access_token) {
-      return res.status(400).json({ error: 'Email y token son obligatorios' });
-    }
-  
     try {
-      // Verificar la sesión del usuario con el access_token
-      const { data: session, error: sessionError } = await supabase.auth.getUser(access_token);
+      const userSupabase = makeSupabaseWithToken(req);
+      const { data: { user }, error: userError } = await userSupabase.auth.getUser();
+      if (userError || !user) return res.status(401).json({ error: 'Usuario no autenticado' });
   
-      if (sessionError || !session) {
-        return res.status(401).json({ error: 'Sesión no válida o expiró' });
-      }
+      const { email } = req.body;
+      if (!email) return res.status(400).json({ error: 'Email obligatorio' });
   
-      // Actualizar el email del usuario
-      const { user, error } = await supabase.auth.updateUser({ email });
+      // 1) Cambiar el email en Supabase Auth con permisos de admin
+      const { data: updateData, error: authError } = await adminClient.auth.admin.updateUserById(user.id, { email });
+      if (authError) throw authError;
   
-      if (error) {
-        console.error('Error al actualizar el email:', error.message);
-        return res.status(500).json({ error: 'Error al actualizar el email' });
-      }
+      // 2) Actualizar también la tabla 'users'
+      const { error: dbError } = await adminClient
+        .from('users')
+        .update({ email })
+        .eq('user_id', user.id);
   
-      return res.status(200).json({
-        message: 'Revisa tu correo para confirmar el cambio',
-      });
+      if (dbError) console.error('Error actualizando tabla users:', dbError.message);
   
+      return res.status(200).json({ message: 'Correo actualizado correctamente' });
     } catch (err) {
-      console.error('Error general:', err);
-      return res.status(500).json({ error: 'Error inesperado' });
+      console.error('changeUserEmail error:', err.message);
+      return res.status(500).json({ error: err.message });
     }
   };
 
