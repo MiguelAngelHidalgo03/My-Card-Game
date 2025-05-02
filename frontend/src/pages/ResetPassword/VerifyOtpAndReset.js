@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../../utils/supabaseClient";
+import { useNavigate } from "react-router-dom";
+import './ResetRequest.css'; // Add this line to import the CSS
 
 const VerifyOtpAndReset = () => {
   const [newPassword, setNewPassword] = useState("");
   const [message, setMessage] = useState("");
+  const navigate = useNavigate(); // Hook to handle navigation
 
   useEffect(() => {
     const hashParams = window.location.hash;
@@ -20,15 +23,18 @@ const VerifyOtpAndReset = () => {
     });
 
     if (error) {
-      setMessage("Error actualizando la contraseña.");
+      setMessage("Error actualizando la contraseña no se permite poner la misma.");
     } else {
       setMessage("Contraseña cambiada correctamente. Ya puedes iniciar sesión.");
+      setTimeout(() => {
+        navigate('/login', { state: { resetPasswordSuccess: true } });
+      }, 2000); 
     }
   };
 
   return (
-    <div>
-      <h2>Restablecer contraseña</h2>
+    <div className="login-container">
+      <h1>Restablecer contraseña</h1>
       <form onSubmit={handleSubmit}>
         <input
           type="password"

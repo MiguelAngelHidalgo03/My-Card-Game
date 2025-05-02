@@ -1,4 +1,5 @@
 import { useState } from "react";
+import './ResetRequest.css'; // Add this line to import the CSS
 
 const ResetRequest = () => {
   const [email, setEmail] = useState("");
@@ -23,8 +24,8 @@ const ResetRequest = () => {
   };
 
   return (
-    <div>
-      <h2>Recuperar contraseña</h2>
+    <div className="login-container">
+      <h1>Recuperar contraseña</h1>
       <form onSubmit={handleSubmit}>
         <input
           type="email"
