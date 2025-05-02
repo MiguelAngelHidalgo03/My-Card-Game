@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import supabase from '../utils/supabaseClient.js';
-
+import jwt from 'jsonwebtoken';
 
 export const getUserProfile = async (req, res) => {
     const { userId } = req.params;
@@ -97,39 +97,73 @@ export const getUserProfile = async (req, res) => {
       return res.status(500).json({ error: 'Error inesperado al cambiar la contraseña' });
     }
   };
+  
+// Cambiar el correo electrónico
 
-  export const changeUserEmail = async (req, res) => {
-    const { email, access_token } = req.body;
-  
-    if (!email || !access_token) {
-      return res.status(400).json({ error: 'Email y token son obligatorios' });
+export const changeUserEmail = async (req, res) => {
+  const { email } = req.body;
+  const token = req.headers['authorization']?.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ error: 'Token no proporcionado o no válido' });
+  }
+
+  try {
+    const { data: { user }, error: userError } = await supabase.auth.getUser(token);
+
+    if (userError || !user) {
+      return res.status(401).json({ error: 'Usuario no autenticado' });
     }
-  
-    try {
-      // Verificar la sesión del usuario con el access_token
-      const { data: session, error: sessionError } = await supabase.auth.getUser(access_token);
-  
-      if (sessionError || !session) {
-        return res.status(401).json({ error: 'Sesión no válida o expiró' });
-      }
-  
-      // Actualizar el email del usuario
-      const { user, error } = await supabase.auth.updateUser({ email });
-  
-      if (error) {
-        console.error('Error al actualizar el email:', error.message);
-        return res.status(500).json({ error: 'Error al actualizar el email' });
-      }
-  
-      return res.status(200).json({
-        message: 'Revisa tu correo para confirmar el cambio',
-      });
-  
-    } catch (err) {
-      console.error('Error general:', err);
-      return res.status(500).json({ error: 'Error inesperado' });
+
+    // Actualizar solo el email en Supabase Auth (esto enviará el correo de confirmación)
+    const { error: updateEmailError } = await supabase.auth.updateUser({
+      email,
+    });
+
+    if (updateEmailError) {
+      return res.status(500).json({ error: 'Error al actualizar el correo en Supabase' });
     }
-  };
+
+    // Responder que el correo de confirmación fue enviado
+    return res.status(200).json({
+      success: true,
+      message: 'Te hemos enviado un correo de confirmación al nuevo email. Debes confirmarlo para completar el cambio.'
+    });
+
+  } catch (error) {
+    console.error('Error al cambiar el correo:', error);
+    return res.status(500).json({ error: 'Error inesperado al cambiar el correo' });
+  }
+};
+
+
+export const syncEmailInDatabase = async (userId) => {
+  try {
+    // Obtener el usuario desde Supabase Auth
+    const { data: user, error } = await supabase.auth.admin.getUser(userId);
+
+    if (error || !user) {
+      console.error('Error obteniendo el usuario de Auth:', error?.message);
+      return;
+    }
+
+    // Actualizar el correo en la base de datos
+    const { data, error: dbError } = await supabase
+      .from('users')
+      .update({ email: user.email })
+      .eq('user_id', userId);
+
+    if (dbError) {
+      console.error('Error actualizando el correo en la base de datos:', dbError.message);
+      return;
+    }
+
+    console.log('Correo sincronizado correctamente en la base de datos');
+  } catch (error) {
+    console.error('Error al sincronizar el correo:', error);
+  }
+};
+
 
   // export const resetPassword = async (req, res) => {
   //   const { email } = req.body;
