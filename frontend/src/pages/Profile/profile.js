@@ -116,6 +116,7 @@ const Profile = () => {
   if (error) return <p>{error}</p>;
 
   return (
+    <div className="profile-background">
     <div className="profile-container">
       <h1>Perfil del Usuario</h1>
       <div className="profile-info"></div>
@@ -161,6 +162,7 @@ const Profile = () => {
           <Button onClick={handleSaveAvatar} color="primary">Guardar</Button>
         </DialogActions>
       </Dialog>
+    </div>
     </div>
   );
 };

@@ -2,56 +2,112 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #1a1a1a;
-  padding: 0.5rem 2rem;
-  color: white;
+  /* margin-top: 0.5rem; */
+  position: fixed; 
+  top: 0;
+  left: 0;
+  height: 80px; /* Altura fija del navbar */
+  backdrop-filter: blur(1px); /* opcional: efecto glass */
+  width: 100%;
+  z-index: 10;
+  background-color: rgba(255, 255, 255, 0); /* opcional: transparente */
+  /* padding: 0.5rem 2rem; */
+  /* color: white; */
+  transition: all 0.5s ease; 
+}
+.navbar-colored {
+  background-color: #1a1a1a; /* Fondo oscuro para login/register */
+}
+.navbar-scrolled {
+  background-color: #1a1a1a; /* Fondo oscuro al hacer scroll */
+  height: 60px; /* Reduce la altura del navbar */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Añade una sombra */
 }
 
+.navbar-scrolled .logo-image {
+  height: 40px; /* Reduce el tamaño del logo */
+}
+
+.navbar-scrolled .nav-links li a {
+  font-size: 0.9rem; /* Reduce el tamaño de los enlaces */
+}
+
+.navbar-scrolled .navbar-avatar {
+  width: 40px; /* Reduce el tamaño del avatar */
+  height: 40px;
+}
 .logo {
   font-size: 1.5rem;
+  margin-left: 2rem;
+    gap: 1rem;
 }
 
 .nav-links {
   list-style: none;
   display: flex;
   gap: 1rem;
+  margin-right: 3rem;
+  margin-left: 3rem;
+}
+
+.nav-links li {
+  display: flex;
+  align-items: center; /* Asegura que los elementos dentro del <li> estén alineados verticalmente */
+  /* margin-right: 1rem; */
 }
 
 .nav-links li a {
   color: white;
   text-decoration: none;
+  transition: color 0.3s ease, transform 0.3s ease; /* Transición para el hover */
+}
+
+.nav-links li a:hover {
+  color: #ffcc00; /* Color de iluminación al pasar el cursor */
+  transform: scale(1.1); /* Aumenta ligeramente el tamaño */
 }
 
 .user-menu {
   position: relative;
   cursor: pointer;
   display: flex;
-  flex-direction: column; /* Organiza los elementos en columna */
-  align-items: center; /* Centra los elementos horizontalmente */
-  justify-content: center; /* Asegura que los elementos estén centrados */
+  align-items: center; /* Centra el avatar y el texto verticalmente */
+  gap: 0.5rem; /* Espaciado entre el avatar y el texto */
 }
 
 .username-button {
+  display: flex;
+  align-items: center; /* Centra el texto y el avatar verticalmente */
+  gap: 0.5rem; /* Espaciado entre el texto y el avatar */
   background: none;
   border: none;
   color: white;
   font-weight: bold;
-  margin-bottom: 0.5rem; 
 }
 
 .dropdown-menu {
   position: absolute;
-  top: 100%;
-  right: 0;
+  top: 120%;
+  right: -2.5rem;
   background: #1a1a1a;
-  padding: 0.5rem;
+  padding: 1rem; /* Aumenta el tamaño del menú */
   border-radius: 6px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
   z-index: 1000;
   list-style: none;
   display: flex;
-  padding: 0.5rem 0rem 0rem 0.5rem;
   flex-direction: column;
+  width: 100px; /* Aumenta el ancho del menú */
+}
+
+.dropdown-menu .user-info {
+  background: linear-gradient(45deg, #ff7f50, #d3a900); /* Fondo colorido */
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  padding: 0.7rem;
+  border-radius: 4px;
+  margin-bottom: 0.5rem; /* Espaciado con los demás elementos */
 }
 
 .dropdown-menu li {
@@ -63,6 +119,13 @@
   text-decoration: none;
   color: white;
   padding: 0rem 0.3rem;
+  transition: color 0.3s ease, transform 0.3s ease; /* Transición para el hover */
+}
+
+.dropdown-menu a:hover,
+.dropdown-menu button:hover {
+  color: #ffcc00; /* Color de iluminación al pasar el cursor */
+  transform: scale(1.05); /* Aumenta ligeramente el tamaño */
 }
 
 .dropdown-menu a,
@@ -75,15 +138,21 @@
 }
 
 .logo-image {
-  height: 50px; /* Ajusta el tamaño según sea necesario */
+  display: flex;
+  height: 50px;
+  border-radius: 5%;
   width: auto;
   cursor: pointer;
+  transition: height 0.3s ease; 
+  /* margin-top: 1rem; */
+    /* gap: 1rem; */
+    
 }
 
 .navbar-avatar {
-  width: 30px;
-  height: 30px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  margin-top: -55%
-
+  object-fit: cover;
+  transition: width 0.3s ease, height 0.3s ease; /* Transición suave para el tamaño */
 }

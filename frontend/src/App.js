@@ -11,6 +11,9 @@ import Config from './pages/Config/Config';
 import Rules from './pages/Rules/Rules'; 
 import About from './pages/About/About'; 
 import AuthCallback from './AuthCallback' 
+import CreateLobby from './pages/CreateLobby/CreateLobby'; 
+import JoinLobby from './pages/JoinLobby/JoinLobby';
+import Lobby from './pages/Lobby/Lobby';
 
 function App() {
   return (
@@ -20,6 +23,17 @@ function App() {
 
         {/* Ruta para la página de inicio */}
         <Route path="/" element={<Home />} />
+
+        {/* Ruta para la página de crear sala */}
+        <Route path="/create-lobby" element={<CreateLobby />} />
+
+        {/* Ruta para la página de unirse a sala */}
+        <Route path="/join-lobby" element={<JoinLobby />} />
+
+        {/* Ruta para la página de lobby */}
+        <Route path="/lobby" element={<Lobby />} />
+
+
 
         {/* Ruta para la página de registro */}
         <Route path="/register" element={<Register />} />
