@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../../utils/supabaseClient";
+import "./VerifyOtpAndReset.css"; // Asegúrate de tener este archivo CSS para estilos
 
 const VerifyOtpAndReset = () => {
   const [newPassword, setNewPassword] = useState("");
@@ -27,7 +28,7 @@ const VerifyOtpAndReset = () => {
   };
 
   return (
-    <div>
+    <div className="verify-otp-container">
       <h2>Restablecer contraseña</h2>
       <form onSubmit={handleSubmit}>
         <input
