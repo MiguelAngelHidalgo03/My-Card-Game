@@ -37,13 +37,10 @@ const VerifyOtpAndReset = () => {
   };
 
   return (
-<<<<<<< HEAD
     <div className="login-container">
       <h1>Restablecer contraseña</h1>
-=======
     <div className="verify-otp-container">
       <h2>Restablecer contraseña</h2>
->>>>>>> 1a8f3d185f0900887b6dd3ab1c0b41aeb31118b2
       <form onSubmit={handleSubmit}>
         <input
           type="password"
@@ -56,7 +53,7 @@ const VerifyOtpAndReset = () => {
       </form>
       {message && <p>{message}</p>}
     </div>
+    </div>
   );
 };
-
 export default VerifyOtpAndReset;
