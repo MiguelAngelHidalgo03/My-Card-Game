@@ -182,7 +182,9 @@ function Config() {
   if (!user) return <p className="Config-loading">Cargando datos de usuario...</p>;
 
   return (
-    <div className="Config-page">
+   
+    <div className="Config-container">
+      <div className="Config-page">
       <h2>Editar cuenta</h2>
       <form onSubmit={handleProfileSubmit}>
         <label>Nombre de usuario</label>
@@ -248,6 +250,7 @@ function Config() {
           {message}
         </Alert>
       </Snackbar>
+    </div>
     </div>
   );
 }

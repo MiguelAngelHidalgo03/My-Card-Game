@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Home.css';
-import fondoHome from '../../img/fondo_home.png'; // Ruta corregida
+import fondoHome from '../../img/fondo_home.png';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -29,10 +30,14 @@ const Home = () => {
             <h2 className="modal-title">Elige una opción</h2>
             <div className="modal-options">
               <div className="modal-option" onClick={() => console.log('Crear sala')}>
+              <Link to="/create-lobby" >
                 <img src={require('../../img/crear_sala.webp')} alt="Crear sala" className="modal-image" />
+              </Link>
               </div>
               <div className="modal-option" onClick={() => console.log('Unirse a una sala')}>
+              <Link to="/join-lobby" >
                 <img src={require('../../img/unirse_sala.webp')} alt="Unirse a una sala" className="modal-image" />
+              </Link>
               </div>
             </div>
           </div>

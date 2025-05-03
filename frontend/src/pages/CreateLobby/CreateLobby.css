@@ -1,0 +1,204 @@
+.create-lobby {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #bba3d3, #2575fc); /* Fondo degradado */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    text-align: center;
+    gap: 4rem;
+    position: relative;
+    z-index: 1;
+    padding-top: 8rem;
+  }
+  
+  .create-lobby h1 {
+    color: #fff;
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Estilo para cuando la sesión está iniciada */
+  .create-lobby .user-session {
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    color: #333;
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+  }
+  
+  .create-lobby .user-session p {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .create-lobby .user-session button {
+    padding: 1rem;
+    font-size: 1rem;
+    background: linear-gradient(135deg, #24477b, #a12fe7); /* Botón degradado */
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .create-lobby .user-session button:hover {
+    transform: scale(1.05);
+  }
+  .avatar-preview {
+    margin: 0;
+    margin-bottom: 0 !important;
+  }
+  /* .user-session .selected-avatar-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+    color: #fff;
+  } */
+  
+  /* Estilo del formulario para invitados */
+  .guest-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .guest-form input {
+    padding: 1rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .guest-form button {
+    padding: 1rem;
+    font-size: 1rem;
+    background: linear-gradient(135deg, #24477b, #a12fe7); /* Botón degradado */
+    color: #ffffff !important;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .guest-form button:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Vista previa del avatar seleccionado */
+  .selected-avatar-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+    color: #fff;
+  }
+  
+  .selected-avatar-preview img {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    border: 2px solid #34322b;
+    object-fit: cover;
+    margin-bottom: 1rem;
+  }
+  
+  /* Estilo del modal */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+  }
+  
+  .modal-content h2 {
+    color: #6a11cb; /* Color principal */
+    margin-bottom: 1rem;
+  }
+  
+  /* Opciones de avatar */
+  .avatar-options {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .avatar-option {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+  
+  .avatar-option:hover {
+    transform: scale(1.1);
+  }
+  
+  .avatar-option.selected {
+    border-color: #6a11cb; /* Color principal */
+  }
+  
+  /* Acciones del modal */
+  .modal-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+  }
+  
+  .modal-actions button {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .modal-actions button:first-child {
+    background-color: #ccc; /* Botón de cancelar */
+    color: #333;
+  }
+  
+  .modal-actions button:first-child:hover {
+    background-color: #bbb;
+  }
+  
+  .modal-actions button:last-child {
+    background: linear-gradient(135deg, #3b3540, #2575fc); /* Botón degradado */
+    color: #fff;
+  }
+  
+  .modal-actions button:last-child:hover {
+    transform: scale(1.05);
+  }
