@@ -32,9 +32,7 @@ function App() {
 
         {/* Ruta para la página de lobby */}
         <Route path="/lobby" element={<Lobby />} />
-
-
-
+        
         {/* Ruta para la página de registro */}
         <Route path="/register" element={<Register />} />
 

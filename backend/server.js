@@ -9,7 +9,7 @@ import userRoutes from './routes/userRoutes.js';
 import avatarRoutes from './routes/avatarRoutes.js';
 import recordRoutes from './routes/recordRoutes.js';
 import resetPasswordRoutes from './routes/resetPassword.js';
-
+import authRoutes from './routes/userRoutes.js';
 dotenv.config();
 
 const app = express();
@@ -26,6 +26,8 @@ app.use(cors({
 app.use(express.json());
 
 // Rutas API
+// Usar las rutas de autenticación
+app.use('/api/auth', authRoutes);
 app.use('/api', userRoutes, avatarRoutes);
 app.use('/api', recordRoutes);
 app.use('/api', resetPasswordRoutes);

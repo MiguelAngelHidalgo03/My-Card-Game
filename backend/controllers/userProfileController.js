@@ -191,32 +191,6 @@ export const changeUserEmail = async (req, res) => {
 };
 
 
-export const syncEmailInDatabase = async (userId) => {
-  try {
-    // Obtener el usuario desde Supabase Auth
-    const { data: user, error } = await supabase.auth.admin.getUser(userId);
-
-    if (error || !user) {
-      console.error('Error obteniendo el usuario de Auth:', error?.message);
-      return;
-    }
-
-    // Actualizar el correo en la base de datos
-    const { data, error: dbError } = await supabase
-      .from('users')
-      .update({ email: user.email })
-      .eq('user_id', userId);
-
-    if (dbError) {
-      console.error('Error actualizando el correo en la base de datos:', dbError.message);
-      return;
-    }
-
-    console.log('Correo sincronizado correctamente en la base de datos');
-  } catch (error) {
-    console.error('Error al sincronizar el correo:', error);
-  }
-};
 
 
   // export const resetPassword = async (req, res) => {

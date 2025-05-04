@@ -63,7 +63,7 @@ Así nació la idea. No en un laboratorio, ni en una lluvia de ideas seria. Naci
         <ul>
           <li>React para el desarrollo frontend.</li>
           <li>Node.js y Express para el backend.</li>
-          <li>Supabase para la base de datos.</li>
+          <li> para la base de datos.</li>
           <li>Figma para el diseño de interfaces.</li>
           <li>GitHub para la colaboración y control de versiones.</li>
         </ul>
