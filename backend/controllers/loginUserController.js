@@ -76,3 +76,92 @@ export const logoutUser = async (req, res) => {
       return res.status(500).json({ error: 'Error inesperado al cerrar sesión' });
     }
   };
+// Función para autenticarse con Google
+
+// Paso 1: Iniciar sesión con Google (redireccionar al login de Google)
+export const googleAuth = async (req, res) => {
+  try {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: 'http://localhost:3000/auth/callback', // Cambia esto a la URL real de tu frontend
+      },
+    });
+
+    if (error) {
+      console.error('Error al iniciar sesión con Google:', error.message);
+      return res.status(401).json({ error: 'No se pudo iniciar sesión con Google' });
+    }
+
+    return res.status(200).json({ url: data.url }); // URL para redirigir al login de Google
+  } catch (err) {
+    console.error('Error inesperado en googleAuth:', err.message);
+    return res.status(500).json({ error: 'Error inesperado en el login con Google' });
+  }
+};
+
+// Paso 2: Callback después de login con Google
+export const handleGoogleCallback = async (req, res) => {
+  try {
+    // Obtener el usuario logueado tras redirección
+    const { data: { user, session }, error } = await supabase.auth.getUser();
+
+    if (error || !user) {
+      console.error('Error al obtener el usuario tras Google login:', error?.message);
+      return res.status(401).json({ error: 'No se pudo obtener el usuario tras login con Google' });
+    }
+
+    // Verificar si el usuario ya existe en la tabla 'users' (base de datos)
+    const { data: existingUser, error: findError } = await supabase
+      .from('users')
+      .select('*')
+      .eq('user_id', user.id)
+      .single();
+
+    if (findError && findError.code === 'PGRST116') {
+      // El usuario no existe, lo creamos
+      const { error: insertError } = await supabase
+        .from('users')
+        .insert([{
+          user_id: user.id, 
+          email: user.email,
+          username: user.email.split('@')[0],  // Puedes usar el correo para generar un username si es necesario
+          profile_picture: user.user_metadata?.avatar_url || '/assets/img/avatar1.png',
+          language: 'es',
+        }]);
+
+      if (insertError) {
+        console.error('Error al crear el usuario en la tabla users:', insertError.message);
+        return res.status(500).json({ error: 'Error al crear el usuario en la base de datos' });
+      }
+
+      return res.status(200).json({
+        message: 'Usuario creado y sesión iniciada con éxito',
+        session,
+        user: {
+          user_id: user.id,
+          email: user.email,
+          username: user.email.split('@')[0],
+          profile_picture: user.user_metadata?.avatar_url || '/assets/img/avatar1.png',
+          language: 'es',
+        },
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Sesión iniciada con éxito',
+      session,
+      user: {
+        user_id: user.id,
+        email: user.email,
+        username: existingUser.username,
+        profile_picture: existingUser.profile_picture,
+        language: existingUser.language,
+      },
+    });
+
+  } catch (err) {
+    console.error('Error general en el callback de Google:', err.message);
+    return res.status(500).json({ error: 'Error inesperado en el callback de Google' });
+  }
+};
