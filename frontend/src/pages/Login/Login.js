@@ -64,6 +64,7 @@ const Login = () => {
         />
         <button type="submit">Entrar</button>
         <p>¿No tienes cuenta? <Link to="/register">Regístrate aquí</Link></p>
+        <p><Link to="/reset-request">¿Se te olvidó la contraseña?</Link></p>
       </form>
       {message && <p>{message}</p>}
     </div>

@@ -1,12 +1,11 @@
-// Config.js
 import React, { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../../context/UserContext';
 import './Config.css';
 import axios from 'axios';
 import { createClient } from '@supabase/supabase-js';
-import { changeEmail, updateProfile, changePassword } from '../../services/playerService';  // Importar las funciones del servicio
+import { changeEmail, updateProfile, changePassword } from '../../services/playerService';  
+import { Snackbar, Alert } from '@mui/material';  // Importar Snackbar y Alert de MUI
 
-// Inicialización de Supabase con las variables de entorno
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
 const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
@@ -16,7 +15,9 @@ function Config() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [language, setLanguage] = useState('es');
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState(''); // Mensaje a mostrar
+  const [messageType, setMessageType] = useState('success'); // Tipo de mensaje (success, error)
+  const [open, setOpen] = useState(false); // Controla la visibilidad del Snackbar
 
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -48,11 +49,15 @@ function Config() {
         setUsername(data.user.username);
         setLanguage(data.user.language);
       } else {
-        alert(`Error al obtener los datos: ${data.error}`);
+        setMessage('Error al obtener los datos: ' + data.error);
+        setMessageType('error');
+        setOpen(true);
       }
     } catch (error) {
       console.error('Error al obtener los datos del perfil:', error);
-      alert('Ocurrió un error al obtener los datos del perfil');
+      setMessage('Ocurrió un error al obtener los datos del perfil');
+      setMessageType('error');
+      setOpen(true);
     }
   };
 
@@ -61,8 +66,10 @@ function Config() {
     const userFromStorage = localStorage.getItem('user');
     const userId = userFromStorage ? JSON.parse(userFromStorage).userId : null;
 
-    if (!username || !email) {
-      alert('El nombre de usuario y el correo son obligatorios');
+    if (!username) {
+      setMessage('El nombre de usuario y el correo son obligatorios');
+      setMessageType('error');
+      setOpen(true);
       return;
     }
 
@@ -76,14 +83,20 @@ function Config() {
       const { success, error } = await updateProfile(updatedUserData);  // Usamos el servicio para actualizar el perfil
 
       if (success) {
-        alert('Perfil actualizado correctamente');
+        setMessage('Perfil actualizado correctamente');
+        setMessageType('success');
+        setOpen(true);
         fetchUserData();  // Recarga los datos después de la actualización
       } else {
-        alert(`Error: ${error}`);
+        setMessage('Error: ' + error);
+        setMessageType('error');
+        setOpen(true);
       }
     } catch (error) {
       console.error('Error al actualizar perfil:', error);
-      alert('Ocurrió un error al guardar los cambios');
+      setMessage('Ocurrió un error al guardar los cambios');
+      setMessageType('error');
+      setOpen(true);
     }
   };
 
@@ -91,86 +104,87 @@ function Config() {
     e.preventDefault();
 
     if (!currentPassword || !newPassword) {
-      alert('Debes introducir la contraseña actual y la nueva contraseña');
+      setMessage('Debes introducir la contraseña actual y la nueva contraseña');
+      setMessageType('error');
+      setOpen(true);
+      return;
+    }
+
+    const { data: { user: supabaseUser }, error: userError } = await supabase.auth.getUser();
+
+    if (userError || !supabaseUser?.email) {
+      console.error('No se pudo obtener el usuario autenticado:', userError?.message);
+      setMessage('No se pudo obtener el email del usuario autenticado');
+      setMessageType('error');
+      setOpen(true);
       return;
     }
 
     const passwordData = {
-      email,
+      email: supabaseUser.email,
       currentPassword,
       newPassword,
     };
 
     try {
-      const { success, error } = await changePassword(passwordData);  // Usamos el servicio para cambiar la contraseña
+      const { success, error } = await changePassword(passwordData);
 
       if (success) {
-        alert('Contraseña actualizada correctamente');
-        setCurrentPassword('');  // Limpiar los campos
+        setMessage('Contraseña actualizada correctamente');
+        setMessageType('success');
+        setOpen(true);
+        setCurrentPassword('');
         setNewPassword('');
       } else {
-        alert(`Error: ${error}`);
+        setMessage('Error: ' + error);
+        setMessageType('error');
+        setOpen(true);
       }
     } catch (error) {
       console.error('Error al cambiar la contraseña:', error);
-      alert('Ocurrió un error al cambiar la contraseña');
+      setMessage('Ocurrió un error al cambiar la contraseña');
+      setMessageType('error');
+      setOpen(true);
     }
   };
 
   const handleChangeEmail = async (e) => {
     e.preventDefault();
-  
+
     if (!email) {
-      alert('Debes introducir un nuevo correo');
-      return;
-    }
-  
-    const { data: { session }, error } = await supabase.auth.getSession();
-
-    if (error) {
-      console.error("Error al obtener la sesión:", error);
+      setMessage('Debes introducir un nuevo correo');
+      setMessageType('error');
+      setOpen(true);
       return;
     }
 
-    if (!session) {
-      console.log('No hay sesión activa', session);
-      alert('No hay sesión activa');
-      return;
-    }
+    try {
+      const { success, error } = await changeEmail(email);  // Llamada a la función del servicio
 
-    // Paso 1: Cambiar el correo en Supabase
-    const { success, error: emailError } = await changeEmail(email, session.access_token);  
-    console.log('Enviando a /change-email:', {
-      email,
-      access_token: session.access_token,
-    });
-    if (success) {
-      // Paso 2: Si el correo se cambió en Supabase, actualizamos el correo en la base de datos
-      const userFromStorage = localStorage.getItem('user');
-      const userId = userFromStorage ? JSON.parse(userFromStorage).userId : null;
-
-      const updatedUserData = {
-        userId,
-        email,  
-      };
-     
-      const { success: profileUpdateSuccess, error: profileError } = await updateProfile(updatedUserData);  
-
-      if (profileUpdateSuccess) {
-        alert('Correo electrónico actualizado correctamente en Supabase y en la base de datos' );
-        setMessage('Ve al email para confirmar el cambio de correo');
-        setEmail(''); 
+      if (success) {
+        setMessage('Revisa tu correo para confirmar el cambio');
+        setMessageType('success');
+        setOpen(true);
+        setEmail('');
       } else {
-        alert(`Error al actualizar el correo en la base de datos: ${profileError}`);
+        setMessage('Error: ' + error);
+        setMessageType('error');
+        setOpen(true);
       }
-    } else {
-      alert(`Error al cambiar el correo en Supabase: ${emailError}`);
+    } catch (error) {
+      console.error('Error al cambiar el correo:', error);
+      setMessage('Ocurrió un error al cambiar el correo');
+      setMessageType('error');
+      setOpen(true);
     }
   };
+
   if (!user) return <p className="Config-loading">Cargando datos de usuario...</p>;
 
   return (
-    <div className="Config-page">
+   
+    <div className="Config-container">
+      <div className="Config-page">
       <h2>Editar cuenta</h2>
       <form onSubmit={handleProfileSubmit}>
         <label>Nombre de usuario</label>
@@ -226,7 +240,17 @@ function Config() {
         <button type="submit">Cambiar email</button>
       </form>
 
-      {message && <p>{message}</p>}
+      {/* Snackbar para mostrar mensajes */}
+      <Snackbar 
+        open={open} 
+        autoHideDuration={6000} 
+        onClose={() => setOpen(false)}
+      >
+        <Alert onClose={() => setOpen(false)} severity={messageType}>
+          {message}
+        </Alert>
+      </Snackbar>
+    </div>
     </div>
   );
 }

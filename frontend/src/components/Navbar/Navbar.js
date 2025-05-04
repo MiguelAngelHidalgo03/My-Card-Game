@@ -1,15 +1,44 @@
 // Navbar.jsx
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { UserContext } from '../../context/UserContext';
 import './Navbar.css';
 function Navbar() {
   const { user, logout } = useContext(UserContext);
   const [showMenu, setShowMenu] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false); // Estado para detectar el scroll
+  const location = useLocation(); 
+
+  const toggleMenu = () => {
+    setShowMenu(!showMenu);
+  };
+
+  // Determina si la ruta actual requiere un fondo de color
+  const isColoredBackground = ["/login", "/register", "/reset-request", "/reset-password"].includes(location.pathname);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setIsScrolled(true); // Si el usuario hace scroll, activa el estado
+      } else {
+        setIsScrolled(false); // Si el usuario vuelve al tope, desactiva el estado
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll); // Limpia el listener al desmontar
+    };
+  }, []);
+
 
   return (
-    <nav className="navbar">
-      {/* Logo como botón de inicio */}
+    <nav
+    className={`navbar ${isScrolled ? 'navbar-scrolled' : ''} ${
+      isColoredBackground ? 'navbar-colored' : ''
+    }`}
+  >    {/* Logo como botón de inicio */}
       <Link to="/" className="logo">
         <img src="/assests/img/logo.jpg" alt="Logo" className="logo-image" />
       </Link>
@@ -18,24 +47,26 @@ function Navbar() {
         <li><Link to="/about">Sobre Nosotros</Link></li>
 
         {user ? (
-          
           <li className="user-menu">
-            <div onClick={() => setShowMenu(!showMenu)} className="username-button">
-            {user.username} 
-            <img
-                src={user.profile_picture }
+            <div
+              onClick={toggleMenu}
+              className={`username-button ${showMenu ? 'moved' : ''}`}
+            >
+              {/* {user.username} */}
+              <img
+                src={user.profile_picture}
                 alt="Avatar"
                 className="navbar-avatar"
               />
-              <span className="arrow">{showMenu ? '▲' : '▼'}</span>
             </div>
-            
 
             {showMenu && (
               <ul className="dropdown-menu">
+                {/* Nombre del usuario en un recuadro */}
+                <div className="user-info">{user.username}</div>
                 <li><Link to="/profile">Perfil</Link></li>
                 <li><Link to="/config">Cuenta</Link></li>
-                <li><button onClick={logout}>Salir</button></li>
+                <li><Link to="/" ><button onClick={logout}>Salir</button></Link></li>
               </ul>
             )}
           </li>
