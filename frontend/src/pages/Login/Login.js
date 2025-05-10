@@ -15,37 +15,53 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
-  const handleGoogleLogin = async () => {
-    try {
-      // Iniciar sesión con Google
-      const { user, session, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-      });
+const handleGoogleLogin = async () => {
+  try {
+    // Esta llamada redirige al login de Google
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: 'http://localhost:3000/login', // Asegúrate de usar la ruta correcta
+      },
+    });
+  } catch (error) {
+    console.error('Error durante el login con Google:', error);
+    setMessage('Error al iniciar sesión con Google');
+  }
+};
 
-      if (error) {
-        console.error('Error al iniciar sesión con Google:', error);
-        setMessage(`Error al iniciar sesión con Google: ${error.message}`);
-        return;
+useEffect(() => {
+  const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
+    if (event === 'SIGNED_IN' && session) {
+      try {
+        const access_token = session.access_token;
+
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/auth/google-auth`, {
+          access_token,
+        });
+
+        if (response.status === 200) {
+          const { user } = response.data;
+
+          login({
+            username: user.username,
+            userId: user.user_id,
+            profile_picture: user.profile_picture || '/assets/img/avatar1.png',
+            token: access_token,
+          });
+
+          navigate('/');  // Redirigir después de iniciar sesión exitosamente
+        }
+      } catch (err) {
+        console.error('Error al autenticar en el backend:', err);
       }
-
-      // Enviar el token de acceso al backend para validar e iniciar sesión o registrar
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/auth/google-auth`, {
-        access_token: session.access_token,
-      });
-
-      if (response.status === 200) {
-        // Almacenar la información del usuario (puedes usar contexto, localStorage, etc.)
-        console.log('Inicio de sesión exitoso:', response.data);
-        navigate('/');
-      }
-    } catch (error) {
-      console.error('Error al procesar el login con Google:', error);
-      setMessage('Error al iniciar sesión con Google');
     }
-  };
-  
-  
-  
+  });
+
+  return () => authListener.subscription.unsubscribe();
+}, [login, navigate]);
+
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -79,34 +95,41 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
-      <h1>Iniciar Sesión</h1>
-      <form onSubmit={handleLogin}>
-        <input
-          type="email"
-          placeholder="Correo electrónico"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Entrar</button>
-        <button onClick={handleGoogleLogin} className="google-btn">
-           Iniciar sesión / Registrarse con Google
-        </button>
+  <div className="login-container">
+    <h1>Iniciar Sesión</h1>
+    <form onSubmit={handleLogin}>
+      <input
+        type="email"
+        placeholder="Correo electrónico"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      />
+      <input
+        type="password"
+        placeholder="Contraseña"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+      />
+      <button type="submit">Entrar</button>
 
-        <p>¿No tienes cuenta? <Link to="/register">Regístrate aquí</Link></p>
-        <p><Link to="/reset-request">¿Se te olvidó la contraseña?</Link></p>
-      </form>
-      {message && <p>{message}</p>}
-    </div>
-  );
-};
+      {/* Prevenir el comportamiento predeterminado del formulario cuando se hace clic en el botón de Google */}
+      <button
+        type="button" // Cambiar el tipo de botón a "button" para evitar el submit del formulario
+        onClick={handleGoogleLogin}
+        className="google-btn"
+      >
+        Iniciar sesión / Registrarse con Google
+      </button>
+
+      <p>¿No tienes cuenta? <Link to="/register">Regístrate aquí</Link></p>
+      <p><Link to="/reset-request">¿Se te olvidó la contraseña?</Link></p>
+    </form>
+    {message && <p>{message}</p>}
+  </div>
+  
+);
+}
 
 export default Login;

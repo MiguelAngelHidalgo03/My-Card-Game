@@ -12,6 +12,7 @@ const Register = () => {
     email: '',
     password: '',
     profile_picture: `/assests/img/avatar${randomAvatar}.png`, 
+    language: 'es',
   });
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
