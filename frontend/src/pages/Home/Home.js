@@ -1,75 +1,214 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Home.css';
-import fondoHome from '../../img/fondo_home.png';
+import anime from 'animejs';  
 import { Link } from 'react-router-dom';
+import { animacionIntroGuantes } from './HomeAnimation.js';
+import { initScrollAnimations } from './ScrollAnimation.js';
+import video from '../../video/kitten.mp4';
 
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [introDone, setIntroDone] = useState(false);
+
+    /* ─────────────────── Intro + cleanup ─────────────────── */
+    useEffect(() => {
+      // 1. bloquea scroll mientras corre la intro
+      document.body.style.overflow = 'hidden';
+  
+      // 2. lanza la animación y guarda la instancia del timeline
+      const tl = animacionIntroGuantes(() => {
+        // callback al terminar la intro
+        setIntroDone(true);
+        document.body.style.overflow = 'auto';   // restaura scroll
+      });
+      
+      // 3. función de limpieza: se ejecuta al desmontar Home (cambiar de ruta)
+      return () => {
+        if (tl) tl.pause();          // detiene el timeline para que no siga corriendo
+        anime.remove('*');  
+        document.body.style.overflow = 'auto';           // borra listeners que anime.js pudiera dejar
+      };
+    }, []);   
+    
+    useEffect(() => {
+      if (introDone) {
+        initScrollAnimations();  // inicializamos las scroll-animations
+      }
+    }, [introDone]);
+  
+    useEffect(() => {
+      if (!introDone) return;
+      anime({
+        targets: '#lineDrawing .lines path',
+        strokeDashoffset: [anime.setDashoffset, 0],
+        easing: 'easeInOutSine',
+        duration: 1000,
+        delay: (el, i) => i * 150,
+        direction: 'alternate',
+        loop: true
+      });
+    }, [introDone]);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  const videoDemo = null; // Temporalmente null para simular la ausencia del video
+  const videoDemo = null;
 
   return (
-    <div className="home">
-      {/* Sección principal con el texto */}
-      <div className="home-main">
-        <div className="home-text">
-          <h1>1pa1™ Web ya está disponible en todo el mundo</h1>
-          <p>¡Ven y juega uno de los mejores juegos de cartas del mundo!</p>
-          <button className="play-button" onClick={openModal}>¡Jugar!</button>
+    <>
+      <div className="home">
+  
+        {!introDone && (
+          <>
+            <div className="impact-wave" id="impact-wave"></div>
+            <div className="flash-effect" id="flash-effect"></div>
+            <div className="intro-container">
+              <img src={require('../../img/guanteDerecho.png')}
+                   alt="Guante Izquierdo"
+                   className="guante-izquierdo" />
+              <img src={require('../../img/guante.png')}
+                   alt="Guante Derecho"
+                   className="guante-derecho" />
+            </div>
+          </>
+        )}
+  
+        <div id="confeti-container"></div>
+  
+        <div className="logo-container">
+          <img src={require('../../img/Logo.png')}
+               alt="Logo"
+               className="logo-normal" />
         </div>
-      </div>
-
-      {/* Modal */}
-      {isModalOpen && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={closeModal}>×</button>
-            <h2 className="modal-title">Elige una opción</h2>
-            <div className="modal-options">
-              <div className="modal-option" onClick={() => console.log('Crear sala')}>
-              <Link to="/create-lobby" >
-                <img src={require('../../img/crear_sala.webp')} alt="Crear sala" className="modal-image" />
-              </Link>
+  
+        {/* CONTENIDO PRINCIPAL (siempre en el DOM, oculto hasta introDone) */}
+        <div id="page-content" className="page-content">
+  
+          {/* ─── BLOQUE 1: Home Main ───────────────────────── */}
+          <div className="home-main">
+            <div className="home-text">
+            <div id="lineDrawing">
+  <svg viewBox="-110 -80 400 120" xmlns="http://www.w3.org/2000/svg">
+    <g className="lines">
+      {/* Ejemplo de dos letras (“1” y “p”) convertidas a path */}
+      <path className="mypath" d="M8.93,-5.97 L20.53,-5.97 L20.53,-46.02 L7.91,-43.49 L7.91,-49.96 L20.46,-52.49 L27.56,-52.49 L27.56,-5.97 L39.16,-5.97 L39.16,-0.00 L8.93,-0.00 L8.93,-5.97 Z"/> 
+     <path className="mypath" d="M58.85,-5.91 L58.85,14.97 L52.34,14.97 L52.34,-39.38 L58.85,-39.38 L58.85,-33.40 Q60.89,-36.91 64.00,-38.61 Q67.12,-40.32 71.44,-40.32 Q78.61,-40.32 83.09,-34.63 Q87.58,-28.93 87.58,-19.65 Q87.58,-10.37 83.09,-4.67 Q78.61,1.02 71.44,1.02 Q67.12,1.02 64.00,-0.69 Q60.89,-2.40 58.85,-5.91 Z"/>
+     <path className="mypath" d="M80.86,-19.65 Q80.86,-26.79 77.93,-30.85 Q74.99,-34.91 69.86,-34.91 Q64.72,-34.91 61.78,-30.85 Q58.85,-26.79 58.85,-19.65 Q58.85,-12.52 61.78,-8.46 Q64.72,-4.40 69.86,-4.40 Q74.99,-4.40 77.93,-8.46 Q80.86,-12.52 80.86,-19.65 Z"/>
+      <path className="mypath" d="M116.19,-19.79 Q108.35,-19.79 105.33,-18.00 Q102.30,-16.21 102.30,-11.88 Q102.30,-8.44 104.57,-6.41 Q106.85,-4.40 110.74,-4.40 Q116.13,-4.40 119.38,-8.21 Q122.63,-12.03 122.63,-18.35 L122.63,-19.79 L116.19,-19.79 Z"/> 
+        <path className="mypath" d="M129.10,-22.47 L129.10,-0.00 L122.63,-0.00 L122.63,-5.97 Q120.41,-2.40 117.11,-0.69 Q113.80,1.02 109.02,1.02 Q102.98,1.02 99.40,-2.37 Q95.83,-5.77 95.83,-11.46 Q95.83,-18.10 100.28,-21.48 Q104.73,-24.85 113.55,-24.85 L122.63,-24.85 L122.63,-25.49 Q122.63,-29.96 119.69,-32.40 Q116.76,-34.84 111.45,-34.84 Q108.07,-34.84 104.87,-34.03 Q101.67,-33.22 98.72,-31.60 L98.72,-37.59 Q102.27,-38.96 105.61,-39.63 Q108.95,-40.32 112.11,-40.32 Q120.66,-40.32 124.88,-35.89 Q129.10,-31.47 129.10,-22.47 Z"/>
+       <path className="mypath" d="M144.57,-5.97 L156.16,-5.97 L156.16,-46.02 L143.54,-43.49 L143.54,-49.96 L156.10,-52.49 L163.20,-52.49 L163.20,-5.97 L174.79,-5.97 L174.79,-0.00 L144.57,-0.00 L144.57,-5.97 Z"/> 
+  </g>
+  </svg>
+  
+  <svg viewBox="360 -80 700 120" xmlns="http://www.w3.org/2000/svg">
+    <g className="lines">
+      {/* Ejemplo de dos letras (“1” y “p”) convertidas a path */}
+         <path className="mypath" d="M407.34,3.66 Q404.61,10.69 402.00,12.82 Q399.40,14.97 395.04,14.97 L389.87,14.97 L389.87,9.56 L393.67,9.56 Q396.34,9.56 397.81,8.29 Q399.30,7.03 401.08,2.32 L402.24,-0.63 L386.32,-39.38 L393.18,-39.38 L405.48,-8.58 L417.79,-39.38 L424.64,-39.38 L407.34,3.66 Z"/> 
+        <path className="mypath" d="M451.47,-19.79 Q443.63,-19.79 440.60,-18.00 Q437.57,-16.21 437.57,-11.88 Q437.57,-8.44 439.85,-6.41 Q442.12,-4.40 446.01,-4.40 Q451.40,-4.40 454.65,-8.21 Q457.90,-12.03 457.90,-18.35 L457.90,-19.79 L451.47,-19.79 Z"/> 
+         <path className="mypath" d="M464.37,-22.47 L464.37,-0.00 L457.90,-0.00 L457.90,-5.97 Q455.69,-2.40 452.38,-0.69 Q449.07,1.02 444.29,1.02 Q438.25,1.02 434.67,-2.37 Q431.11,-5.77 431.11,-11.46 Q431.11,-18.10 435.55,-21.48 Q440.00,-24.85 448.82,-24.85 L457.90,-24.85 L457.90,-25.49 Q457.90,-29.96 454.97,-32.40 Q452.03,-34.84 446.72,-34.84 Q443.35,-34.84 440.14,-34.03 Q436.94,-33.22 434.00,-31.60 L434.00,-37.59 Q437.54,-38.96 440.88,-39.63 Q444.22,-40.32 447.38,-40.32 Q455.93,-40.32 460.15,-35.89 Q464.37,-31.47 464.37,-22.47 Z"/> 
+         <path className="mypath" d="M534.26,-21.31 L534.26,-18.15 L504.51,-18.15 Q504.94,-11.46 508.54,-7.96 Q512.14,-4.47 518.58,-4.47 Q522.30,-4.47 525.80,-5.38 Q529.30,-6.29 532.75,-8.12 L532.75,-2.00 Q529.26,-0.53 525.61,0.25 Q521.95,1.02 518.19,1.02 Q508.77,1.02 503.27,-4.46 Q497.76,-9.95 497.76,-19.30 Q497.76,-28.97 502.98,-34.64 Q508.20,-40.32 517.07,-40.32 Q525.01,-40.32 529.64,-35.20 Q534.26,-30.09 534.26,-21.31 Z"/>
+         <path className="mypath" d="M527.79,-23.21 Q527.72,-28.51 524.82,-31.67 Q521.92,-34.84 517.14,-34.84 Q511.73,-34.84 508.47,-31.78 Q505.22,-28.72 504.73,-23.16 L527.79,-23.21 Z"/> 
+         <path className="mypath" d="M569.97,-38.22 L569.97,-32.10 Q567.24,-33.50 564.28,-34.20 Q561.33,-34.91 558.16,-34.91 Q553.35,-34.91 550.94,-33.44 Q548.53,-31.96 548.53,-29.00 Q548.53,-26.75 550.25,-25.47 Q551.97,-24.19 557.18,-23.03 L559.40,-22.53 Q566.28,-21.06 569.19,-18.37 Q572.09,-15.68 572.09,-10.87 Q572.09,-5.38 567.75,-2.17 Q563.40,1.02 555.81,1.02 Q552.65,1.02 549.22,0.40 Q545.79,-0.21 541.99,-1.44 L541.99,-8.12 Q545.58,-6.25 549.06,-5.32 Q552.54,-4.40 555.96,-4.40 Q560.52,-4.40 562.98,-5.96 Q565.44,-7.53 565.44,-10.37 Q565.44,-13.00 563.66,-14.41 Q561.90,-15.82 555.88,-17.12 L553.63,-17.65 Q547.62,-18.91 544.94,-21.53 Q542.28,-24.15 542.28,-28.72 Q542.28,-34.28 546.21,-37.29 Q550.15,-40.32 557.40,-40.32 Q560.97,-40.32 564.13,-39.79 Q567.31,-39.27 569.97,-38.22 Z"/> 
+         <path className="mypath" d="M588.79,-50.56 L588.79,-39.38 L602.11,-39.38 L602.11,-34.35 L588.79,-34.35 L588.79,-12.97 Q588.79,-8.16 590.10,-6.78 Q591.42,-5.41 595.47,-5.41 L602.11,-5.41 L602.11,-0.00 L595.47,-0.00 Q587.98,-0.00 585.13,-2.79 Q582.28,-5.59 582.28,-12.97 L582.28,-34.35 L577.54,-34.35 L577.54,-39.38 L582.28,-39.38 L582.28,-50.56 L588.79,-50.56 Z"/> 
+         <path className="mypath" d="M628.51,-19.79 Q620.67,-19.79 617.65,-18.00 Q614.62,-16.21 614.62,-11.88 Q614.62,-8.44 616.89,-6.41 Q619.17,-4.40 623.06,-4.40 Q628.45,-4.40 631.70,-8.21 Q634.95,-12.03 634.95,-18.35 L634.95,-19.79 L628.51,-19.79 Z"/> 
+         <path className="mypath" d="M641.42,-22.47 L641.42,-0.00 L634.95,-0.00 L634.95,-5.97 Q632.73,-2.40 629.43,-0.69 Q626.12,1.02 621.34,1.02 Q615.30,1.02 611.72,-2.37 Q608.15,-5.77 608.15,-11.46 Q608.15,-18.10 612.60,-21.48 Q617.05,-24.85 625.87,-24.85 L634.95,-24.85 L634.95,-25.49 Q634.95,-29.96 632.01,-32.40 Q629.08,-34.84 623.77,-34.84 Q620.39,-34.84 617.19,-34.03 Q613.99,-33.22 611.04,-31.60 L611.04,-37.59 Q614.59,-38.96 617.93,-39.63 Q621.27,-40.32 624.43,-40.32 Q632.98,-40.32 637.20,-35.89 Q641.42,-31.47 641.42,-22.47 Z"/>
+         <path className="mypath" d="M629.60,-57.59 L636.59,-57.59 L625.14,-44.37 L619.75,-44.37 L629.60,-57.59 Z"/> 
+         <path className="mypath" d="M703.53,-33.40 L703.53,-54.71 L710.00,-54.71 L710.00,-0.00 L703.53,-0.00 L703.53,-5.91 Q701.50,-2.40 698.38,-0.69 Q695.28,1.02 690.91,1.02 Q683.78,1.02 679.29,-4.67 Q674.81,-10.37 674.81,-19.65 Q674.81,-28.93 679.29,-34.63 Q683.78,-40.32 690.91,-40.32 Q695.28,-40.32 698.38,-38.61 Q701.50,-36.91 703.53,-33.40 Z"/> 
+         <path className="mypath" d="M681.49,-19.65 Q681.49,-12.52 684.43,-8.46 Q687.37,-4.40 692.50,-4.40 Q697.63,-4.40 700.57,-8.46 Q703.53,-12.52 703.53,-19.65 Q703.53,-26.79 700.57,-30.85 Q697.63,-34.91 692.50,-34.91 Q687.37,-34.91 684.43,-30.85 Q681.49,-26.79 681.49,-19.65 Z"/> 
+         <path className="mypath" d="M723.33,-39.38 L729.80,-39.38 L729.80,-0.00 L723.33,-0.00 L723.33,-39.38 Z"/> 
+         <path className="mypath" d="M723.33,-54.71 L729.80,-54.71 L729.80,-46.51 L723.33,-46.51 L723.33,-54.71 Z"/> 
+         <path className="mypath" d="M768.43,-38.22 L768.43,-32.10 Q765.70,-33.50 762.74,-34.20 Q759.79,-34.91 756.62,-34.91 Q751.80,-34.91 749.39,-33.44 Q746.99,-31.96 746.99,-29.00 Q746.99,-26.75 748.71,-25.47 Q750.43,-24.19 755.64,-23.03 L757.85,-22.53 Q764.74,-21.06 767.64,-18.37 Q770.54,-15.68 770.54,-10.87 Q770.54,-5.38 766.20,-2.17 Q761.86,1.02 754.27,1.02 Q751.10,1.02 747.67,0.40 Q744.24,-0.21 740.45,-1.44 L740.45,-8.12 Q744.04,-6.25 747.52,-5.32 Q750.99,-4.40 754.41,-4.40 Q758.98,-4.40 761.43,-5.96 Q763.90,-7.53 763.90,-10.37 Q763.90,-13.00 762.12,-14.41 Q760.35,-15.82 754.33,-17.12 L752.08,-17.65 Q746.08,-18.91 743.40,-21.53 Q740.73,-24.15 740.73,-28.72 Q740.73,-34.28 744.67,-37.29 Q748.61,-40.32 755.85,-40.32 Q759.43,-40.32 762.59,-39.79 Q765.76,-39.27 768.43,-38.22 Z"/> 
+         <path className="mypath" d="M787.10,-5.91 L787.10,14.97 L780.60,14.97 L780.60,-39.38 L787.10,-39.38 L787.10,-33.40 Q789.15,-36.91 792.25,-38.61 Q795.37,-40.32 799.69,-40.32 Q806.86,-40.32 811.34,-34.63 Q815.83,-28.93 815.83,-19.65 Q815.83,-10.37 811.34,-4.67 Q806.86,1.02 799.69,1.02 Q795.37,1.02 792.25,-0.69 Q789.15,-2.40 787.10,-5.91 Z"/> 
+         <path className="mypath" d="M809.11,-19.65 Q809.11,-26.79 806.18,-30.85 Q803.24,-34.91 798.11,-34.91 Q792.97,-34.91 790.03,-30.85 Q787.10,-26.79 787.10,-19.65 Q787.10,-12.52 790.03,-8.46 Q792.97,-4.40 798.11,-4.40 Q803.24,-4.40 806.18,-8.46 Q809.11,-12.52 809.11,-19.65 Z"/> 
+         <path className="mypath" d="M841.80,-34.84 Q836.60,-34.84 833.58,-30.78 Q830.55,-26.72 830.55,-19.65 Q830.55,-12.59 833.55,-8.53 Q836.57,-4.47 841.80,-4.47 Q846.98,-4.47 849.99,-8.54 Q853.02,-12.62 853.02,-19.65 Q853.02,-26.65 849.99,-30.75 Q846.98,-34.84 841.80,-34.84 Z"/> 
+         <path className="mypath" d="M841.80,-40.32 Q850.24,-40.32 855.05,-34.83 Q859.88,-29.35 859.88,-19.65 Q859.88,-9.99 855.05,-4.48 Q850.24,1.02 841.80,1.02 Q833.33,1.02 828.53,-4.48 Q823.73,-9.99 823.73,-19.65 Q823.73,-29.35 828.53,-34.83 Q833.33,-40.32 841.80,-40.32 Z"/> 
+         <path className="mypath" d="M903.33,-23.77 L903.33,-0.00 L896.87,-0.00 L896.87,-23.56 Q896.87,-29.15 894.68,-31.92 Q892.50,-34.70 888.15,-34.70 Q882.90,-34.70 879.88,-31.35 Q876.85,-28.02 876.85,-22.25 L876.85,-0.00 L870.35,-0.00 L870.35,-39.38 L876.85,-39.38 L876.85,-33.25 Q879.18,-36.81 882.32,-38.56 Q885.47,-40.32 889.59,-40.32 Q896.37,-40.32 899.85,-36.12 Q903.33,-31.93 903.33,-23.77 Z"/> 
+         <path className="mypath" d="M916.23,-39.38 L922.70,-39.38 L922.70,-0.00 L916.23,-0.00 L916.23,-39.38 Z"/> 
+         <path className="mypath" d="M916.23,-54.71 L922.70,-54.71 L922.70,-46.51 L916.23,-46.51 L916.23,-54.71 Z"/> 
+         <path className="mypath" d="M964.50,-19.65 Q964.50,-26.79 961.57,-30.85 Q958.63,-34.91 953.50,-34.91 Q948.36,-34.91 945.42,-30.85 Q942.49,-26.79 942.49,-19.65 Q942.49,-12.52 945.42,-8.46 Q948.36,-4.40 953.50,-4.40 Q958.63,-4.40 961.57,-8.46 Q964.50,-12.52 964.50,-19.65 Z"/> 
+         <path className="mypath" d="M942.49,-33.40 Q944.54,-36.91 947.64,-38.61 Q950.76,-40.32 955.08,-40.32 Q962.25,-40.32 966.73,-34.63 Q971.22,-28.93 971.22,-19.65 Q971.22,-10.37 966.73,-4.67 Q962.25,1.02 955.08,1.02 Q950.76,1.02 947.64,-0.69 Q944.54,-2.40 942.49,-5.91 L942.49,-0.00 L935.99,-0.00 L935.99,-54.71 L942.49,-54.71 L942.49,-33.40 Z"/> 
+         <path className="mypath" d="M981.94,-54.71 L988.41,-54.71 L988.41,-0.00 L981.94,-0.00 L981.94,-54.71 Z"/> 
+         <path className="mypath" d="M1035.62,-21.31 L1035.62,-18.15 L1005.88,-18.15 Q1006.31,-11.46 1009.91,-7.96 Q1013.51,-4.47 1019.94,-4.47 Q1023.66,-4.47 1027.16,-5.38 Q1030.66,-6.29 1034.12,-8.12 L1034.12,-2.00 Q1030.63,-0.53 1026.97,0.25 Q1023.32,1.02 1019.56,1.02 Q1010.13,1.02 1004.63,-4.46 Q999.13,-9.95 999.13,-19.30 Q999.13,-28.97 1004.35,-34.64 Q1009.57,-40.32 1018.43,-40.32 Q1026.38,-40.32 1031.00,-35.20 Q1035.62,-30.09 1035.62,-21.31 Z"/> 
+         <path className="mypath" d="M1029.15,-23.21 Q1029.09,-28.51 1026.18,-31.67 Q1023.28,-34.84 1018.50,-34.84 Q1013.09,-34.84 1009.84,-31.78 Q1006.59,-28.72 1006.09,-23.16 L1029.15,-23.21 Z"/>
+      {/* …aquí pegarías todos los <path> que Inkscape te genere para la frase completa… */}
+    </g>
+  </svg>
+</div>
+              <p className="">
+                Ven y juega uno de los mejores juegos de cartas del mundo
+              </p>
+              <button className="play-button"
+                      onClick={openModal}>
+                ¡Jugar!
+              </button>
+            </div>
+          </div>
+  
+          {/* ─── BLOQUE 2: Modal (no es scroll-block) ───────── */}
+          {isModalOpen && (
+            <div className="modal-overlay" onClick={closeModal}>
+              <div className="modal-content" onClick={e => e.stopPropagation()}>
+                <button className="modal-close" onClick={closeModal}>×</button>
+                <h2 className="modal-title">Elige una opción</h2>
+                <div className="modal-options">
+                  <div className="modal-option">
+                    <Link to="/create-lobby">
+                      <img src={require('../../img/crear_sala.webp')}
+                           alt="Crear sala"
+                           className="modal-image" />
+                    </Link>
+                  </div>
+                  <div className="modal-option">
+                    <Link to="/join-lobby">
+                      <img src={require('../../img/unirse_sala.webp')}
+                           alt="Unirse a una sala"
+                           className="modal-image" />
+                    </Link>
+                  </div>
+                </div>
               </div>
-              <div className="modal-option" onClick={() => console.log('Unirse a una sala')}>
-              <Link to="/join-lobby" >
-                <img src={require('../../img/unirse_sala.webp')} alt="Unirse a una sala" className="modal-image" />
-              </Link>
+            </div>
+          )}
+  
+          {/* ─── BLOQUE 3: Reglas ──────────────────────────── */}
+          <div className="home-rules scroll-block">
+            <div className="rules-image">
+              <a href="/rules">
+                <img src={require('../../img/img_rules.webp')} alt="Reglas" />
+              </a>
+            </div>
+            <div className="rules-text">
+              <div className="rule-item animate-text">
+                Aprende a jugar 1pa1 en minutos.
+              </div>
+              <div className="rule-item animate-text">
+                Domina las reglas y conviértete en un profesional.
+              </div>
+              <div className="rule-item animate-text">
+                ¡Reta a tus amigos y familiares!
               </div>
             </div>
           </div>
-        </div>
-      )}
-
-      {/* Sección de reglas */}
-      <div className="home-rules">
-        <div className="rules-image">
-          <a href="/rules">
-            <img src={require('../../img/img_rules.webp')} alt="Reglas" />
-          </a>
-        </div>
-        <div className="rules-text">
-          <div className="rule-item">Aprende a jugar 1pa1 en minutos.</div>
-          <div className="rule-item">Domina las reglas y conviértete en un profesional.</div>
-          <div className="rule-item">¡Reta a tus amigos y familiares!</div>
-        </div>
-      </div>
-
-      {/* Sección del video */}
-      <div className="home-video">
-        {videoDemo ? (
-          <video src={videoDemo} controls />
-        ) : (
-          <div className="video-placeholder">
-            <p>El video estará disponible pronto.</p>
+  
+          {/* ─── BLOQUE 4: Vídeo ───────────────────────────── */}
+          <div className="home-video scroll-block">
+            {video ? (
+              <video src={video}
+                     controls/>
+            ) : (
+              <div className="video-placeholder">
+                <p className="animate-text">
+                  El video estará disponible pronto.
+                </p>
+              </div>
+            )}
           </div>
-        )}
-      </div>
-    </div>
+  
+        </div>{/* /#page-content */}
+      </div>{/* /.home */}
+    </>
   );
+  
 };
 
 export default Home;

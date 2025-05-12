@@ -20,8 +20,8 @@ export const loginUser = async (req, res) => {
     });
 
     if (error) {
-      console.log('Error en autenticación con Supabase:', error.message);
-      return res.status(401).json({ error: 'Credenciales incorrectas' });
+      console.log('Error en autenticación con Supabase:', error);
+      return res.status(401).json({ error: error.message || 'Credenciales incorrectas' });
     }
 
     const { user, session } = data;

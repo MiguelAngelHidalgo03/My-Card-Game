@@ -1,10 +1,41 @@
 /* Fondo de la página */
+*, *::before, *::after { box-sizing: border-box; }
+
+.scroll-block {
+  opacity: 0;
+  transform: scale(0.8) skewX(15deg) skewY(10deg);
+  transform-origin: top center;
+  will-change: transform, opacity;
+  /* **elimina** cualquier margin/padding extra aquí */
+  margin: 0;
+  padding: 0; /* para evitar overflow al crecer */
+}
+.scroll-block.fixed-size {
+  width: min( var(--block-w), 100% );
+  max-width: 100%;
+  height: var(--block-h);
+}
+.animate-text {
+  visibility: hidden;
+  white-space: pre-wrap;
+}
+
+
+#lineDrawing {
+  width: 100%;
+  max-width: 800px;
+  margin: 2rem auto;
+  /* centro absoluto sin desplazar nada */
+}
+.mypath {
+  fill: none;
+  stroke: #D2F567;
+  stroke-width: 3;
+}
 .home {
-  background-image: url('../../img/fondo_home.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+ 
   /* color: white; */
+  width: 100%;
   text-align: center;
   padding: 2rem;
   min-height: 100vh;
@@ -16,23 +47,14 @@
   z-index: 1;
   padding-top: 8rem;
 }
-.home::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 30%; /* Ajusta la altura del oscurecimiento */
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0)); /* Gradiente de negro a transparente */
-  z-index: 2; /* Asegura que el gradiente esté por encima del fondo */
-  pointer-events: none; /* Permite interactuar con los elementos debajo */
-}
 
-/* Asegura que el contenido esté por encima del gradiente */
 .home > * {
+  max-width: 100%;
   position: relative;
   z-index: 3;
 }
+/* Asegura que el contenido esté por encima del gradiente */
+
 /* Sección principal */
 .home-main {
   display: flex;
@@ -40,7 +62,7 @@
   align-items: center;
   justify-content: center;
   gap: 1.5rem;
-  margin-bottom: 4rem;
+  margin-bottom: 14rem;
 }
 
 .home-image img {
@@ -56,7 +78,7 @@
   /* margin-top: 10rem; */
   border-radius: 10px;
   text-align: center;
-  max-width: 800px;
+  max-width: 1000px;
 }
 
 .home-text h1 {
@@ -94,20 +116,21 @@
 .home-video {
   display: flex;
   justify-content: center;
-  margin-top: 4rem;
+  /* margin-top: 4rem; */
+  margin: 0 auto;
   margin-bottom: 4rem;
 }
 
 .home-video video {
-  width: 80%;
-  height: auto;
+  width: 55%;
+  height: 70%;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .video-placeholder {
   width: 60%;
-  height: 400px;
+  /* height: 400px; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -119,56 +142,114 @@
   font-style: italic;
 }
 
-/* Sección de reglas */
+/* ─── BLOQUE 3: Reglas ──────────────────────────── */
 .home-rules {
+  margin-top: 5rem;
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
   gap: 2rem;
-  /*justify-content: space-between;*/
-  margin-top: 8rem;
-  margin-bottom: 8rem;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2.5rem 1rem;  
+  /* flex-wrap: wrap; */
+  align-items: stretch;              /* algo de separación lateral */
+  box-sizing: border-box;
+}
+.home-rules {
+  overflow: hidden;               /* evita overflow en su contenedor */
+}
+
+
+.home-rules > .rules-image,
+.home-rules > .rules-text {
+  flex: 1 1 200px;            
+  min-width: 0;               
 }
 
 .rules-image img {
-  width: 90%;
+  width: 100%;
   height: auto;
-  max-height: 500px;
+  display: block;
   border-radius: 10px;
   transition: transform 0.3s;
-  margin-left: 3%;
 }
 
 .rules-image img:hover {
-  transform: scale(1.05);
+  transform: scale(1.05) translateY(1%);
 }
 
 .rules-text {
-  flex: 1;
-  text-align: left;
-  margin-right: 3%;
-  max-width: 33%;
-  color: white;
   background-color: rgba(0, 0, 0, 0.3);
   padding: 1.5rem;
   border-radius: 10px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.6s ease;
+}
+
+.rules-text.expanded {
+  max-height: calc(var(--img-h, 0px) - 1.2rem);     /* suficiente para todo el contenido */
 }
 
 .rule-item {
-  font-size: 1.55rem;
-  line-height: 2.66;
-  color: white;
-  margin-bottom: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  white-space: normal;
+  font-size: 1.4rem;
+  line-height: 1.6;
   background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  margin-bottom: 1rem;
   padding: 1rem;
   border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   transition: transform 0.2s, background-color 0.3s;
 }
 
 .rule-item:hover {
-  transform: scale(1.05);
-  background-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.03);
+  background-color: rgba(45, 45, 45, 0.6);
 }
+
+/* ─── MEDIA QUERIES ─────────────────────────────── */
+
+/* Tablets y pantallas medias */
+@media (max-width: 1024px) {
+  .home-rules {
+    gap: 1.5rem;
+    padding: 0 0.5rem;
+  }
+  .rules-image,
+  .rules-text {
+    flex: 1 1 45%;          /* dos columnas en tablets */
+  }
+}
+
+/* Móviles grandes */
+@media (max-width: 768px) {
+  .home-rules {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .rules-image,
+  .rules-text {
+    flex: 1 1 100%;
+  }
+  .rules-text {
+    padding: 1rem;
+  }
+}
+
+/* Móviles pequeños */
+@media (max-width: 480px) {
+  .rule-item {
+    font-size: 1.2rem;
+    line-height: 1.4;
+    padding: 0.8rem;
+  }
+}
+
+
 
 /* Estilos para el modal */
 .modal-overlay {
@@ -283,6 +364,171 @@
 
 
 
+.logo-container {
+  display: flex;
+  justify-content: center;
+  inset:0;          /* top:0; right:0; bottom:0; left:0; */
+  margin:auto; 
+  margin-top: 11rem;
+}
+
+.logo-normal {
+  width: 600px;
+  opacity: 0;
+  margin-bottom: 20rem;
+  /* transform: scale(2.5); */
+}
+#impact-wave{
+  position:fixed;
+  inset:0;          /* top:0; right:0; bottom:0; left:0; */
+  margin:auto;      /* lo coloca justo en medio */
+  width:100px;
+  height:100px;
+  border-radius:50%;
+  background:rgba(255,255,255,.6);
+  transform:scale(0);  /* solo escalas, sin translate */
+  z-index:9999;
+  pointer-events:none;
+}
+
+@media (max-width:1440px){
+  
+  .logo-container {
+  display: flex;
+  justify-content: center;
+  inset:0;          /* top:0; right:0; bottom:0; left:0; */
+  margin:auto; 
+  margin-top: 5rem;
+  }
+  .logo-normal {
+    width: 550px;
+    opacity: 0;
+    margin-bottom: 10rem;
+    /* transform: scale(2.5); */
+  }
+}
+@media (max-width:1024px){
+  
+  .logo-container {
+  display: flex;
+  justify-content: center;
+  inset:0;          /* top:0; right:0; bottom:0; left:0; */
+  margin:auto; 
+  margin-top: 5rem;
+  }
+  .logo-normal {
+    width: 450px;
+    opacity: 0;
+    margin-bottom: 10rem;
+    /* transform: scale(2.5); */
+  }
+}
+@media (max-width:768px){
+ 
+  
+  #impact-wave{
+    top:45%;                       /* 5 % más arriba */
+    transform:translate(-50%, -55%) scale(0); /* resta un poco menos */
+  }
+  
+  .logo-container {
+  display: flex;
+  justify-content: center;
+  inset:0;          /* top:0; right:0; bottom:0; left:0; */
+  margin:auto; 
+  margin-top: 5rem;
+  }
+  .logo-normal {
+    width: 300px;
+    opacity: 0;
+    margin-bottom: 10rem;
+    /* transform: scale(2.5); */
+  }
+}
+@media (max-width:480px){
+  #impact-wave{
+    top:40%;                       /* 10 % más arriba respecto al centro */
+    transform:translate(-50%, -60%) scale(0); /* resta todavía menos */
+  }
+}
+.page-content{
+  opacity:0;                 /* invisible al principio            */
+  transition:opacity .2s ease-in-out;
+  pointer-events:none;       /* evita que se hagan clics antes de tiempo */
+}
+
+.page-content.visible{
+  opacity:1;                 /* se mostrará con transición        */
+  pointer-events:auto;
+}
+
+.intro-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.guante-izquierdo,
+.guante-derecho {
+  width: 28vw; /* ← 25% del ancho de la pantalla */
+  max-width: 500px; /* Limita el tamaño en pantallas grandes */
+  position: absolute;
+  top: 25%; /* más arriba */
+  transform: translateY(-50%);
+  opacity: 0;
+}
+
+
+.guante-izquierdo {
+  left: 0;
+}
+
+.guante-derecho {
+  right: 0rem;
+}
+
+.flash-effect {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: white;
+  opacity: 0;
+  z-index: 10000;
+  pointer-events: none;
+}
+
+
+#confeti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+.confeti {
+  position: absolute;
+  width: 8px;
+  height: 12px;
+  background-color: red; /* color se asigna dinámicamente */
+  opacity: 0.9;
+  border-radius: 2px;
+  will-change: transform, opacity;
+}
+
 /* Animaciones modal */
 @keyframes fadeIn {
   from {
@@ -344,22 +590,70 @@
     height: 15rem;
   }
 
-  /* Ajustar la sección de reglas */
-  .home-rules {
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
-  }
+ 
 
-  .rules-image img {
-    width: 100%;
-    max-height: none;
-    margin-left: 0;
-  }
+ 
 
-  .rules-text {
-    max-width: 100%;
-    margin-right: 0;
-    text-align: center;
+}
+
+
+:root{
+  --punch-start : -140%;
+  --punch-show  :  60%;
+  --punch-back  :  75%;
+  --punch-hit   :   5%;
+  --punch-exit  :  60%;   /* ← NUEVO: hacia dónde “se van” */
+  --punch-scale : 1.30;
+}
+@media (max-width:1050px){
+  :root{
+    --punch-start : -170%;
+    --punch-show  :  55%;
+    --punch-back  :  50%;
+    --punch-hit   :   2%;
+    --punch-exit  :  30%;   /* puede quedarse igual */
+    --punch-scale : 1.05;
+  }
+}
+@media (max-width:1250px){
+  :root{
+    --punch-start : -170%;
+    --punch-show  :  75%;
+    --punch-back  :  90%;
+    --punch-hit   :   2%;
+    --punch-exit  :  50%;   /* puede quedarse igual */
+    --punch-scale : 1.15;
+  }
+}
+@media (max-width:1650px){
+  :root{
+    --punch-start : -170%;
+    --punch-show  :  75%;
+    --punch-back  :  90%;
+    --punch-hit   :   2%;
+    --punch-exit  :  80%;   /* puede quedarse igual */
+    --punch-scale : 1.15;
+  }
+}
+
+@media (max-width:2100px){
+  :root{
+    --punch-start : -170%;
+    --punch-show  :  75%;
+    --punch-back  :  90%;
+    --punch-hit   :   2%;
+    --punch-exit  :  100%;   /* puede quedarse igual */
+    --punch-scale : 1.15;
+  }
+}
+
+@media (max-width:2460px){
+  :root{
+    --punch-start : -170%;
+    --punch-show  :  75%;
+    --punch-back  :  90%;
+    --punch-hit   :   2%;
+    --punch-exit  :  100%;   /* puede quedarse igual */
+    --punch-scale : 1.15;
   }
 }
