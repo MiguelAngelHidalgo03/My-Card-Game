@@ -50,7 +50,7 @@ const Profile = () => {
       });
 
     } catch (error) {
-      console.error('Error al cargar el perfil:', error);
+      console.error('Error al cargar el perfil:');
       // setError(error.message || 'Hubo un error al cargar tu perfil.');
     } finally {
       setLoading(false);

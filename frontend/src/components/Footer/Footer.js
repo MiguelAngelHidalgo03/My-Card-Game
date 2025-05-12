@@ -3,7 +3,7 @@ import './Footer.css';
 
 function Footer() {
   return (
-    <footer className="footer">
+    <div className="footer">
       <div className="footer-content">
         <div className="footer-section">
           <h4>Contactos</h4>
@@ -38,7 +38,7 @@ function Footer() {
           <a href="/manage-cookies" className="footer-link">Manage Cookies</a>
         </div>
       </div>
-    </footer>
+    </div>
   );
 }
 
