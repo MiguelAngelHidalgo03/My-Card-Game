@@ -39,12 +39,12 @@ function Navbar() {
       isColoredBackground ? 'navbar-colored' : ''
     }`}
   >    {/* Logo como botón de inicio */}
-      <Link to="/" className="logo">
+      <Link to="/" reloadDocument className="logo">
         <img src="/assests/img/logo.jpg" alt="Logo" className="logo-image" />
       </Link>
       <ul className="nav-links">
-        <li><Link to="/rules">Reglas</Link></li>
-        <li><Link to="/about">Sobre Nosotros</Link></li>
+        <li><Link to="/rules" reloadDocument>Reglas</Link></li>
+        <li><Link to="/about" reloadDocument>Sobre Nosotros</Link></li>
 
         {user ? (
           <li className="user-menu">
@@ -64,9 +64,9 @@ function Navbar() {
               <ul className="dropdown-menu">
                 {/* Nombre del usuario en un recuadro */}
                 <div className="user-info">{user.username}</div>
-                <li><Link to="/profile">Perfil</Link></li>
-                <li><Link to="/config">Cuenta</Link></li>
-                <li><Link to="/" ><button onClick={logout}>Salir</button></Link></li>
+                <li><Link to="/profile" reloadDocument>Perfil</Link></li>
+                <li><Link to="/config" reloadDocument>Cuenta</Link></li>
+                <li><Link to="/" reloadDocument><button onClick={logout}>Salir</button></Link></li>
               </ul>
             )}
           </li>

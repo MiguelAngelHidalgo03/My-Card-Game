@@ -1,71 +1,65 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import ResetRequest from "./pages/ResetPassword/ResetRequest";  // Página donde el usuario solicita el restablecimiento
-import VerifyOtpAndReset from "./pages/ResetPassword/VerifyOtpAndReset";  // Página donde el usuario verifica el código y cambia la contraseña
+// App.js
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
 import Navbar from './components/Navbar/Navbar';
-import Footer from './components/Footer/Footer'; 
+import Footer from './components/Footer/Footer';
+import BgMountains from "./components/background/BgMountains";
 import Home from './pages/Home/Home';
+import Rules from './pages/Rules/Rules';
+import About from './pages/About/About';
+import Config from './pages/Config/Config';
+import CreateLobby from './pages/CreateLobby/CreateLobby';
+import JoinLobby from './pages/JoinLobby/JoinLobby';
+import Lobby from './pages/Lobby/Lobby';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import Profile from './pages/Profile/profile';
-import Config from './pages/Config/Config';
-import Rules from './pages/Rules/Rules'; 
-import About from './pages/About/About'; 
-import AuthCallback from './AuthCallback' 
-import CreateLobby from './pages/CreateLobby/CreateLobby'; 
-import JoinLobby from './pages/JoinLobby/JoinLobby';
-import Lobby from './pages/Lobby/Lobby';
+import ResetRequest from "./pages/ResetPassword/ResetRequest";
+import VerifyOtpAndReset from "./pages/ResetPassword/VerifyOtpAndReset";
+import AuthCallback from './AuthCallback';
+import ScrollToTop from './utils/scrollReset';
+import GameCanvas from "./components/GameCanvas/GameCanvas";
 
-function App() {
+export default function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Navbar />
-      <Routes>
-
-        {/* Ruta para la página de inicio */}
-        <Route path="/" element={<Home />} />
-
-        {/* Ruta para la página de crear sala */}
-        <Route path="/create-lobby" element={<CreateLobby />} />
-
-        {/* Ruta para la página de unirse a sala */}
-        <Route path="/join-lobby" element={<JoinLobby />} />
-
-        {/* Ruta para la página de lobby */}
-        <Route path="/lobby" element={<Lobby />} />
-        
-        {/* Ruta para la página de registro */}
-        <Route path="/register" element={<Register />} />
-
-        {/* Ruta para la página de inicio de sesión */}
-        <Route path="/login" element={<Login />} />
-       
-        {/* Ruta para la página de Perfil */}
-        <Route path="/profile" element={<Profile />} />
-
-        {/* Ruta para la página de perfil de usuario */}
-        <Route path="/Config" element={<Config />} />
-
-        {/* Ruta para solicitar el restablecimiento de la contraseña */}
-        <Route path="/reset-request" element={<ResetRequest />} />
-
-        {/* Ruta para verificar el código y cambiar la contraseña */}
-        <Route path="/reset-password" element={<VerifyOtpAndReset />} />
-
-        {/* Redirección por defecto, puedes ponerla a "/reset-request" o cualquier otra ruta */}
-        <Route path="/" element={<Navigate to="/reset-request" />} />
-  
-        {/* Ruta para la página de reglas */}
-        <Route path="/rules" element={<Rules />} />
-
-        {/* Ruta para la página de "Sobre Nosotros" */}
-        <Route path="/about" element={<About />} />
-        {/* Aquí agregamos el AuthCallback */}
-        
-        <Route path="/auth/callback" element={<AuthCallback />} /> 
-      </Routes>
-      <Footer /> {/* Añadir el Footer aquí */}
+      <Main />
     </Router>
   );
 }
 
-export default App;
+function Main() {
+  const { pathname } = useLocation();
+
+  return (
+    <>
+      <Routes>
+        <Route path="/"        element={<><BgMountains /><Home/></>} />
+        <Route path="/rules"   element={<><BgMountains /><Rules/></>} />
+        <Route path="/about"   element={<><BgMountains /><About/></>} />
+        <Route path="/config"  element={<><BgMountains /><Config/></>} />
+        <Route path="/game"    element={<GameCanvas />} />
+        <Route path="/create-lobby" element={<CreateLobby />} />
+        <Route path="/join-lobby"   element={<JoinLobby />} />
+        <Route path="/lobby"        element={<Lobby />} />
+        <Route path="/login"        element={<Login />} />
+        <Route path="/register"     element={<Register />} />
+        <Route path="/profile"      element={<Profile />} />
+        <Route path="/reset-request" element={<ResetRequest />} />
+        <Route path="/reset-password" element={<VerifyOtpAndReset />} />
+        <Route path="/auth/callback" element={<AuthCallback />} />
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+
+      {/* sólo renderiza el Footer si NO estamos en /game */}
+      {pathname !== "/game" && <Footer />}
+    </>
+  );
+}

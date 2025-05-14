@@ -1,11 +1,10 @@
-/* Asegúrate de que el body y html ocupen toda la altura */
-html, body {
-  height: 100%;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
+*, *::before, *::after {
+  box-sizing: border-box;
 }
-
+html, body {
+  margin: 0;
+  padding: 0;
+}
 /* El contenedor principal debe ocupar todo el espacio disponible */
 #root {
   flex: 1;
@@ -19,6 +18,7 @@ html, body {
   color: white;
   padding: 2rem;
   text-align: center;
+  width: 100%;
   margin-top: auto; /* Empuja el footer hacia abajo */
 }
 
