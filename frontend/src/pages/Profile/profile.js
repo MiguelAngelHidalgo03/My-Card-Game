@@ -41,17 +41,23 @@ const availableImages = googleAvatar
 
   useEffect(() => {
   const fetchGoogleAvatar = async () => {
-    const { data: { user }, error } = await supabase.auth.getUser({ forceRefresh: true });
-    if (error) {
-      console.error('Error al obtener avatar de Google:', error);
+    const { data, error } = await supabase.auth.getSession();
+
+    if (error || !data?.session) {
+      console.error('No se encontró sesión activa o hubo un error:', error);
       return;
     }
 
-    const avatarUrl = user?.user_metadata?.avatar_url;
+    const user = data.session.user;
+    if (!user) {
+      console.error('No hay usuario autenticado');
+      return;
+    }
+
+    const avatarUrl = user.user_metadata?.avatar_url;
     if (avatarUrl) {
       setGoogleAvatar(avatarUrl);
 
-      // Actualiza el localStorage si es necesario
       const updatedUser = {
         ...storedUser,
         profile_picture: avatarUrl,

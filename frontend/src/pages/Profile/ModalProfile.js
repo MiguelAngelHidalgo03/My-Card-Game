@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Modal = ({ isOpen, onClose, availableImages, selectedImage, handleImageChange, onSave }) => {
-  if (!isOpen) return null; 
+  if (!isOpen) return null;
 
   return (
     <div className="modal-overlay" onClick={onClose}>
