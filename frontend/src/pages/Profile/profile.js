@@ -2,12 +2,17 @@ import React, { useEffect, useState } from 'react';
 import './Profile.css';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button } from '@mui/material';
 import { getUserProfile, getUserStats } from '../../services/playerService';
+import { createClient } from '@supabase/supabase-js';
+const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
+const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const Profile = () => {
   const storedUser = JSON.parse(localStorage.getItem('user'));
   const userId = storedUser?.userId;
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [googleAvatar, setGoogleAvatar] = useState(null);
   const [error, setError] = useState(null);
   const [selectedImage, setSelectedImage] = useState('/assests/img/avatar1.png');
   const [stats, setStats] = useState({
@@ -17,18 +22,46 @@ const Profile = () => {
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const availableImages = [
-    '/assests/img/avatar1.png',
-    '/assests/img/avatar2.png',
-    '/assests/img/avatar3.png',
-    '/assests/img/avatar4.png',
-  ];
+  const baseAvatars = [
+  '/assests/img/avatar1.png',
+  '/assests/img/avatar2.png',
+  '/assests/img/avatar3.png',
+  '/assests/img/avatar4.png',
+];
+
+const availableImages = googleAvatar
+  ? [googleAvatar, ...baseAvatars]
+  : baseAvatars;
 
   useEffect(() => {
     if (userId) {
       fetchProfile();
     }
   }, []);
+
+  useEffect(() => {
+  const fetchGoogleAvatar = async () => {
+    const { data: { user }, error } = await supabase.auth.getUser({ forceRefresh: true });
+    if (error) {
+      console.error('Error al obtener avatar de Google:', error);
+      return;
+    }
+
+    const avatarUrl = user?.user_metadata?.avatar_url;
+    if (avatarUrl) {
+      setGoogleAvatar(avatarUrl);
+
+      // Actualiza el localStorage si es necesario
+      const updatedUser = {
+        ...storedUser,
+        profile_picture: avatarUrl,
+      };
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+    }
+  };
+
+  fetchGoogleAvatar();
+}, []);
 
   const fetchProfile = async () => {
     if (!userId) {

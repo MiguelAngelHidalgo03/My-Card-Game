@@ -120,7 +120,7 @@ useEffect(() => {
         onClick={handleGoogleLogin}
         className="google-btn"
       >
-        Iniciar sesión / Registrarse con Google
+        Iniciar sesión con Google
       </button>
 
       <p>¿No tienes cuenta? <Link to="/register">Regístrate aquí</Link></p>
