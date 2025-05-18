@@ -6,55 +6,45 @@ import './Lobby.css';
 import { UserContext } from '../../context/UserContext';
 
 const AVAILABLE_MODES = [
-  {
-    key: 'normal',
-    title: '🎲 Modo Normal',
-    description: 'Se juega con las reglas estándar y las cartas especiales. Ideal para partidas equilibradas.',
-    img: '/assests/img/GameModes/1pa1mode.png',
-  },
-  {
-    key: 'quick',
-    title: '⏱️ Modo Rápido',
-    description: 'Tienes poco tiempo para jugar tu carta. Perfecto para partidas cortas y emocionantes.',
-    img: '/assests/img/GameModes/FastMode.png',
-  },
-  {
-    key: 'tournament',
-    title: '🏆 Modo Torneo',
-    description: 'Cada jugador acumula puntos por ganar partidas. El primero que llegue a 10 puntos gana el torneo.',
-    img: '/assests/img/GameModes/TournamentMode.png',
-  },
-  {
-    key: 'challenge',
-    title: '🎯 Modo Desafío',
-    description: 'Hay objetivos adicionales, como ganar sin usar cartas especiales o en menos de 10 turnos.',
-    img: '/assests/img/GameModes/Challenge.png',
-  },
-  {
-    key: 'noSpecials',
-    title: '🚫 Modo sin Cartas Especiales',
-    description: 'Se juega solo con cartas normales. Ideal para partidas relajadas.',
-    img: '/assests/img/GameModes/ClassicMode.png',
-  },
+  { key: 'normal', title: '🎲 Modo Normal', description: 'Se juega con las reglas estándar y las cartas especiales.', img: '/assests/img/GameModes/1pa1mode.png' },
+  { key: 'quick', title: '⏱️ Modo Rápido', description: 'Perfecto para partidas cortas y emocionantes.', img: '/assests/img/GameModes/FastMode.png' },
+  { key: 'tournament', title: '🏆 Modo Torneo', description: 'Acumula puntos por ganar partidas. Primero a 10 gana.', img: '/assests/img/GameModes/TournamentMode.png' },
+  { key: 'challenge', title: '🎯 Modo Desafío', description: 'Objetivos adicionales en cada partida.', img: '/assests/img/GameModes/Challenge.png' },
+  { key: 'noSpecials', title: '🚫 Sin Cartas Especiales', description: 'Solo cartas numéricas para partidas más relajadas.', img: '/assests/img/GameModes/ClassicMode.png' },
 ];
-const Lobby = () => {
+
+export default function Lobby() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useContext(UserContext);
-  
-  const storedUser = useMemo(() => {
-  const s = localStorage.getItem('user');
-  return s ? JSON.parse(s) : null;
-   }, []);
 
+  const clientId = useMemo(() => {
+    let id = localStorage.getItem('clientId');
+    if (!id) {
+      id = crypto.randomUUID();
+      localStorage.setItem('clientId', id);
+    }
+    return id;
+  }, []);
 
+  const savedState = useMemo(() => {
+    const s = localStorage.getItem('lobbyState');
+    return s ? JSON.parse(s) : {};
+  }, []);
 
-  const { code, username, avatar, isHost } =
-    location.state ||
-    JSON.parse(localStorage.getItem('lobbyState')) ||
-    {};
+  const {
+    code,
+    username,
+    avatar,
+    isHost,
+    userId: initUserId = null,
+    clientId: savedClientId
+  } = location.state || savedState || {};
 
-  const [players, setPlayers] = useState([]);
+  const effectiveClientId = savedClientId || clientId;
+  const resolvedUserId   = user?.userId ?? initUserId;
+
+  const [players, setPlayers]       = useState([]);
   const [gameSettings, setGameSettings] = useState({
     activeTab: 'modes',
     selectedMode: 'normal',
@@ -62,186 +52,171 @@ const Lobby = () => {
     enableSpecialCards: true,
     quickModeTimeLimit: 5,
   });
-
-  const hasJoined = useRef(false);
+  const [hostLeft, setHostLeft]     = useState(false);
+  const hasJoined                   = useRef(false);
 
   useEffect(() => {
-    
+    // 0) Si la partida ya arrancó, saltar directo a /game
+    if (savedState.code === code && savedState.gameSettings) {
+      return navigate(`/game/${code}`, { state: savedState });
+    }
+
+    // 1) Validar datos mínimos
     if (!code || !username || !avatar) {
+      return navigate('/join-lobby');
+    }
+
+    // 2) Persistir estado
+    const toSave = { code, username, avatar, isHost, userId: resolvedUserId, clientId: effectiveClientId };
+    localStorage.setItem('lobbyState', JSON.stringify(toSave));
+
+    // — 3) Registramos listeners *antes* de emitir —
+    const handlePlayersList     = list => setPlayers([...list].sort((a,b) => b.isHost - a.isHost));
+    const handlePlayerLeft      = ({ playerId }) => setPlayers(ps => ps.filter(p => p.playerId !== playerId));
+    const handleHostLeft        = () => setHostLeft(true);
+    const handleHostReturned    = () => setHostLeft(false);
+    const handleSettingsUpdated = s => { if (!isHost) setGameSettings(s); };
+    const handleGameStarted = ({
+    players,
+    gameSettings,
+    drawPile,
+    discardPile,
+    hands,
+    turnIndex
+    }) => {
+    // 1) Recupera el estado mínimo que ya tenías guardado
+    const prev = JSON.parse(localStorage.getItem('lobbyState')) || {};
+
+    // 2) Enriquécelo con TODO el payload del servidor
+    const ns = {
+    ...prev,
+    players,
+    gameSettings,
+    drawPile,
+    discardPile,
+    hands,
+    turnIndex,
+    mySocketId: socket.id
+    };
+
+  // 3) Guarda y navega
+  localStorage.setItem('lobbyState', JSON.stringify(ns));
+  navigate(`/game/${code}`, { state: ns });
+};
+    const handleGameEnded       = () => {
+      alert('La partida ha sido cancelada o finalizada.');
+      localStorage.removeItem('lobbyState');
       navigate('/join-lobby');
-      return;
-    }   const userId = user?.userId ?? storedUser?.userId ?? null;
-    console.log(
-      '→ join-room:',
-      { code, userId, username, avatar, isHost }
-    );
-    // Guardar en localStorage
-    localStorage.setItem(
-      'lobbyState',
-      JSON.stringify({ code, username, avatar, isHost, userId })
-    );
+    };
+    const handleRoomFull        = () => {
+      alert('La sala está llena o no existe.');
+      localStorage.removeItem('lobbyState');
+      navigate('/join-lobby');
+    };
 
+    socket.on('players-list',    handlePlayersList);
+    socket.on('player-joined',   handlePlayersList);
+    socket.on('player-left',     handlePlayerLeft);
+    socket.on('host-left',       handleHostLeft);
+    socket.on('host-returned',   handleHostReturned);
+    socket.on('settings-updated',handleSettingsUpdated);
+    socket.on('game-started',    handleGameStarted);
+    socket.on('game-ended',      handleGameEnded);
+    socket.on('room-full',       handleRoomFull);
 
+    // — 4) Emitir join + get —
     if (!hasJoined.current) {
-      socket.emit('join-room', code, userId, username, avatar, isHost);
+      socket.emit('join-room',
+        code, resolvedUserId, effectiveClientId,
+        username, avatar, isHost
+      );
       hasJoined.current = true;
     }
-    // Siempre pedir lista actualizada
     socket.emit('get-players', code);
 
-    const updatePlayers = list => {
-      const sorted = [...list].sort((a, b) => b.isHost - a.isHost);
-      setPlayers(sorted);
-    };
-
-    socket.on('players-list', updatePlayers);
-    socket.on('player-joined', updatePlayers);
-
-    socket.on('settings-updated', newSettings => {
-      if (!isHost) setGameSettings(newSettings);
-    });
-
-    socket.on('game-started', ({ settings: srvSettings, players: srvPlayers }) => {
-      navigate('/game', {
-        state: { code, players: srvPlayers, gameSettings: srvSettings }
-      });
-    });
-
-    socket.on('room-full', () =>
-      alert('La sala está llena. Solo se permiten 2 jugadores.')
-    );
-
     return () => {
-      socket.off('players-list', updatePlayers);
-      socket.off('player-joined', updatePlayers);
-      socket.off('settings-updated');
-      socket.off('game-started');
-      socket.off('room-full');
+      socket.off('players-list',    handlePlayersList);
+      socket.off('player-left',      handlePlayerLeft);
+      socket.off('host-left',        handleHostLeft);
+      socket.off('host-returned',    handleHostReturned);
+      socket.off('settings-updated', handleSettingsUpdated);
+      socket.off('game-started',     handleGameStarted);
+      socket.off('game-ended',       handleGameEnded);
+      socket.off('room-full',        handleRoomFull);
     };
   }, [
-    code,
-    username,
-    avatar,
-    isHost,
-    user,   
-    storedUser,      // 👉 añadido
-    navigate
+    code, username, avatar, isHost,
+    resolvedUserId, effectiveClientId,
+    navigate, savedState
   ]);
 
-  // Emitir ajustes si eres host
+  // El host emite settings al cambiar
   useEffect(() => {
-    if (isHost) {
-      socket.emit('update-settings', code, gameSettings);
-    }
+    if (isHost) socket.emit('update-settings', code, gameSettings);
   }, [gameSettings, isHost, code]);
 
-   // ─── CONTROLADORES UI ────────────────────────────────────────────
-  const handleTabChange = tab => {
-    if (!isHost) return;
-    setGameSettings(gs => ({ ...gs, activeTab: tab }));
-  };
+  // UI Handlers
+  const handleTabChange  = tab => { if (isHost) setGameSettings(gs => ({ ...gs, activeTab: tab })); };
+  const handleModeSelect = key => { if (isHost) setGameSettings(gs => ({ ...gs, selectedMode: key })); };
+  const handleChange     = (k,v) => { if (isHost) setGameSettings(gs => ({ ...gs, [k]: v })); };
+  const handleStartGame  = () => socket.emit('start-game', code, gameSettings);
 
-  const handleModeSelect = modeKey => {
-    if (!isHost) return;
-    setGameSettings(gs => ({ ...gs, selectedMode: modeKey }));
-  };
-
-  const handleChange = (key, value) => {
-    if (!isHost) return;
-    setGameSettings(gs => ({ ...gs, [key]: value }));
-  };
-
-  const handleStartGame = () => socket.emit('start-game', code, gameSettings);
- // ─── RENDER ────────────────────────────────────────
   return (
     <div className="lobby">
+      {/* Banner si el host se va */}
+      {hostLeft && (
+        <div className="host-alert">
+          ⚠️ El host se ha desconectado. Esperando reconexión…
+        </div>
+      )}
+
       <h1>Código de Sala: <span>{code}</span></h1>
+
+      {/* Lista de jugadores */}
       <h2>Jugadores:</h2>
       <ul>
         {players.map((p,i) => (
-          <li key={i}>
-            <img src={p.avatar} alt="avatar"/>
+          <li key={p.playerId || i}>
+            <img src={p.avatar} alt="avatar" />
             <span>{p.username}</span>
             {p.isHost && <span className="host-label">Host</span>}
           </li>
         ))}
       </ul>
 
-     
-      {/* ─── PESTAÑAS ───────────────────────────────────────── */}
+      {/* Pestañas y ajustes (igual que antes) */}
       <div className="settings-tabs">
-        <button
-          className={gameSettings.activeTab === 'modes' ? 'active' : ''}
-          onClick={() => handleTabChange('modes')}
-        >
-          ⚙️ Modos de Juego
-        </button>
-        <button
-          className={gameSettings.activeTab === 'custom' ? 'active' : ''}
-          onClick={() => handleTabChange('custom')}
-        >
-          🔧 Ajustes Personalizados
-        </button>
+        <button className={gameSettings.activeTab==='modes'?'active':''} onClick={()=>handleTabChange('modes')}>⚙️ Modos</button>
+        <button className={gameSettings.activeTab==='custom'?'active':''} onClick={()=>handleTabChange('custom')}>🔧 Ajustes</button>
       </div>
-
-      {/* ─── MODOS DE JUEGO ─────────────────────────────────────── */}
-      {gameSettings.activeTab === 'modes' ? (
+      {gameSettings.activeTab==='modes' ? (
         <div className="mode-cards">
-          {AVAILABLE_MODES.map(mode => (
-            <div
-              key={mode.key}
-              className={`mode-card ${
-                gameSettings.selectedMode === mode.key ? 'selected' : ''
-              }`}
-              onClick={() => handleModeSelect(mode.key)}
+          {AVAILABLE_MODES.map(m => (
+            <div key={m.key}
+              className={`mode-card ${gameSettings.selectedMode===m.key?'selected':''}`}
+              onClick={()=>handleModeSelect(m.key)}
             >
-              <img src={mode.img} alt={mode.title} />
-              <h3>{mode.title}</h3>
-              <p>{mode.description}</p>
+              <img src={m.img} alt={m.title} /><h3>{m.title}</h3><p>{m.description}</p>
             </div>
           ))}
         </div>
-
-      // Ajustes personalizados
       ) : (
         <div className="game-settings">
-          <h3>Ajustes Personalizados</h3>
-
-          <label>
-            Cartas Iniciales:
-            <input
-              type="number"
-              min="1"
-              max="10"
-              value={gameSettings.initialHandSize}
-              onChange={e =>
-                handleChange('initialHandSize', +e.target.value)
-              }
-              disabled={!isHost}
-            />
-          </label>
-
-          <label>
-            Cartas Especiales:
-            <input
-              type="checkbox"
-              checked={gameSettings.enableSpecialCards}
-              onChange={e =>
-                handleChange('enableSpecialCards', e.target.checked)
-              }
-              disabled={!isHost}
-            />
-          </label>
-
-          {/* AÑADE AQUÍ MÁS CONTROLES */}
+          <label>Cartas Iniciales:<input type="number" min="1" max="10"
+            value={gameSettings.initialHandSize}
+            onChange={e=>handleChange('initialHandSize', +e.target.value)}
+            disabled={!isHost} /></label>
+          <label>Especiales:<input type="checkbox"
+            checked={gameSettings.enableSpecialCards}
+            onChange={e=>handleChange('enableSpecialCards', e.target.checked)}
+            disabled={!isHost} /></label>
         </div>
       )}
 
-      {isHost && players.length === 2 && (
-       <button onClick={handleStartGame}>Empezar Partida</button>
+      {/* Botón de inicio (solo host, 2 jugadores) */}
+      {isHost && players.length===2 && (
+        <button onClick={handleStartGame}>Empezar Partida</button>
       )}
     </div>
   );
-};
-
-export default Lobby;
+}
