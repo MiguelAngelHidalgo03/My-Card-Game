@@ -10,6 +10,7 @@ function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false); // Estado para detectar el scroll
   const location = useLocation(); 
 
+
   const toggleMenu = () => {
     setShowMenu(!showMenu);
   };

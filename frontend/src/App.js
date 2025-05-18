@@ -51,7 +51,7 @@ function Main() {
         <Route path="/lobby"        element={<Lobby />} />
         <Route path="/login"        element={<Login />} />
         <Route path="/register"     element={<Register />} />
-        <Route path="/profile"      element={<Profile />} />
+        <Route path="/profile"      element={<><BgMountains /><Profile/></>} />
         <Route path="/reset-request" element={<ResetRequest />} />
         <Route path="/reset-password" element={<VerifyOtpAndReset />} />
         <Route path="/auth/callback" element={<AuthCallback />} />

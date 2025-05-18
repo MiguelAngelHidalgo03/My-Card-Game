@@ -84,30 +84,41 @@
   color: white;
   font-weight: bold;
 }
-
 .dropdown-menu {
   position: absolute;
   top: 120%;
   right: -2.5rem;
   background: #1a1a1a;
-  padding: 1rem; /* Aumenta el tamaño del menú */
+  padding: 1rem 1.2rem; /* un poco más de padding para que respire */
   border-radius: 6px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
   z-index: 1000;
   list-style: none;
+
   display: flex;
   flex-direction: column;
-  width: 100px; /* Aumenta el ancho del menú */
+
+  width: auto;       
+  min-width: 120px; 
+  max-width: 220px;  
+  
+  word-wrap: break-word; 
 }
 
 .dropdown-menu .user-info {
-  background: linear-gradient(45deg, #ff7f50, #d3a900); /* Fondo colorido */
+  background: linear-gradient(45deg, #ff7f50, #d3a900);
   color: white;
   font-weight: bold;
   text-align: center;
   padding: 0.7rem;
   border-radius: 4px;
-  margin-bottom: 0.5rem; /* Espaciado con los demás elementos */
+  margin-bottom: 0.5rem;
+
+  white-space: normal;
+  word-break: break-word; 
+  overflow-wrap: break-word;
+ min-width: 120px; 
+  max-width: 220px;  
 }
 
 .dropdown-menu li {
@@ -118,14 +129,14 @@
 .dropdown-menu a {
   text-decoration: none;
   color: white;
-  padding: 0rem 0.3rem;
-  transition: color 0.3s ease, transform 0.3s ease; /* Transición para el hover */
+  padding: 0 0.3rem;
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .dropdown-menu a:hover,
 .dropdown-menu button:hover {
-  color: #ffcc00; /* Color de iluminación al pasar el cursor */
-  transform: scale(1.05); /* Aumenta ligeramente el tamaño */
+  color: #ffcc00;
+  transform: scale(1.05);
 }
 
 .dropdown-menu a,
@@ -137,6 +148,7 @@
   cursor: pointer;
 }
 
+
 .logo-image {
   display: flex;
   height: 50px;
@@ -144,9 +156,7 @@
   width: auto;
   cursor: pointer;
   transition: height 0.3s ease; 
-  /* margin-top: 1rem; */
-    /* gap: 1rem; */
-    
+
 }
 
 .navbar-avatar {

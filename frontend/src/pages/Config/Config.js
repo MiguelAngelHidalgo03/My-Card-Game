@@ -1,10 +1,9 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../../context/UserContext';
 import './Config.css';
-import axios from 'axios';
 import { createClient } from '@supabase/supabase-js';
-import { changeEmail, updateProfile, changePassword } from '../../services/playerService';  
-import { Snackbar, Alert } from '@mui/material';  // Importar Snackbar y Alert de MUI
+import { changeEmail, updateProfile, changePassword } from '../../services/playerService';
+import { Snackbar, Alert } from '@mui/material';
 
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
 const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
@@ -15,17 +14,21 @@ function Config() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [language, setLanguage] = useState('es');
-  const [message, setMessage] = useState(''); // Mensaje a mostrar
-  const [messageType, setMessageType] = useState('success'); // Tipo de mensaje (success, error)
-  const [open, setOpen] = useState(false); // Controla la visibilidad del Snackbar
-
+  const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState('success');
+  const [open, setOpen] = useState(false);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
+  const [isGoogleUser, setIsGoogleUser] = useState(false);
 
-  useEffect(() => {
-    fetchUserData();
-  }, []);
+useEffect(() => {
+  const init = async () => {
+    await detectGoogleUser(); // Primero detectar si es de Google
+    await fetchUserData();    // Luego cargar los datos
+  };
 
+  init();
+}, []);
   const fetchUserData = async () => {
     const userFromStorage = localStorage.getItem('user');
     const userId = userFromStorage ? JSON.parse(userFromStorage).userId : null;
@@ -45,7 +48,15 @@ function Config() {
 
       const data = await res.json();
       if (res.ok) {
-        setUser(data.user);
+        // Solo actualiza el contexto si hay cambios
+      if (
+      !user || 
+       data.user.username !== user.username || 
+       data.user.language !== user.language || 
+       data.user.profile_picture !== user.profile_picture
+      ) {
+         setUser(data.user);
+      }
         setUsername(data.user.username);
         setLanguage(data.user.language);
       } else {
@@ -59,6 +70,18 @@ function Config() {
       setMessageType('error');
       setOpen(true);
     }
+  };
+
+  const detectGoogleUser = async () => {
+    const { data: { user: supabaseUser }, error } = await supabase.auth.getUser();
+
+    if (error || !supabaseUser) {
+      console.error('No se pudo obtener el usuario autenticado:', error);
+      return;
+    }
+
+    const provider = supabaseUser.app_metadata?.provider || '';
+    setIsGoogleUser(provider === 'google');
   };
 
   const handleProfileSubmit = async (e) => {
@@ -80,13 +103,13 @@ function Config() {
     };
 
     try {
-      const { success, error } = await updateProfile(updatedUserData);  // Usamos el servicio para actualizar el perfil
+      const { success, error } = await updateProfile(updatedUserData);
 
       if (success) {
         setMessage('Perfil actualizado correctamente');
         setMessageType('success');
         setOpen(true);
-        fetchUserData();  // Recarga los datos después de la actualización
+        fetchUserData();
       } else {
         setMessage('Error: ' + error);
         setMessageType('error');
@@ -159,7 +182,7 @@ function Config() {
     }
 
     try {
-      const { success, error } = await changeEmail(email);  // Llamada a la función del servicio
+      const { success, error } = await changeEmail(email);
 
       if (success) {
         setMessage('Revisa tu correo para confirmar el cambio');
@@ -182,75 +205,82 @@ function Config() {
   if (!user) return <p className="Config-loading">Cargando datos de usuario...</p>;
 
   return (
-   
     <div className="Config-container">
       <div className="Config-page">
-      <h2>Editar cuenta</h2>
-      <form onSubmit={handleProfileSubmit}>
-        <label>Nombre de usuario</label>
-        <input
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
+        <h2>Editar cuenta</h2>
+        <form onSubmit={handleProfileSubmit}>
+          <label>Nombre de usuario</label>
+          <input
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
 
-        <label>Idioma</label>
-        <select
-          value={language}
-          onChange={(e) => setLanguage(e.target.value)}
+          <label>Idioma</label>
+          <select
+            value={language}
+            onChange={(e) => setLanguage(e.target.value)}
+          >
+            <option value="es">Español</option>
+            <option value="en">Inglés</option>
+          </select>
+
+          <button type="submit">Guardar cambios</button>
+        </form>
+
+        <hr />
+
+        {isGoogleUser && (
+          <p style={{ color: 'red', fontWeight: 'bold' }}>
+            Has iniciado sesión con Google, por lo que no puedes cambiar la contraseña ni el correo desde aquí.
+          </p>
+        )}
+
+        <h3>Cambiar contraseña</h3>
+        <form onSubmit={handlePasswordChange}>
+          <label>Contraseña actual</label>
+          <input
+            type="password"
+            value={currentPassword}
+            onChange={(e) => setCurrentPassword(e.target.value)}
+            disabled={isGoogleUser}
+          />
+
+          <label>Nueva contraseña</label>
+          <input
+            type="password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            disabled={isGoogleUser}
+          />
+
+          <button type="submit" disabled={isGoogleUser}>Cambiar contraseña</button>
+        </form>
+
+        <hr />
+
+        <h3>Cambiar correo electrónico</h3>
+        <form onSubmit={handleChangeEmail}>
+          <label>Correo nuevo</label>
+          <input
+            type="email"
+            placeholder="Nuevo email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            disabled={isGoogleUser}
+          />
+          <button type="submit" disabled={isGoogleUser}>Cambiar email</button>
+        </form>
+
+        <Snackbar
+          open={open}
+          autoHideDuration={6000}
+          onClose={() => setOpen(false)}
         >
-          <option value="es">Español</option>
-          <option value="en">Inglés</option>
-        </select>
-
-        <button type="submit">Guardar cambios</button>
-      </form>
-
-      <hr />
-
-      <h3>Cambiar contraseña</h3>
-      <form onSubmit={handlePasswordChange}>
-        <label>Contraseña actual</label>
-        <input
-          type="password"
-          value={currentPassword}
-          onChange={(e) => setCurrentPassword(e.target.value)}
-        />
-
-        <label>Nueva contraseña</label>
-        <input
-          type="password"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-        />
-
-        <button type="submit">Cambiar contraseña</button>
-      </form>
-
-      <hr />
-
-      <h3>Cambiar correo electrónico</h3>
-      <form onSubmit={handleChangeEmail}>
-        <label>Correo nuevo</label>
-        <input
-          type="email"
-          placeholder="Nuevo email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <button type="submit">Cambiar email</button>
-      </form>
-
-      {/* Snackbar para mostrar mensajes */}
-      <Snackbar 
-        open={open} 
-        autoHideDuration={6000} 
-        onClose={() => setOpen(false)}
-      >
-        <Alert onClose={() => setOpen(false)} severity={messageType}>
-          {message}
-        </Alert>
-      </Snackbar>
-    </div>
+          <Alert onClose={() => setOpen(false)} severity={messageType}>
+            {message}
+          </Alert>
+        </Snackbar>
+      </div>
     </div>
   );
 }

@@ -27,7 +27,6 @@ const ResetRequest = () => {
     <div className="login-container">
       <h1>Recuperar contraseña</h1>
     <div className="reset-request-container">
-      <h2>Recuperar contraseña</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="email"
