@@ -25,7 +25,8 @@ const isGoogleUrl = (url) => url?.includes('googleusercontent.com');
 const enhanceGoogleAvatarQuality = (url) => {
   if (!url) return url;
   if (url.includes('googleusercontent.com')) {
-    return url.replace(/=s\\d+-c$/, '=s200-c');
+    return url.replace(/=s\d+-c$/, '=s150-c');
+;
   }
   return url;
 };
