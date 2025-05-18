@@ -45,7 +45,7 @@ function Main() {
         <Route path="/rules"   element={<><BgMountains /><Rules/></>} />
         <Route path="/about"   element={<><BgMountains /><About/></>} />
         <Route path="/config"  element={<><BgMountains /><Config/></>} />
-        <Route path="/game"    element={<GameCanvas />} />
+        <Route path="/game/:code" element={<GameCanvas />} />
         <Route path="/create-lobby" element={<CreateLobby />} />
         <Route path="/join-lobby"   element={<JoinLobby />} />
         <Route path="/lobby"        element={<Lobby />} />
@@ -59,7 +59,7 @@ function Main() {
       </Routes>
 
       {/* sólo renderiza el Footer si NO estamos en /game */}
-      {pathname !== "/game" && <Footer />}
+    {!pathname.startsWith("/game") && <Footer />}
     </>
   );
 }
