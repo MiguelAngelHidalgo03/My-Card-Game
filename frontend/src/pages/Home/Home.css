@@ -1,4 +1,33 @@
 /* Fondo de la página */
+:root {
+  --ink-black: #0b0b0b;
+  --sepia-dark: #3e2e1e;
+  --sepia-light: #bda88f;
+  --yellow-cream: #f7e6c4;
+  --shadow-black: rgba(0, 0, 0, 0.8);
+  --primary-blue:   #64E9F5;
+  --primary-green:  #D2F567;
+  --primary-purple: #C868F5;
+  --primary-orange: #F5A267;
+  --font-cartoon: 'Permanent Marker', cursive; /* Usa una fuente cartoon tipo */
+}
+
+/*Para que vayan intercambiando de color las luches del logo*/
+@keyframes shadow-color-change {
+  0% {
+    filter: drop-shadow(0 0 20px var(--primary-blue));
+  }
+  33% {
+    filter: drop-shadow(0 0 20px var(--primary-green));
+  }
+  66% {
+    filter: drop-shadow(0 0 20px var(--primary-purple));
+  }
+  100% {
+    filter: drop-shadow(0 0 20px var(--primary-blue));
+  }
+}
+
 *, *::before, *::after { box-sizing: border-box; }
 
 .scroll-block {
@@ -33,26 +62,29 @@
   stroke-width: 3;
 }
 .home {
- 
-  /* color: white; */
-  width: 100%;
-  text-align: center;
-  padding: 2rem;
+
+  color: var(--primary-green);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding-top: 8rem;
+  position: relative;
+  z-index: 1;
   min-height: 100vh;
-  height: 100%;
   display: flex;
   flex-direction: column;
   gap: 4rem;
-  position: relative;
-  z-index: 1;
-  padding-top: 8rem;
+  overflow: visible;
 }
 
+
 .home > * {
-  max-width: 100%;
+  color: var(--primary-green);
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
   position: relative;
   z-index: 3;
+  max-width: 100%;
 }
+
+
 /* Asegura que el contenido esté por encima del gradiente */
 
 /* Sección principal */
@@ -66,50 +98,51 @@
 }
 
 .home-image img {
-  width: 100%;
-  max-width: 500px;
-  height: auto;
   border-radius: 10px;
+  box-shadow: 0 0 20px var(--primary-blue);
 }
 
 .home-text {
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(40, 10, 80, 0.85); /* un poco más oscuro y saturado para resaltar */
   padding: 2rem;
-  /* margin-top: 10rem; */
   border-radius: 10px;
   text-align: center;
   max-width: 1000px;
+  color: var(--primary-green);
+  box-shadow: 0 0 20px var(--primary-purple);
 }
-
 .home-text h1 {
   font-size: 3rem;
   margin-bottom: 1rem;
-  color: white;
+  color: var(--primary-orange);
+  text-shadow: 0 0 12px var(--primary-orange);
 }
 
 .home-text p {
   font-size: 1.5rem;
   margin-bottom: 2rem;
-  color: #ddd;
+  color: #d2f567cc; /* un verde claro translúcido */
+  line-height: 1.6;
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
 }
 
-/* Botón de jugar */
+/* Botón */
 .play-button {
-  background-color: #FF5733;
+  background: linear-gradient(135deg, var(--primary-orange), var(--primary-green));
   color: white;
   border: none;
   padding: 1.5rem 3rem;
   font-size: 1.5rem;
   font-weight: bold;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 6px 15px var(--primary-orange);
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
-
 .play-button:hover {
-  background-color: #C13C24;
+  background: linear-gradient(135deg, var(--primary-green), var(--primary-orange));
   transform: scale(1.1);
+  box-shadow: 0 8px 20px var(--primary-green);
 }
 
 /* Sección del video */
@@ -144,73 +177,70 @@
 
 /* ─── BLOQUE 3: Reglas ──────────────────────────── */
 .home-rules {
-  margin-top: 5rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  width: 100%;
-  margin: 0 auto;
-  padding: 2.5rem 1rem;  
-  /* flex-wrap: wrap; */
-  align-items: stretch;              /* algo de separación lateral */
-  box-sizing: border-box;
+  background-color: rgba(210, 245, 103, 0.15); /* verde muy claro translúcido */
+  box-shadow: 0 2px 12px rgba(200, 220, 100, 0.4);
+  border-radius: 10px;
+  padding: 1rem;
+  color: #333;
 }
 .home-rules {
   overflow: hidden;               /* evita overflow en su contenedor */
 }
 
 
-.home-rules > .rules-image,
-.home-rules > .rules-text {
-  flex: 1 1 200px;            
-  min-width: 0;               
+.rules-image {
+  flex: 1 1 40%;
 }
-
 .rules-image img {
   width: 100%;
   height: auto;
+  border-radius: 6px;
   display: block;
-  border-radius: 10px;
-  transition: transform 0.3s;
 }
-
 .rules-image img:hover {
   transform: scale(1.05) translateY(1%);
 }
 
 .rules-text {
-  background-color: rgba(0, 0, 0, 0.3);
-  padding: 1.5rem;
-  border-radius: 10px;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.6s ease;
+  flex: 1 1 60%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-size: 1.1rem;
+  color: #333;
 }
 
+
 .rules-text.expanded {
-  max-height: calc(var(--img-h, 0px) - 1.2rem);     /* suficiente para todo el contenido */
+  max-height: calc(var(--img-h, 0px) - 1.2rem);
 }
 
 .rule-item {
-  width: 100%;
-  box-sizing: border-box;
-  word-wrap: break-word;
-  white-space: normal;
-  font-size: 1.4rem;
-  line-height: 1.6;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: #fff;
-  margin-bottom: 1rem;
+  background-color: var(--primary-green);
+  color: #222;
   padding: 1rem;
-  border-radius: 10px;
-  transition: transform 0.2s, background-color 0.3s;
+  border-radius: 6px;
+  box-shadow: 0 0 10px var(--primary-green);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
 
 .rule-item:hover {
-  transform: scale(1.03);
-  background-color: rgba(45, 45, 45, 0.6);
+  background-color: var(--primary-purple);
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0 0 20px var(--primary-purple);
 }
-
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
 /* ─── MEDIA QUERIES ─────────────────────────────── */
 
 /* Tablets y pantallas medias */
@@ -227,27 +257,75 @@
 
 /* Móviles grandes */
 @media (max-width: 768px) {
-  .home-rules {
+   .container {
+    flex-direction: row;
+    justify-content: center;
+    gap: 1rem;
+  }
+  .container.show-options {
+    justify-content: flex-start;
+  }
+  /* Tamaño normal logo en móvil */
+  .logo-container {
+    width: 120px;
+  }
+  /* Cuando se muestran opciones, logo MUY pequeño */
+  .logo-container.moved-right {
+    width: 50px !important;
+    transform: scale(1);
+  }
+  /* Opciones más pequeñas para móvil */
+  .option-button {
+    width: 70px;
+  }
+}
+   .home-rules {
     flex-direction: column;
     gap: 1rem;
   }
+
   .rules-image,
   .rules-text {
     flex: 1 1 100%;
   }
+
   .rules-text {
-    padding: 1rem;
+    font-size: 1rem;
   }
-}
+
+
 
 /* Móviles pequeños */
 @media (max-width: 480px) {
+
+  .container {
+    flex-direction: row;
+    justify-content: center;
+    gap: 1rem;
+  }
+  .container.show-options {
+    justify-content: flex-start;
+  }
+  /* Tamaño normal logo en móvil */
+  .logo-container {
+    width: 120px;
+  }
+  /* Cuando se muestran opciones, logo MUY pequeño */
+  .logo-container.moved-right {
+    width: 50px !important;
+    transform: scale(1);
+  }
+  /* Opciones más pequeñas para móvil */
+  .option-button {
+    width: 70px;
+  }
+}
   .rule-item {
     font-size: 1.2rem;
     line-height: 1.4;
     padding: 0.8rem;
   }
-}
+
 
 
 
@@ -265,36 +343,19 @@
   z-index: 1000;
   animation: fadeIn 0.3s ease-in-out;
 }
-
 .modal-content {
-  background-color: #000000ac;
-  padding: 2rem;
-  border-radius: 15px;
-  text-align: center;
-  position: relative;
-  width: 90%;
-  max-width: 500px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-  animation: scaleIn 0.3s ease-in-out;
-  padding-bottom: 3.5rem;
+  background-color: rgba(60, 0, 100, 0.85);
+  box-shadow: 0 8px 20px var(--primary-purple);
+  color: var(--primary-green);
 }
 
 .modal-close {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: none;
-  border: none;
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: #4b4b4b;
-  cursor: pointer;
+  color: var(--primary-orange);
   transition: transform 0.2s ease-in-out;
 }
-
 .modal-close:hover {
-  transform: scale(1.2);
-  color: #ff5733;
+  color: var(--primary-blue);
+  transform: scale(1.3);
 }
 
 .modal-title {
@@ -305,23 +366,13 @@
 }
 
 .modal-button {
-  background-color: #ffd49bc4;
-  color: white;
-  border: none;
-  padding: 1rem 2rem;
-  font-size: 1.5rem;
-  border-radius: 10px;
-  cursor: pointer;
-  margin: 1rem 0;
+  background-color: var(--primary-green);
+  color: black;
   transition: background-color 0.3s, transform 0.2s;
-  width: 100%;
-  height: 4rem;
-  max-width: 300px;
-  max-height: 150px;
 }
-
 .modal-button:hover {
-  background-color: #ff9100c4;
+  background-color: var(--primary-orange);
+  color: white;
   transform: scale(1.05);
 }
 
@@ -350,34 +401,97 @@
 
 /* Imagen en el modal */
 .modal-image {
-  width: 12rem;
+  width: 100%;
   height: auto;
-  object-fit: cover;
   border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease-in-out;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  user-select: none;
+  pointer-events: none;
 }
+
 
 .modal-image:hover {
   transform: scale(1.1);
 }
 
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centra el contenido cuando no hay opciones */
+  gap: 2rem;
+  position: relative;
+  padding: 2rem;
+  transition: justify-content 0.3s ease;
+   overflow: visible;
+}
 
 
+/* Logo Container */
 .logo-container {
   display: flex;
   justify-content: center;
-  inset:0;          /* top:0; right:0; bottom:0; left:0; */
-  margin:auto; 
-  margin-top: 11rem;
+  align-items: center;
+  width: 500px;          
+  height: 300px;
+  cursor: pointer;
+  position: relative;      
+  transition: transform 0.3s ease, width 0.3s ease;
+  overflow: visible;    
+  pointer-events: auto; /* Este es importante para detectar click */
+}
+
+.logo-wrapper {
+  transform-origin: center center;
+  transform: scale(5);
+  user-select: none;
+  display: inline-block;
+  margin-top: 150%;
+  pointer-events: none; /* Si quieres que el wrapper ignore eventos y los deje pasar */
 }
 
 .logo-normal {
-  width: 600px;
-  opacity: 0;
-  margin-bottom: 20rem;
-  /* transform: scale(2.5); */
+  width: 100%;
+  height: auto;
+  display: block;
+  user-select: none;
+  pointer-events: none; /* Si quieres que el SVG ignore eventos */
+  border-radius: 10px;
+  transform-origin: center center;
 }
+
+.logo-container:hover {
+  transform: scale(1.12);
+  animation: shadow-color-change 10s linear infinite;
+  filter: drop-shadow(0 0 20px var(--primary-blue));
+  overflow: visible;
+}
+
+/* Cuando se hace click (showOptions true), se desplaza a la izquierda */
+.logo-container.moved-right {
+  transform: translateX(-150px) scale(1); /* mueve a la izquierda y mantiene escala normal */
+  transition: transform 0.4s ease;
+    width: 620px;
+ /* puedes ajustar tamaño cuando está movido */
+}
+
+/* Contenedor de opciones */
+.options-container {
+  display: flex;
+  gap: 1.5rem;
+  flex-shrink: 0;
+}
+/* Botones opciones */
+.option-button {
+  display: inline-block;
+  width: 140px;
+  transition: transform 0.3s ease;
+}
+
+
+.option-button:hover {
+  transform: scale(1.05);
+}
+
 #impact-wave{
   position:fixed;
   inset:0;          /* top:0; right:0; bottom:0; left:0; */
@@ -550,6 +664,36 @@
 
 /* Media query para pantallas pequeñas (móviles) */
 @media (max-width: 768px) {
+    .container {
+    flex-direction: row;
+    justify-content: center;
+    gap: 1rem;
+  }
+  .container.show-options {
+    justify-content: flex-start;
+  }
+  /* Tamaño normal logo en móvil */
+  .logo-container {
+    width: 200px;
+  }
+  /* Cuando se muestran opciones, logo MUY pequeño */
+  .logo-container.moved-right {
+    width: 150px !important;
+    transform: scale(1);
+  }
+  /* Opciones más pequeñas para móvil */
+  .option-button {
+    width: 70px;
+    margin-bottom: 30%;
+  }
+}
+  /* Esto hace que la imagen se ajuste al ancho del contenedor */
+  .logo-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
   /* Ajustar el modal */
   .modal-overlay {
     display: flex;
@@ -584,17 +728,16 @@
   }
 
   /* Ajustar el video */
-  .home-video video,
-  .video-placeholder {
-    width: 100%;
-    height: 15rem;
-  }
-
- 
-
- 
-
+.home-video video {
+  border-radius: 12px;
+  box-shadow: 0 0 25px var(--primary-green);
 }
+
+ 
+
+ 
+
+
 
 
 :root{

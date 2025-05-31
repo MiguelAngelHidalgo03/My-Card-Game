@@ -41,7 +41,7 @@ function Navbar() {
     }`}
   >    {/* Logo como botón de inicio */}
       <Link to="/" reloadDocument className="logo">
-        <img src="/assests/img/logo.jpg" alt="Logo" className="logo-image" />
+        <img src="/assests/img/Logo_Grande.svg" alt="Logo" className="logo-image" />
       </Link>
       <ul className="nav-links">
         <li><Link to="/rules" reloadDocument>Reglas</Link></li>

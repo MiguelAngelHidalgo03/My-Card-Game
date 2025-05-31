@@ -185,7 +185,7 @@ const Profile = () => {
         Estadísticas
       </Typography>
       <Typography variant="body1" sx={{ mb: 1 }}>
-        <strong>Partidas jugadas:</strong> {stats.gamesPlayed}
+        <strong>Partidas jugadas:</strong> {stats.total_games}
       </Typography>
       <Typography variant="body1" sx={{ mb: 1 }}>
         <strong>Victorias:</strong> {stats.wins}

@@ -5,7 +5,7 @@
    width="960"
    height="540"
    version="1.1"
-   sodipodi:docname="backgroundPC.svg"
+   sodipodi:docname="backgroundPCversion 1.svg"
    inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -22,7 +22,7 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="1.4314815"
      inkscape:cx="280.82794"
-     inkscape:cy="549.43079"
+     inkscape:cy="214.11384"
      inkscape:window-width="1920"
      inkscape:window-height="991"
      inkscape:window-x="-9"
@@ -32,40 +32,29 @@
   <defs
      id="defs7" />
   <path
-     d="M 0,136 84,91 h 85 l 84,-45 85,81 73.49962,-15.74992 L 422,109 506,64 591,46 675,118 V 0 H 591 506 422 338 253 169 84 0 Z"
+     d="M 0,136 84,91 h 85 l 84,-45 85,81 84,-18 84,-45 85,-18 84,72 V 0 H 591 506 422 338 253 169 84 0 Z"
      fill="#64e9f5"
-     id="layer1"
-     sodipodi:nodetypes="cccccccccccccccccccc"
-     style="fill:#c868f5;fill-opacity:1" />
+     id="layer1" />
   <path
      d="m 0,172 h 84 l 85,27 84,-72 85,63 84,9 84,-27 85,-27 84,81 V 116 L 591,44 506,62 422,107 338,125 253,44 169,89 H 84 L 0,134 Z"
      fill="#3fdcfa"
-     id="layer2"
-     sodipodi:nodetypes="ccccccccccccccccccc"
-     style="fill:#b738f2;fill-opacity:1" />
+     id="layer2" />
   <path
      d="m 0,253 84,63 85,63 84,-117 85,99 84,-63 84,27 85,-81 84,108 V 224 l -84,-81 -85,27 -84,27 -84,-9 -85,-63 -84,72 -85,-27 H 0 Z"
      fill="#15cdfd"
-     id="layer3"
-     sodipodi:nodetypes="ccccccccccccccccccc"
-     style="fill:#8100bf;fill-opacity:1" />
+     id="layer3" />
   <path
      d="m 0,487 84,99 85,36 84,-207 85,153 84,-9 84,-117 85,90 84,99 V 350 L 591,242 506,323 422,296 338,359 253,260 169,377 84,314 0,251 Z"
      fill="#00beff"
-     id="layer4"
-     sodipodi:nodetypes="ccccccccccccccccccc"
-     style="fill:#ffd807;fill-opacity:1" />
+     id="layer4" />
   <path
      d="m 0,577 84,72 85,9 84,-162 85,162 84,-18 84,-108 85,99 84,99 V 629 L 591,530 506,440 422,557 338,566 253,413 169,620 84,584 0,485 Z"
      fill="#34acff"
-     id="layer5"
-     sodipodi:nodetypes="ccccccccccccccccccc"
-     style="fill:#ffd807;fill-opacity:1" />
+     id="layer5" />
   <path
      d="m 0,658 84,117 85,-63 84,-72 85,126 84,-18 84,-72 85,63 84,63 V 728 L 591,629 506,530 422,638 338,656 253,494 169,656 84,647 0,575 Z"
      fill="#8491ff"
-     id="layer6"
-     sodipodi:nodetypes="ccccccccccccccccccc" />
+     id="layer6" />
   <path
      d="m 0,901 h 84 85 84 85 84 84 85 84 V 800 L 591,737 506,674 422,746 338,764 253,638 169,710 84,773 0,656 Z"
      fill="#c868f5"

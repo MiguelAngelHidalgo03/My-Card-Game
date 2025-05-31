@@ -2,6 +2,7 @@ import { ReactComponent as BgSm } from '../../img/backgroundMovil.svg';
 import { ReactComponent as BgMd } from '../../img/backgroundtablet.svg';
 import { ReactComponent as BgLg } from '../../img/backgroundPCA.svg';
 import { useEffect, useState } from 'react';
+import './Fondo.css';
 import anime from 'animejs';
 
 /* hook para saber ancho de pantalla ------------------------ */
@@ -66,8 +67,10 @@ export default function BgMountains() {
   }, [w]);                      // reinicia con el nuevo SVG
 
   return (
-    <div className={`bg-svg-wrapper ${sizeClass}`}>
+  <div className={`bg-svg-wrapper ${sizeClass}`}>
+    <div className="tv-effect">
       <Svg />
     </div>
-  );
+  </div>
+);
 }
