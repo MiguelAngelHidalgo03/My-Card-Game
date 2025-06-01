@@ -164,7 +164,7 @@ export default class WinScene extends Phaser.Scene {
     const n = Math.max(2, this.withScenePlayers?.length || this.players?.length || 2);
 
     // Panel dimensiones, más compacto si pocos jugadores
-    const minPanelH = n <= 2 ? 260 : 320;
+    const minPanelH = n <= 2 ? 220 : 320;
     this.panelW = Math.max(340, Math.min(700, width * 0.62, height * 0.92));
     this.panelH = Math.max(minPanelH, Math.min(480, height * 0.62, width * 0.85));
     this.panelStroke = Math.max(4, Math.min(10, Math.floor(this.panelW * 0.014)));
@@ -172,27 +172,27 @@ export default class WinScene extends Phaser.Scene {
     // Márgenes proporcionales
     const marginY = Math.max(14, Math.floor(this.panelH * 0.04));
 
-    // Avatares: límite estricto y responsivo
-    const maxAvatarW = (this.panelW * 0.35) / n;
-    const maxAvatarH = this.panelH * 0.18;
-    this.avatarSize = Math.min(70, maxAvatarW, maxAvatarH);
+    // Avatares: límite estricto y responsivo (nunca más del 32% del ancho entre todos, ni 16% del alto, ni 56px)
+    const maxAvatarW = (this.panelW * 0.32) / n;
+    const maxAvatarH = this.panelH * 0.16;
+    this.avatarSize = Math.min(56, maxAvatarW, maxAvatarH);
 
-    // Espacio para nombres debajo del avatar
-    this.avatarNameOffsetY = Math.max(6, Math.floor(this.avatarSize * 0.18));
+    // Espacio para nombres debajo del avatar (máximo 14px)
+    this.avatarNameOffsetY = Math.max(8, Math.min(this.avatarSize * 0.18, 14));
+
+    // Cálculo de bloque avatares+nombres
+    const avatarBlockH = this.avatarSize + this.avatarNameOffsetY + 8; // 8px margen extra
 
     // Icono central arriba, nunca solapa
-    this.iconFontSize = Math.min(this.panelH * 0.11, this.panelW * 0.13, 60);
+    this.iconFontSize = Math.min(this.panelH * 0.11, this.panelW * 0.13, 48);
 
     // Título y botón
-    this.titleFontSize = Math.min(this.panelH * 0.09, 32);
-    this.lobbyBtnFontSize = Math.min(this.panelH * 0.07, 26);
+    this.titleFontSize = Math.min(this.panelH * 0.09, 28);
+    this.lobbyBtnFontSize = Math.min(this.panelH * 0.07, 22);
     this.codeFontSize = Math.max(11, Math.floor(this.panelH * 0.045));
     this.codePadY = Math.max(12, Math.floor(height * 0.025));
     this.btnPadX = Math.max(10, Math.floor(this.panelW * 0.06));
     this.btnPadY = Math.max(5, Math.floor(this.panelH * 0.03));
-
-    // Cálculo de bloque avatares+nombres
-    const avatarBlockH = this.avatarSize + this.avatarNameOffsetY + Math.max(10, this.avatarSize * 0.18);
 
     // Vertical: Calcula desde arriba, todo aireado y compacto
     let y = -this.panelH / 2 + marginY;
@@ -234,70 +234,65 @@ export default class WinScene extends Phaser.Scene {
     const avatarSize = this.avatarSize;
     const nameOffset = this.avatarNameOffsetY;
     const gap = isHorizontal && n > 1
-      ? Math.min(this.panelW - 40, Math.floor((this.panelW * 0.8) / n))
+      ? Math.max(avatarSize + 8, Math.min(this.panelW - 40, Math.floor((this.panelW * 0.8) / n)))
       : avatarSize + 18;
 
-    // Renderiza primero los avatares, luego los nombres
-    this.withScenePlayers.forEach((p, i) => {
-      const x = isHorizontal
-        ? (-(gap * (n - 1)) / 2) + i * gap
-        : 0;
-      const y = 0;
+    // Renderiza primero los avatares, luego los nombres (ambos en el mismo bucle, pero el nombre SIEMPRE encima)
+   this.withScenePlayers.forEach((p, i) => {
+  const x = isHorizontal
+    ? (-(gap * (n - 1)) / 2) + i * gap
+    : 0;
+  const y = 0;
 
-      let avatarObj;
-      let avatarKey = p.avatar && this.textures.exists('avatar-' + p.playerId)
-        ? 'avatar-' + p.playerId
-        : null;
+  // Sub-container por jugador
+  const playerContainer = this.add.container(x, y);
 
-      if (avatarKey) {
-        avatarObj = this.add.image(x, y, avatarKey)
-          .setDisplaySize(avatarSize, avatarSize)
-          .setAlpha(0.97)
-          .setDepth(1)
-          .setOrigin(0.5);
-      } else {
-        avatarObj = this.add.circle(x, y, avatarSize / 2,
-          p.username === this.winnerName ? PALETTE.winner : PALETTE.loser, 0.26)
-          .setStrokeStyle(3, p.isHost ? PALETTE.gold : (p.username === this.winnerName ? PALETTE.winner : PALETTE.loser))
-          .setDepth(1);
-        const initialText = this.add.text(x, y, p.username?.charAt(0).toUpperCase(), {
-          fontSize: Math.floor(avatarSize / 1.5) + 'px',
-          fontFamily: 'Arial Black, Arial, sans-serif',
-          color: PALETTE.text, stroke: '#000', strokeThickness: 3
-        }).setOrigin(0.5).setDepth(2);
-        this.playerPanelsGroup.add(initialText);
-      }
-      // Corona
-      if (p.isHost) {
-        const crown = this.add.text(x + avatarSize / 2 - 10, y - avatarSize / 2 + 12, '👑', {
-          fontSize: Math.floor(avatarSize / 2.2) + 'px'
-        }).setOrigin(0.5).setDepth(3);
-        this.playerPanelsGroup.add(crown);
-      }
-      // Nombre: justo debajo del avatar, nunca solapa
-      const nameText = this.add.text(x, y + avatarSize / 2 + nameOffset, p.username, {
-        fontSize: Math.max(12, Math.floor(avatarSize * 0.26)) + 'px',
-        fontFamily: 'Arial Black, Arial, sans-serif',
-        color: '#fff',
-        align: 'center',
-        stroke: '#000', strokeThickness: 2,
-        wordWrap: { width: avatarSize * 1.2 }
-      }).setOrigin(0.5).setDepth(2);
-      this.playerPanelsGroup.add(nameText);
+  let avatarKey = p.avatar && this.textures.exists('avatar-' + p.playerId)
+    ? 'avatar-' + p.playerId : null;
 
-      // Fade in
-      avatarObj.setAlpha(0);
-      this.tweens.add({
-        targets: avatarObj,
-        alpha: 1,
-        scale: { from: 0.82, to: 1 },
-        duration: 370,
-        delay: 60 * i,
-        ease: 'Back.Out'
-      });
+  let avatarObj;
+  if (avatarKey) {
+    avatarObj = this.add.image(0, 0, avatarKey)
+      .setDisplaySize(avatarSize, avatarSize)
+      .setOrigin(0.5);
+  } else {
+    avatarObj = this.add.circle(0, 0, avatarSize / 2,
+      p.username === this.winnerName ? PALETTE.winner : PALETTE.loser, 0.26)
+      .setStrokeStyle(3, p.isHost ? PALETTE.gold : (p.username === this.winnerName ? PALETTE.winner : PALETTE.loser));
+    // Inicial
+    const initialText = this.add.text(0, 0, p.username?.charAt(0).toUpperCase(), {
+      fontSize: Math.floor(avatarSize / 1.5) + 'px',
+      fontFamily: 'Arial Black, Arial, sans-serif',
+      color: PALETTE.text, stroke: '#000', strokeThickness: 3
+    }).setOrigin(0.5);
+    playerContainer.add(avatarObj);
+    playerContainer.add(initialText);
+  }
+  // Añade avatar primero
+  playerContainer.add(avatarObj);
 
-      this.playerPanelsGroup.add(avatarObj);
-    });
+  // Nombre SIEMPRE debajo del avatar
+  const nameText = this.add.text(0, avatarSize / 2 + nameOffset, p.username, {
+    fontSize: Math.max(12, Math.floor(avatarSize * 0.26)) + 'px',
+    fontFamily: 'Arial Black, Arial, sans-serif',
+    color: '#fff',
+    align: 'center',
+    stroke: '#000', strokeThickness: 2,
+    wordWrap: { width: Math.max(avatarSize * 1.1, 60) }
+  }).setOrigin(0.5);
+  playerContainer.add(nameText);
+
+  // Corona si es host
+  if (p.isHost) {
+    const crown = this.add.text(avatarSize / 2 - 10, -avatarSize / 2 + 12, '👑', {
+      fontSize: Math.floor(avatarSize / 2.2) + 'px'
+    }).setOrigin(0.5);
+    playerContainer.add(crown);
+  }
+
+  // Añade el subcontainer al grupo principal
+  this.playerPanelsGroup.add(playerContainer);
+});
 
     // Mensaje central
     let msg = '';
