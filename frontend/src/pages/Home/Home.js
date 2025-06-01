@@ -8,10 +8,11 @@ import video from '../../video/kitten.mp4';
 import LogoAnimation from './LogoAnimation';
 import './LogoAnimation.css';
 
-const Home = () => {
+const Home = ({ onPulse }) => {
   const [introDone, setIntroDone] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
   const [showLogo, setShowLogo] = useState(false);
+
     const logoRef = useRef(null);
 
     /* ─────────────────── Intro + cleanup ─────────────────── */
@@ -106,30 +107,22 @@ useEffect(() => {
           >
             {showLogo && (
               <div className="logo-wrapper">
-                <LogoAnimation ref={logoRef} className="logo-normal" aria-label="Logo" />
+                <LogoAnimation ref={logoRef} className="logo-normal" aria-label="Logo"    onPulse={onPulse}  />
               </div>
             )}
           </div>
 
           {/* Opciones */}
           {showOptions && (
-            <div className="options-container">
-              <Link to="/create-lobby" className="option-button">
-                <img
-                  src={require('../../img/crear_sala.webp')}
-                  alt="Crear sala"
-                  className="modal-image"
-                />
-              </Link>
-              <Link to="/join-lobby" className="option-button">
-                <img
-                  src={require('../../img/unirse_sala.webp')}
-                  alt="Unirse a una sala"
-                  className="modal-image"
-                />
-              </Link>
-            </div>
-          )}
+      <div className="options-container">
+       <Link to="/create-lobby" className="option-button osu-style-button">
+        Crear Sala
+       </Link>
+       <Link to="/join-lobby" className="option-button osu-style-button">
+         Unirse a una Sala
+       </Link>
+     </div>
+      )}
         </div>
 
         {/* CONTENIDO PRINCIPAL (siempre en el DOM, oculto hasta introDone) */}

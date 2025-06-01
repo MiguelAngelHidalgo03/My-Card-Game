@@ -329,89 +329,51 @@
 
 
 
-/* Estilos para el modal */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  animation: fadeIn 0.3s ease-in-out;
-}
-.modal-content {
-  background-color: rgba(60, 0, 100, 0.85);
-  box-shadow: 0 8px 20px var(--primary-purple);
-  color: var(--primary-green);
-}
-
-.modal-close {
-  color: var(--primary-orange);
-  transition: transform 0.2s ease-in-out;
-}
-.modal-close:hover {
-  color: var(--primary-blue);
-  transform: scale(1.3);
-}
-
-.modal-title {
-  font-size: 2.4rem;
-  font-weight: bold;
-  margin-bottom: 1.5rem;
-  color: #ffffff;
-}
-
-.modal-button {
-  background-color: var(--primary-green);
-  color: black;
-  transition: background-color 0.3s, transform 0.2s;
-}
-.modal-button:hover {
-  background-color: var(--primary-orange);
-  color: white;
-  transform: scale(1.05);
-}
-
-/* Contenedor de opciones en el modal */
-.modal-options {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  margin-top: 2rem;
-}
-
-/* Cada opción (imagen + texto) */
-.modal-option {
+/* Estilos para el crear sala y jugar */
+.options-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  flex: none;
-  cursor: pointer;
-  transition: transform 0.2s ease-in-out, background-color 0.3s;
-}
-
-.modal-option:hover {
-  transform: scale(1.05);
-}
-
-/* Imagen en el modal */
-.modal-image {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  gap: 16px;
+  min-width: 350px;
+  background: #121212;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 0 20px rgba(255, 102, 170, 0.7);
   user-select: none;
-  pointer-events: none;
+  /* para alinearlo verticalmente al centro del logo */
+  align-self: center;
+ 
 }
 
+.option-button {
+  min-width: 280px; /* toma todo el ancho del contenedor */
+  padding: 16px 0; /* padding vertical para buena altura */
+  text-align: center;
+  color: #eee;
+  font-weight: 700;
+  font-size: 1.2rem; /* un poco más grande */
+  border-radius: 10px;
+  text-decoration: none;
+  user-select: none;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 0 8px #ff66aa80;
+  border: 2px solid transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* centra texto verticalmente */
+}
 
-.modal-image:hover {
-  transform: scale(1.1);
+.osu-style-button {
+  background: linear-gradient(135deg, #ff66aa, #ff3377);
+  border: 2px solid #ff66aa;
+}
+
+.osu-style-button:hover {
+  background: linear-gradient(135deg, #ff3399, #ff0055);
+  box-shadow: 0 0 15px #ff3399;
+  border-color: #ff3399;
+  color: white;
 }
 
 .container {
@@ -424,7 +386,6 @@
   transition: justify-content 0.3s ease;
    overflow: visible;
 }
-
 
 /* Logo Container */
 .logo-container {
@@ -468,23 +429,24 @@
 
 /* Cuando se hace click (showOptions true), se desplaza a la izquierda */
 .logo-container.moved-right {
-  transform: translateX(-150px) scale(1); /* mueve a la izquierda y mantiene escala normal */
+  transform: translateX(0) scale(1); /* sin mover, o ajusta si quieres */
   transition: transform 0.4s ease;
-    width: 620px;
- /* puedes ajustar tamaño cuando está movido */
+  width: 500px; /* mantén tamaño o ajusta */
 }
 
 /* Contenedor de opciones */
 .options-container {
   display: flex;
-  gap: 1.5rem;
-  flex-shrink: 0;
-}
-/* Botones opciones */
-.option-button {
-  display: inline-block;
-  width: 140px;
-  transition: transform 0.3s ease;
+  flex-direction: column;
+  gap: 8px; /* menos espacio que 16px */
+  max-width: 220px; /* más ancho para que los botones crezcan */
+  background: #121212;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 0 20px rgba(255, 102, 170, 0.7);
+  user-select: none;
+  margin-left: 10px; /* pegado al logo */
+  align-self: center;
 }
 
 

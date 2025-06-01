@@ -135,6 +135,9 @@ lineasAbajo.forEach(linea => {
     { value: 1, duration: 1750 }
   ],
   easing: 'easeInOutSine',
+   begin: () => {
+    if (props.onPulse) props.onPulse();
+  },
 
 }, 0);
 
