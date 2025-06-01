@@ -1,0 +1,104 @@
+{
+	"textures": [
+		{
+			"image": "cambiacolor-0.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 2000,
+				"h": 700
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "cambia_color_azul.svg",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 500,
+						"h": 700
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 500,
+						"h": 700
+					}
+				},
+				{
+					"filename": "cambia_color_morada.svg",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 500,
+						"h": 700
+					},
+					"frame": {
+						"x": 500,
+						"y": 0,
+						"w": 500,
+						"h": 700
+					}
+				},
+				{
+					"filename": "cambia_color_naranja.svg",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 500,
+						"h": 700
+					},
+					"frame": {
+						"x": 1000,
+						"y": 0,
+						"w": 500,
+						"h": 700
+					}
+				},
+				{
+					"filename": "cambia_color_verde.svg",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 500,
+						"h": 700
+					},
+					"frame": {
+						"x": 1500,
+						"y": 0,
+						"w": 500,
+						"h": 700
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:a3f684ba5110dbef651edbcf6cda7f3a:c871ea8e1afbd925f3b529778c32dec7:f432801d08e7e509f80c6fa6d7196fdf$"
+	}
+}

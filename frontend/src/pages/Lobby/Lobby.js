@@ -82,7 +82,8 @@ export default function Lobby() {
     drawPile,
     discardPile,
     hands,
-    turnIndex
+    turnIndex,
+    currentPlayerId
     }) => {
     // 1) Recupera el estado mínimo que ya tenías guardado
     const prev = JSON.parse(localStorage.getItem('lobbyState')) || {};
@@ -96,6 +97,7 @@ export default function Lobby() {
     discardPile,
     hands,
     turnIndex,
+     currentPlayerId,
     mySocketId: socket.id
     };
 

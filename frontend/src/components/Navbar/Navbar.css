@@ -7,7 +7,7 @@
   top: 0;
   left: 0;
   height: 80px; /* Altura fija del navbar */
-  backdrop-filter: blur(1px); /* opcional: efecto glass */
+  /* backdrop-filter: blur(1px); */
   width: 100%;
   z-index: 10;
   background-color: rgba(255, 255, 255, 0); /* opcional: transparente */

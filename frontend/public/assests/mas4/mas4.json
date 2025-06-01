@@ -1,0 +1,104 @@
+{
+	"textures": [
+		{
+			"image": "mas4-0.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 2000,
+				"h": 700
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "mas4_azul.svg",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 500,
+						"h": 700
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 500,
+						"h": 700
+					}
+				},
+				{
+					"filename": "mas4_morado.svg",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 500,
+						"h": 700
+					},
+					"frame": {
+						"x": 500,
+						"y": 0,
+						"w": 500,
+						"h": 700
+					}
+				},
+				{
+					"filename": "mas4_naranja.svg",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 500,
+						"h": 700
+					},
+					"frame": {
+						"x": 1000,
+						"y": 0,
+						"w": 500,
+						"h": 700
+					}
+				},
+				{
+					"filename": "mas4_verde.svg",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 500,
+						"h": 700
+					},
+					"frame": {
+						"x": 1500,
+						"y": 0,
+						"w": 500,
+						"h": 700
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:fbfe2903a6ac472c97aebfb8cddb53fa:9dfedd9e8469468d4623b26d8e5434f5:daaa498fa8def08a435abe8b94547e09$"
+	}
+}
