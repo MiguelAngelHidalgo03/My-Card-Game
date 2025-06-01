@@ -175,7 +175,13 @@ async function cancelGame({ gameCode }) {
   }
   console.log(`❌ Partida ${gameCode} cancelada (sin ganador)`);
 }
-
+async function setCurrentPlayer({ gameCode, playerId }) {
+  const { error } = await supabase
+    .from('games')
+    .update({ current_player_id: playerId })
+    .eq('game_code', gameCode);
+  if (error) throw error;
+}
 export {
   createGame,
   addOrUpdatePlayer,
@@ -183,5 +189,6 @@ export {
   startGame,
   finishGame,
   cancelGame,
+  setCurrentPlayer,
   supabase
 };

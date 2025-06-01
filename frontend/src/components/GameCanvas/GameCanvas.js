@@ -12,16 +12,6 @@ import ChatWindow from '../../scenes/playScene/ChatWindows';
 // import { debug } from 'console';
 
 export default function GameCanvas() {
-  useEffect(() => {
-    // Al montar GameCanvas, desactivamos el overlay
-    document.body.classList.add('no-overlay');
-    return () => {
-      // Al desmontar (volver al lobby, etc.), lo quitamos
-      document.body.classList.remove('no-overlay');
-    };
-  }, []);
-
-
   const { code: urlCode } = useParams();
   const { state }         = useLocation();
   const navigate          = useNavigate();
@@ -31,7 +21,7 @@ export default function GameCanvas() {
   const endRef            = useRef();
   const resizeDebounceRef = useRef();
   const debugMode = process.env.NODE_ENV === 'development';
-  
+
 
   // Persistir clientId para invitados
   const clientId = useMemo(() => {
@@ -53,7 +43,12 @@ export default function GameCanvas() {
   const [gameEnded,   setGameEnded]   = useState(false);
 
   useEffect(() => {
+
+
+    const isMobile = window.innerWidth < 1024 || navigator.maxTouchPoints > 0;
     let onResizeHandler;
+    document.body.classList.add('no-overlay');
+  
 
     // — Handlers de socket —
     const handleReconnected = () => {
@@ -113,7 +108,7 @@ export default function GameCanvas() {
     // Ahora arrancamos PlayScene con el nuevo estado
     gm.scene.start('PlayScene', {
       ...newState,
-      debugMode
+      debugMode, isMobile
     });
   }
  });
@@ -122,25 +117,23 @@ export default function GameCanvas() {
 
     // Función principal de carga
     async function loadAndStart() {
-      let gameState = state?.players ? { ...state } : null;
-      if (!gameState) {
-        try {
-          const raw = localStorage.getItem('lobbyState');
-          const obj = raw ? JSON.parse(raw) : null;
-          if (obj?.players && obj.code === urlCode) gameState = obj;
-        } catch {}
-      }
-      if (!gameState) {
-        try {
-          const res = await fetch(`/api/game/${urlCode}`);
-          if (!res.ok) throw new Error();
-          gameState = await res.json();
-        } catch {
-          return navigate('/lobby');
-        }
-      }
+       let gameState = null;
+  try {
+    const res = await fetch(`/api/game/${urlCode}`);
+    if (!res.ok) throw new Error();
+    gameState = await res.json();
+  } catch {
+    return navigate('/lobby');
+  }
 
-      const {
+ const prev = JSON.parse(localStorage.getItem('lobbyState') || '{}');
+const userId   = prev.userId   || null;
+const username = prev.username || '';
+const avatar   = prev.avatar   || '';
+const isHost   = prev.isHost   || false;
+const clientId = prev.clientId || '';
+
+const {
   code,
   players,
   gameSettings,
@@ -148,10 +141,8 @@ export default function GameCanvas() {
   discardPile,
   hands,
   turnIndex,
-  userId = null,
-  username,
-  avatar,
-  isHost
+  currentPlayerId,
+  chosenColor
 } = gameState;
 
 
@@ -169,6 +160,8 @@ export default function GameCanvas() {
       discardPile,
       hands,
       turnIndex,
+      currentPlayerId,
+      chosenColor,
       userId,
       username,
       avatar,
@@ -200,6 +193,11 @@ export default function GameCanvas() {
           width:  w,
           height: h
         },
+        render: {
+    pixelArt: false,
+    antialias: true,
+    resolution: window.devicePixelRatio  // esto sube la resolución de todo: sprites, texto, etc.
+  },
         physics: { default: 'arcade' },
         scene: [ PlayScene, WinScene ]
       };
@@ -209,10 +207,10 @@ export default function GameCanvas() {
         navigate('/lobby');
       });
       game.events.on('restart-game', payload => {
-        game.scene.start('PlayScene', { ...payload, debugMode });
+        game.scene.start('PlayScene', { ...payload, debugMode, isMobile });
       });
 
-      const enriched = { ...newState, mySocketId: socket.id, debugMode };
+      const enriched = { ...newState, mySocketId: socket.id, debugMode, isMobile };
       game.scene.start('PlayScene', enriched);
 
       // Debounce resize
@@ -232,6 +230,7 @@ export default function GameCanvas() {
 
     return () => {
       // Limpiar todo
+      document.body.classList.remove('no-overlay');
       socket.off('reconnected', handleReconnected);
       socket.off('player-left',  handlePlayerLeft);
       
