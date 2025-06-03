@@ -48,11 +48,15 @@ export default class PlayScene extends Phaser.Scene {
   const scaleFactor = this.isMobile ? 0.6 : 1;
   const scaleFactorScale = this.isMobile ? 0.45 : 1;
   const scaleFactorY = this.isMobile ? 1 : 0.6;
+  const surrenderFactorY = this.isMobile ? 0.65 : 0.6;
   const cardMobileFactor = this.isMobile ? 1.05 : 1;
   const rivalMobileFactor = this.isMobile ? 1.1 : 1;
   const width = this.scale.width;
   const height = this.scale.height;
-
+const surrenderFactor = this.isMobile ? 0 : 120;
+const surrenderFactorX = this.isMobile ? 0.85 : 1;
+const surrenderFactor2 = this.isMobile ? 3 : 1;
+const scaleFactorFont = this.isMobile ? 0.6 : 1;
   this.debug = {
     cardOverlap: 80.76 * scaleFactorScale,
     bgColor: 0x000000,
@@ -71,11 +75,11 @@ export default class PlayScene extends Phaser.Scene {
     drawY: height / 2, // centro vertical
     drawScale: 0.23 * scaleFactor,
     drawTint: 0xffffff,
-    surrenderX: width / 2 - 120,
-    surrenderY: 0,
-    surrenderFontSize: 18 * scaleFactor,
-    surrenderPaddingX: 10,
-    surrenderPaddingY: 5,
+    surrenderX: (width*surrenderFactorX)- surrenderFactor,
+    surrenderY: height* surrenderFactorY,
+    surrenderFontSize: 24 * scaleFactorFont,
+    surrenderPaddingX: 10*scaleFactorFont,
+    surrenderPaddingY: 5*scaleFactorFont,
     panelOffsetY: 152.851205566406 * scaleFactorY,
     avatarSize: 48 * scaleFactor,
     highlightStroke: 4,
@@ -164,6 +168,7 @@ console.log('[PlayScene:init] playerId:', this.playerId);
   }
   
   create() {
+    const scaleFactor = this.isMobile ? 0.5 : 1;
     this.input.enabled = !this.isAnimating;
     this.recalculateDebugLayout();
 
@@ -175,27 +180,152 @@ console.log('[PlayScene:init] playerId:', this.playerId);
     this.board = new BoardRenderer(this);
     this.board.create();
 
-    // render del surrender
-    const { width, height } = this.scale;
-    this.surrenderBtn = this.add.text(
-      this.debug.surrenderX,
-      this.debug.surrenderY,
-      'Rendirse',
-      {
-        fontSize: `${this.debug.surrenderFontSize}px`,
-        backgroundColor: '#f00',
-        padding: { x: this.debug.surrenderPaddingX, y: this.debug.surrenderPaddingY },
-        color: '#fff'
-      }
-    )
-      .setOrigin(0.5)
-      .setInteractive({ cursor: 'pointer' })
-      .on('pointerup', () => {
-        socket.emit('end-game', {
-          code: this.code,
-          winnerPlayerId: this.remotePlayer.playerId
-        });
+ 
+const { width, height } = this.scale;
+const btnWidth = 180*scaleFactor;
+const btnHeight = 56*scaleFactor;
+const btnRadius = 18;
+const btnX = this.debug.surrenderX;
+const btnY = this.debug.surrenderY + 40;
+
+// Botón principal "Rendirse"
+const surrenderGraphics = this.add.graphics();
+surrenderGraphics.fillStyle(0xff5555, 1);
+surrenderGraphics.fillRoundedRect(-btnWidth/2, -btnHeight/2, btnWidth, btnHeight, btnRadius);
+surrenderGraphics.lineStyle(4, 0xaa2222, 1);
+surrenderGraphics.strokeRoundedRect(-btnWidth/2, -btnHeight/2, btnWidth, btnHeight, btnRadius);
+surrenderGraphics.setAlpha(0.92);
+
+const surrenderText = this.add.text(0, 0, 'Rendirse', {
+  fontFamily: 'Arial Black, Arial, sans-serif',
+  fontSize: `${this.debug.surrenderFontSize}px`,	
+  fontStyle: 'bold',
+  color: '#fff',
+  align: 'center',
+  stroke: '#000',
+  strokeThickness: 4,
+  shadow: {
+    offsetX: 0,
+    offsetY: 3,
+    color: '#aa2222',
+    blur: 8,
+    fill: true
+  }
+}).setOrigin(0.5);
+
+const surrenderZone = this.add.zone(0, 0, btnWidth, btnHeight)
+  .setOrigin(0.5)
+  .setInteractive();
+
+this.surrenderBtn = this.add.container(btnX, btnY, [surrenderGraphics, surrenderText, surrenderZone])
+  .setSize(btnWidth, btnHeight)
+  .setDepth(1000);
+
+surrenderZone
+  .on('pointerover', () => surrenderGraphics.setAlpha(1))
+  .on('pointerout', () => surrenderGraphics.setAlpha(0.92))
+  .on('pointerdown', () => surrenderGraphics.setAlpha(0.7))
+  .on('pointerup', () => {
+    surrenderGraphics.setAlpha(1);
+    this.showSurrenderModal();
+  });
+
+// --- Modal de confirmación ---
+this.showSurrenderModal = () => {
+  if (this.surrenderModal) return;
+
+  const modalWidth = 400;
+  const modalHeight = 220;
+  const modalBg = this.add.graphics();
+  modalBg.fillStyle(0x222222, 0.96);
+  modalBg.fillRoundedRect(-modalWidth/2, -modalHeight/2, modalWidth, modalHeight, 24);
+  modalBg.lineStyle(4, 0xff5555, 1);
+  modalBg.strokeRoundedRect(-modalWidth/2, -modalHeight/2, modalWidth, modalHeight, 24);
+
+  const modalText = this.add.text(0, -40, '¿Seguro que quieres rendirte?\nEsta acción no se puede deshacer.', {
+    fontFamily: 'Arial Black, Arial, sans-serif',
+    fontSize: '22px',
+    color: '#fff',
+    align: 'center',
+    wordWrap: { width: modalWidth - 40 }
+  }).setOrigin(0.5);
+
+  // Botón "Sí, rendirse"
+  const yesBtnBg = this.add.graphics();
+  yesBtnBg.fillStyle(0xff5555, 1);
+  yesBtnBg.fillRoundedRect(-70, -22, 140, 44, 12);
+  yesBtnBg.setAlpha(0.92);
+
+  const yesBtnText = this.add.text(0, 0, 'Sí, rendirse', {
+    fontSize: '20px',
+    fontFamily: 'Arial Black, Arial, sans-serif',
+    color: '#fff',
+    fontStyle: 'bold',
+    align: 'center'
+  }).setOrigin(0.5);
+
+  const yesBtnZone = this.add.zone(0, 0, 140, 44)
+    .setOrigin(0.5)
+    .setInteractive({ cursor: 'pointer' });
+
+  const yesBtn = this.add.container(-80, 50, [yesBtnBg, yesBtnText, yesBtnZone]);
+
+  yesBtnZone
+    .on('pointerover', () => yesBtnBg.setAlpha(1))
+    .on('pointerout', () => yesBtnBg.setAlpha(0.92))
+    .on('pointerdown', () => yesBtnBg.setAlpha(0.7))
+    .on('pointerup', () => {
+      yesBtnBg.setAlpha(1);
+      socket.emit('end-game', {
+        code: this.code,
+        winnerPlayerId: this.remotePlayer.playerId
       });
+      this.hideSurrenderModal();
+    });
+
+  // Botón "Cancelar"
+  const cancelBtnBg = this.add.graphics();
+  cancelBtnBg.fillStyle(0x444444, 1);
+  cancelBtnBg.fillRoundedRect(-70, -22, 140, 44, 12);
+  cancelBtnBg.setAlpha(0.92);
+
+  const cancelBtnText = this.add.text(0, 0, 'Cancelar', {
+    fontSize: '20px',
+    fontFamily: 'Arial Black, Arial, sans-serif',
+    color: '#fff',
+    fontStyle: 'bold',
+    align: 'center'
+  }).setOrigin(0.5);
+
+  const cancelBtnZone = this.add.zone(0, 0, 140, 44)
+    .setOrigin(0.5)
+    .setInteractive({ cursor: 'pointer' });
+
+  const cancelBtn = this.add.container(80, 50, [cancelBtnBg, cancelBtnText, cancelBtnZone]);
+
+  cancelBtnZone
+    .on('pointerover', () => cancelBtnBg.setAlpha(1))
+    .on('pointerout', () => cancelBtnBg.setAlpha(0.92))
+    .on('pointerdown', () => cancelBtnBg.setAlpha(0.7))
+    .on('pointerup', () => {
+      cancelBtnBg.setAlpha(1);
+      this.hideSurrenderModal();
+    });
+
+  this.surrenderModal = this.add.container(width/2, height/2, [modalBg, modalText, yesBtn, cancelBtn])
+    .setDepth(2000);
+
+  // Bloquea input detrás del modal
+  // this.input.enabled = false;
+};
+
+this.hideSurrenderModal = () => {
+  if (this.surrenderModal) {
+    this.surrenderModal.destroy();
+    this.surrenderModal = null;
+    // this.input.enabled = true;
+  }
+};
 
     // montar GUI de debug SI toca
     if (this.debugMode) {
