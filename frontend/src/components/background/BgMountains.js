@@ -35,6 +35,39 @@ export default function BgMountains({ pulseTrigger }) {
     sizeClass = 'bg-lg';
   }
 
+  /* ① parallax scroll ------------------------------------- */
+  useEffect(() => {
+    const layers = [
+      'layer1','layer2','layer3','layer4','layer5','layer6','layer7'
+    ].map(id => document.getElementById(id)).filter(Boolean);
+
+    const onScroll = () => {
+      const y = window.scrollY;
+      layers.forEach((el, idx) => {
+        el.style.transform = `translateY(${y * (idx + 5) * 0.04}px)`;
+      });
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();                 // posición inicial
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [w]);                      // se rehace al cambiar de SVG
+
+  /* ② “respiración” lenta --------------------------------- */
+  useEffect(() => {
+    anime.remove('#layer1, #layer2, #layer3, #layer4, #layer5, #layer6, #layer7');
+
+    anime({
+      targets : ['#layer1','#layer2','#layer3','#layer4','#layer5','#layer6','#layer7'],
+      translateY: (el,i)=>[0,(i+1)*10],
+      direction : 'alternate',
+      duration  : 2500,
+      easing    : 'easeInOutSine',
+      loop      : true,
+      delay     : (el,i)=> i*300
+    });
+  }, [w]);                      // reinicia con el nuevo SVG
+
    // Animación de escala tras 1 segundo
 useEffect(() => {
   const timeout = setTimeout(() => {
