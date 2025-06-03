@@ -1,0 +1,1315 @@
+{
+	"textures": [
+		{
+			"image": "cartas-0.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 2035,
+				"h": 1414
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "Reverso_Carta.svg",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 535,
+						"h": 716
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 535,
+						"h": 716
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 535,
+						"h": 716
+					}
+				},
+				{
+					"filename": "misteriosa.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 1,
+						"w": 500,
+						"h": 698
+					},
+					"frame": {
+						"x": 0,
+						"y": 716,
+						"w": 500,
+						"h": 698
+					}
+				},
+				{
+					"filename": "1pa1_sin_camiseta.svg",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 500,
+						"h": 700
+					},
+					"frame": {
+						"x": 535,
+						"y": 0,
+						"w": 500,
+						"h": 700
+					}
+				},
+				{
+					"filename": "cambia_color.svg",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 500,
+						"h": 700
+					},
+					"frame": {
+						"x": 535,
+						"y": 700,
+						"w": 500,
+						"h": 700
+					}
+				},
+				{
+					"filename": "lgtb.svg",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 500,
+						"h": 700
+					},
+					"frame": {
+						"x": 1035,
+						"y": 0,
+						"w": 500,
+						"h": 700
+					}
+				},
+				{
+					"filename": "lumos.svg",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 500,
+						"h": 700
+					},
+					"frame": {
+						"x": 1535,
+						"y": 0,
+						"w": 500,
+						"h": 700
+					}
+				},
+				{
+					"filename": "mas4.svg",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 500,
+						"h": 700
+					},
+					"frame": {
+						"x": 1035,
+						"y": 700,
+						"w": 500,
+						"h": 700
+					}
+				},
+				{
+					"filename": "perder_apuesta.svg",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 500,
+						"h": 700
+					},
+					"frame": {
+						"x": 1535,
+						"y": 700,
+						"w": 500,
+						"h": 700
+					}
+				}
+			]
+		},
+		{
+			"image": "cartas-1.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 1992,
+				"h": 1397
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "Azul_9.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 0,
+						"w": 498,
+						"h": 699
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 498,
+						"h": 699
+					}
+				},
+				{
+					"filename": "Morada_9.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 0,
+						"w": 498,
+						"h": 699
+					},
+					"frame": {
+						"x": 498,
+						"y": 0,
+						"w": 498,
+						"h": 699
+					}
+				},
+				{
+					"filename": "Naranja_9.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 0,
+						"w": 498,
+						"h": 699
+					},
+					"frame": {
+						"x": 996,
+						"y": 0,
+						"w": 498,
+						"h": 699
+					}
+				},
+				{
+					"filename": "Verde_9.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 0,
+						"w": 498,
+						"h": 699
+					},
+					"frame": {
+						"x": 1494,
+						"y": 0,
+						"w": 498,
+						"h": 699
+					}
+				},
+				{
+					"filename": "Azul_5.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 0,
+						"w": 498,
+						"h": 698
+					},
+					"frame": {
+						"x": 0,
+						"y": 699,
+						"w": 498,
+						"h": 698
+					}
+				},
+				{
+					"filename": "Azul_6.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 0,
+						"w": 498,
+						"h": 698
+					},
+					"frame": {
+						"x": 498,
+						"y": 699,
+						"w": 498,
+						"h": 698
+					}
+				},
+				{
+					"filename": "Azul_7.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 2,
+						"w": 498,
+						"h": 698
+					},
+					"frame": {
+						"x": 996,
+						"y": 699,
+						"w": 498,
+						"h": 698
+					}
+				},
+				{
+					"filename": "Morada_5.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 0,
+						"w": 498,
+						"h": 698
+					},
+					"frame": {
+						"x": 1494,
+						"y": 699,
+						"w": 498,
+						"h": 698
+					}
+				}
+			]
+		},
+		{
+			"image": "cartas-2.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 1992,
+				"h": 1396
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "Morada_6.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 0,
+						"w": 498,
+						"h": 698
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 498,
+						"h": 698
+					}
+				},
+				{
+					"filename": "Morada_7.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 2,
+						"w": 498,
+						"h": 698
+					},
+					"frame": {
+						"x": 0,
+						"y": 698,
+						"w": 498,
+						"h": 698
+					}
+				},
+				{
+					"filename": "multa.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 1,
+						"w": 498,
+						"h": 698
+					},
+					"frame": {
+						"x": 498,
+						"y": 0,
+						"w": 498,
+						"h": 698
+					}
+				},
+				{
+					"filename": "Naranja_5.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 0,
+						"w": 498,
+						"h": 698
+					},
+					"frame": {
+						"x": 996,
+						"y": 0,
+						"w": 498,
+						"h": 698
+					}
+				},
+				{
+					"filename": "Naranja_6.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 0,
+						"w": 498,
+						"h": 698
+					},
+					"frame": {
+						"x": 1494,
+						"y": 0,
+						"w": 498,
+						"h": 698
+					}
+				},
+				{
+					"filename": "Naranja_7.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 2,
+						"w": 498,
+						"h": 698
+					},
+					"frame": {
+						"x": 498,
+						"y": 698,
+						"w": 498,
+						"h": 698
+					}
+				},
+				{
+					"filename": "Verde_5.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 0,
+						"w": 498,
+						"h": 698
+					},
+					"frame": {
+						"x": 996,
+						"y": 698,
+						"w": 498,
+						"h": 698
+					}
+				},
+				{
+					"filename": "Verde_6.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 0,
+						"w": 498,
+						"h": 698
+					},
+					"frame": {
+						"x": 1494,
+						"y": 698,
+						"w": 498,
+						"h": 698
+					}
+				}
+			]
+		},
+		{
+			"image": "cartas-3.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 1992,
+				"h": 1394
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "Verde_7.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 2,
+						"w": 498,
+						"h": 698
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 498,
+						"h": 698
+					}
+				},
+				{
+					"filename": "Azul_Bloqueo.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 0,
+						"w": 499,
+						"h": 695
+					},
+					"frame": {
+						"x": 498,
+						"y": 0,
+						"w": 499,
+						"h": 695
+					}
+				},
+				{
+					"filename": "Morada_Bloqueo.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 0,
+						"w": 499,
+						"h": 695
+					},
+					"frame": {
+						"x": 997,
+						"y": 0,
+						"w": 499,
+						"h": 695
+					}
+				},
+				{
+					"filename": "Azul_3.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 1,
+						"w": 496,
+						"h": 699
+					},
+					"frame": {
+						"x": 1496,
+						"y": 0,
+						"w": 496,
+						"h": 699
+					}
+				},
+				{
+					"filename": "Naranja_Bloqueo.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 0,
+						"w": 499,
+						"h": 695
+					},
+					"frame": {
+						"x": 0,
+						"y": 699,
+						"w": 499,
+						"h": 695
+					}
+				},
+				{
+					"filename": "Morada_3.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 1,
+						"w": 496,
+						"h": 699
+					},
+					"frame": {
+						"x": 499,
+						"y": 695,
+						"w": 496,
+						"h": 699
+					}
+				},
+				{
+					"filename": "Naranja_3.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 1,
+						"w": 496,
+						"h": 699
+					},
+					"frame": {
+						"x": 995,
+						"y": 695,
+						"w": 496,
+						"h": 699
+					}
+				},
+				{
+					"filename": "Verde_Bloqueo.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 0,
+						"w": 499,
+						"h": 695
+					},
+					"frame": {
+						"x": 1491,
+						"y": 699,
+						"w": 499,
+						"h": 695
+					}
+				}
+			]
+		},
+		{
+			"image": "cartas-4.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 1990,
+				"h": 1395
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "Azul_4.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 4,
+						"w": 498,
+						"h": 696
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 498,
+						"h": 696
+					}
+				},
+				{
+					"filename": "Verde_3.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 1,
+						"w": 496,
+						"h": 699
+					},
+					"frame": {
+						"x": 498,
+						"y": 0,
+						"w": 496,
+						"h": 699
+					}
+				},
+				{
+					"filename": "Azul_0.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 3,
+						"w": 497,
+						"h": 697
+					},
+					"frame": {
+						"x": 0,
+						"y": 696,
+						"w": 497,
+						"h": 697
+					}
+				},
+				{
+					"filename": "Morada_4.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 4,
+						"w": 498,
+						"h": 696
+					},
+					"frame": {
+						"x": 497,
+						"y": 699,
+						"w": 498,
+						"h": 696
+					}
+				},
+				{
+					"filename": "Naranja_4.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 4,
+						"w": 498,
+						"h": 696
+					},
+					"frame": {
+						"x": 994,
+						"y": 0,
+						"w": 498,
+						"h": 696
+					}
+				},
+				{
+					"filename": "Azul_1.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 3,
+						"w": 497,
+						"h": 697
+					},
+					"frame": {
+						"x": 995,
+						"y": 696,
+						"w": 497,
+						"h": 697
+					}
+				},
+				{
+					"filename": "Azul_2.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 3,
+						"w": 497,
+						"h": 697
+					},
+					"frame": {
+						"x": 1492,
+						"y": 0,
+						"w": 497,
+						"h": 697
+					}
+				},
+				{
+					"filename": "Verde_4.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 4,
+						"w": 498,
+						"h": 696
+					},
+					"frame": {
+						"x": 1492,
+						"y": 697,
+						"w": 498,
+						"h": 696
+					}
+				}
+			]
+		},
+		{
+			"image": "cartas-5.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 1988,
+				"h": 1394
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "Azul_8.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 497,
+						"h": 697
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 497,
+						"h": 697
+					}
+				},
+				{
+					"filename": "Azul_mas2.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 3,
+						"w": 497,
+						"h": 697
+					},
+					"frame": {
+						"x": 0,
+						"y": 697,
+						"w": 497,
+						"h": 697
+					}
+				},
+				{
+					"filename": "Morada_0.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 3,
+						"w": 497,
+						"h": 697
+					},
+					"frame": {
+						"x": 497,
+						"y": 0,
+						"w": 497,
+						"h": 697
+					}
+				},
+				{
+					"filename": "Morada_1.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 3,
+						"w": 497,
+						"h": 697
+					},
+					"frame": {
+						"x": 994,
+						"y": 0,
+						"w": 497,
+						"h": 697
+					}
+				},
+				{
+					"filename": "Morada_2.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 3,
+						"w": 497,
+						"h": 697
+					},
+					"frame": {
+						"x": 1491,
+						"y": 0,
+						"w": 497,
+						"h": 697
+					}
+				},
+				{
+					"filename": "Morada_8.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 497,
+						"h": 697
+					},
+					"frame": {
+						"x": 497,
+						"y": 697,
+						"w": 497,
+						"h": 697
+					}
+				},
+				{
+					"filename": "Morada_mas2.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 3,
+						"w": 497,
+						"h": 697
+					},
+					"frame": {
+						"x": 994,
+						"y": 697,
+						"w": 497,
+						"h": 697
+					}
+				},
+				{
+					"filename": "Naranja_0.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 3,
+						"w": 497,
+						"h": 697
+					},
+					"frame": {
+						"x": 1491,
+						"y": 697,
+						"w": 497,
+						"h": 697
+					}
+				}
+			]
+		},
+		{
+			"image": "cartas-6.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 1988,
+				"h": 1394
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "Naranja_1.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 3,
+						"w": 497,
+						"h": 697
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 497,
+						"h": 697
+					}
+				},
+				{
+					"filename": "Naranja_2.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 3,
+						"w": 497,
+						"h": 697
+					},
+					"frame": {
+						"x": 0,
+						"y": 697,
+						"w": 497,
+						"h": 697
+					}
+				},
+				{
+					"filename": "Naranja_8.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 497,
+						"h": 697
+					},
+					"frame": {
+						"x": 497,
+						"y": 0,
+						"w": 497,
+						"h": 697
+					}
+				},
+				{
+					"filename": "Naranja_mas2.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 3,
+						"w": 497,
+						"h": 697
+					},
+					"frame": {
+						"x": 994,
+						"y": 0,
+						"w": 497,
+						"h": 697
+					}
+				},
+				{
+					"filename": "ten_huevos_robar.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 3,
+						"w": 497,
+						"h": 697
+					},
+					"frame": {
+						"x": 1491,
+						"y": 0,
+						"w": 497,
+						"h": 697
+					}
+				},
+				{
+					"filename": "Verde_0.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 3,
+						"w": 497,
+						"h": 697
+					},
+					"frame": {
+						"x": 497,
+						"y": 697,
+						"w": 497,
+						"h": 697
+					}
+				},
+				{
+					"filename": "Verde_1.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 3,
+						"w": 497,
+						"h": 697
+					},
+					"frame": {
+						"x": 994,
+						"y": 697,
+						"w": 497,
+						"h": 697
+					}
+				},
+				{
+					"filename": "Verde_2.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 3,
+						"w": 497,
+						"h": 697
+					},
+					"frame": {
+						"x": 1491,
+						"y": 697,
+						"w": 497,
+						"h": 697
+					}
+				}
+			]
+		},
+		{
+			"image": "cartas-7.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 497,
+				"h": 1394
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "Verde_8.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 497,
+						"h": 697
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 497,
+						"h": 697
+					}
+				},
+				{
+					"filename": "Verde_mas2.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 500,
+						"h": 700
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 3,
+						"w": 497,
+						"h": 697
+					},
+					"frame": {
+						"x": 0,
+						"y": 697,
+						"w": 497,
+						"h": 697
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:b01a1ab87f98f4235c777ae09f0a2775:edbd7f056ffe1d8d5ad78f8e4142e575:e1eb25e6fc48bbd2b16551db7b141e1a$"
+	}
+}

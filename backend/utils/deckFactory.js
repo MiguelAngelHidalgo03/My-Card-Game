@@ -18,10 +18,10 @@ export function createDeck(enableSpecialCards) {
   // 3) Cambia color y +4 (aún no añadida)
   for (let i = 0; i < 4; i++) {
     deck.push({ frame: 'cambia_color.svg' });
-    // deck.push({ frame: 'wild_draw4.svg' }); // cuando la crees
+   deck.push({ frame: 'mas4.svg' }); // cuando la crees
   }
   // 4) Reverso
-  deck.push({ frame: 'Reverso_Carta.svg' });
+  // deck.push({ frame: 'Reverso_Carta.svg' });
   // 5) Futuras especiales
   if (enableSpecialCards) {
     // …tu código para especiales

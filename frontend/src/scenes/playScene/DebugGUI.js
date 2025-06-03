@@ -14,18 +14,41 @@ export default function mountDebugGUI(scene, debug, applyLayout) {
   fBg.addColor(debug, 'bgColor').name('Color fondo').onChange(applyLayout);
   fBg.open();
 
+  // 👥 Panel Jugadores
+  const fPlayers = gui.addFolder('👥 Panel Jugadores');
+  fPlayers.add(debug, 'panelOffsetY', 0, scene.scale.height / 2)
+    .name('Offset Y Panel')
+    .onChange(applyLayout);
+  fPlayers.add(debug, 'avatarSize', 16, 128)
+    .name('Tamaño Avatar')
+    .onChange(applyLayout);
+  fPlayers.open();
+
+  // ✨ Resalte Turno
+  const fHighlight = gui.addFolder('✨ Resalte Turno');
+  fHighlight.add(debug, 'highlightStroke', 1, 10)
+    .name('Grosor Resalte')
+    .onChange(applyLayout);
+  fHighlight.addColor(debug, 'highlightColorLocal')
+    .name('Color Tu Turno')
+    .onChange(applyLayout);
+  fHighlight.addColor(debug, 'highlightColorRemote')
+    .name('Color Rival Turno')
+    .onChange(applyLayout);
+  fHighlight.open();
+
   // 🃏 Mano Local
   const fLocal = gui.addFolder('🃏 Mano Local');
   fLocal.add(debug, 'cardY', 0, scene.scale.height).name('Y Mano').onChange(applyLayout);
-  fLocal.add(debug, 'spacing', 0, scene.scale.width).name('Espaciado').onChange(applyLayout);
-  fLocal.add(debug, 'cardScale', 0.2, 2).name('Escala').onChange(applyLayout);
-  fLocal.addColor(debug, 'cardTint').name('Color cartas').onChange(applyLayout);
+  fLocal.add(debug, 'cardOverlap', 0, scene.scale.width).name('Overlap Mano').onChange(applyLayout);
+  fLocal.add(debug, 'cardScale', 0.2, 2).name('Escala Mano').onChange(applyLayout);
+  fLocal.addColor(debug, 'cardTint').name('Color Mano').onChange(applyLayout);
   fLocal.open();
 
   // 👥 Mano Rival
   const fRival = gui.addFolder('👥 Mano Rival');
   fRival.add(debug, 'rivalY', 0, scene.scale.height).name('Y Rival').onChange(applyLayout);
-  fRival.add(debug, 'rivalSpacing', 0, scene.scale.width).name('Esp. Rival').onChange(applyLayout);
+  fRival.add(debug, 'rivalOverlap', 0, scene.scale.width).name('Overlap Rival').onChange(applyLayout);
   fRival.add(debug, 'rivalScale', 0.2, 2).name('Escala Rival').onChange(applyLayout);
   fRival.addColor(debug, 'rivalTint').name('Color Rival').onChange(applyLayout);
   fRival.open();
@@ -40,7 +63,7 @@ export default function mountDebugGUI(scene, debug, applyLayout) {
 
   // 📦 Mazo
   const fDraw = gui.addFolder('📦 Mazo');
-  fDraw.add(debug, 'drawX', 335.872, scene.scale.width).name('X Mazo').onChange(applyLayout);
+  fDraw.add(debug, 'drawX', 0, scene.scale.width).name('X Mazo').onChange(applyLayout);
   fDraw.add(debug, 'drawY', 0, scene.scale.height).name('Y Mazo').onChange(applyLayout);
   fDraw.add(debug, 'drawScale', 0.1, 2).name('Escala Mazo').onChange(applyLayout);
   fDraw.addColor(debug, 'drawTint').name('Color Mazo').onChange(applyLayout);
@@ -74,6 +97,62 @@ export default function mountDebugGUI(scene, debug, applyLayout) {
       scene.surrenderBtn.setStyle(style);
     });
   fSurr.open();
+
+  // ✋ Hover & Tap Lift
+  const fLift = gui.addFolder('✋ Elevación Carta');
+  fLift.add(debug, 'liftOffset', 0, 100).name('Offset Elevación').onChange(applyLayout);
+  fLift.add(debug, 'liftDuration', 50, 1000).name('Duración Elevación ms');
+  fLift.open();
+    const fScroll = gui.addFolder('◀️▶️ Desplazamiento');
+  fScroll.add(debug, 'arrowMargin', 0, 100)
+    .name('Margen flechas')
+    .onChange(applyLayout);
+  fScroll.open();
+  const fTest = gui.addFolder('🔧 Test');
+  fTest
+    .add({ addTestCard: () => scene.addDebugCard() }, 'addTestCard')
+    .name('Añadir carta de prueba');
+  fTest.open();
+
+  const fUno = gui.addFolder('🟩 Botón UNO');
+ Object.keys(scene.unoBtnOffsets).forEach(pos => {
+  const folder = fUno.addFolder(pos);
+  folder.add(scene.unoBtnOffsets[pos], 'x', -300, 300, 1).name('Offset X').onChange(() => {
+    if (scene.unoBtn && scene.unoBtnPosition === pos) {
+      // Recalcula la posición real
+      const d = scene.debug;
+      if (pos === 'left-draw') {
+        scene.unoBtn.x = d.drawX + scene.unoBtnOffsets['left-draw'].x;
+        scene.unoBtn.y = d.drawY + scene.unoBtnOffsets['left-draw'].y;
+      } else if (pos === 'right-discard') {
+        scene.unoBtn.x = d.discardX + scene.unoBtnOffsets['right-discard'].x;
+        scene.unoBtn.y = d.discardY + scene.unoBtnOffsets['right-discard'].y;
+      } else if (pos === 'above-handmodal') {
+        scene.unoBtn.x = scene.scale.width + scene.unoBtnOffsets['above-handmodal'].x;
+        scene.unoBtn.y = d.cardY + scene.unoBtnOffsets['above-handmodal'].y;
+      }
+    }
+  });
+  folder.add(scene.unoBtnOffsets[pos], 'y', -300, 300, 1).name('Offset Y').onChange(() => {
+    if (scene.unoBtn && scene.unoBtnPosition === pos) {
+      // Igual que arriba
+      const d = scene.debug;
+      if (pos === 'left-draw') {
+        scene.unoBtn.x = d.drawX + scene.unoBtnOffsets['left-draw'].x;
+        scene.unoBtn.y = d.drawY + scene.unoBtnOffsets['left-draw'].y;
+      } else if (pos === 'right-discard') {
+        scene.unoBtn.x = d.discardX + scene.unoBtnOffsets['right-discard'].x;
+        scene.unoBtn.y = d.discardY + scene.unoBtnOffsets['right-discard'].y;
+      } else if (pos === 'above-handmodal') {
+        scene.unoBtn.x = scene.scale.width + scene.unoBtnOffsets['above-handmodal'].x;
+        scene.unoBtn.y = d.cardY + scene.unoBtnOffsets['above-handmodal'].y;
+      }
+    }
+  });
+  folder.open();
+});
+
+
 
   return gui;
 }
