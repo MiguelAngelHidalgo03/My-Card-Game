@@ -24,6 +24,7 @@ import VerifyOtpAndReset from "./pages/ResetPassword/VerifyOtpAndReset";
 import AuthCallback from './AuthCallback';
 import ScrollToTop from './utils/scrollReset';
 import GameCanvas from "./components/GameCanvas/GameCanvas";
+import React, { useState  } from 'react';
 
 export default function App() {
   return (
@@ -37,11 +38,15 @@ export default function App() {
 
 function Main() {
   const { pathname } = useLocation();
-
+  const [pulseTrigger, setPulseTrigger] = useState(0);
+  const handlePulse = () => {
+    setPulseTrigger(prev => prev + 1);
+  };
   return (
     <>
+      <BgMountains pulseTrigger={pulseTrigger} />
       <Routes>
-        <Route path="/"        element={<><BgMountains /><Home/></>} />
+        <Route path="/" element={<Home onPulse={handlePulse} />} />
         <Route path="/rules"   element={<><BgMountains /><Rules/></>} />
         <Route path="/about"   element={<><BgMountains /><About/></>} />
         <Route path="/config"  element={<><BgMountains /><Config/></>} />
@@ -51,7 +56,7 @@ function Main() {
         <Route path="/lobby"        element={<Lobby />} />
         <Route path="/login"        element={<Login />} />
         <Route path="/register"     element={<Register />} />
-        <Route path="/profile"      element={<Profile />} />
+        <Route path="/profile"      element={<><BgMountains /><Profile/></>} />
         <Route path="/reset-request" element={<ResetRequest />} />
         <Route path="/reset-password" element={<VerifyOtpAndReset />} />
         <Route path="/auth/callback" element={<AuthCallback />} />

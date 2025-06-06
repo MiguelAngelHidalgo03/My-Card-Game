@@ -4,13 +4,8 @@ import { UserContext } from '../../context/UserContext';
 import Modal from '../../pages/Profile/ModalProfile';
 import './JoinLobby.css';
 import { useNavigate } from 'react-router-dom';
-
-const availableImages = [
-  '/assests/img/avatar1.png',
-  '/assests/img/avatar2.png',
-  '/assests/img/avatar3.png',
-  '/assests/img/avatar4.png',
-];
+import avatarImages from '../../utils/avatar';
+const availableImages = avatarImages;
 export default function JoinLobby() {
   const { user } = useContext(UserContext);
   const [showAvatarModal, setShowAvatarModal] = useState(false);
@@ -77,6 +72,7 @@ export default function JoinLobby() {
   };
   return (
     <div className="join-lobby">
+      <div className="join-bg-anim"></div>
       <h1>Unirse a Sala</h1>
 
       {user ? (
@@ -95,13 +91,15 @@ export default function JoinLobby() {
           <button onClick={handleJoinLobby}>Unirse</button>
         </div>
       ) : (
-        <div className="guest-form">
+        <div className="guest-formJ">
+          <p>Ingresa un nombre de usuario</p>
           <input
             type="text"
             placeholder="Nombre de usuario"
             value={tempUsername}
             onChange={e => setTempUsername(e.target.value)}
           />
+           <p>Ingresa codigo de sala</p>
           <input
             type="text"
             placeholder="Código de sala"

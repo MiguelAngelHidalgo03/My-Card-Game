@@ -3,14 +3,9 @@ import { UserContext } from '../../context/UserContext';
 import Modal from '../../pages/Profile/ModalProfile';
 import './CreateLobby.css';
 import { useNavigate } from 'react-router-dom';
+import avatarImages from '../../utils/avatar';
 
-const availableImages = [
-  '/assests/img/avatar1.png',
-  '/assests/img/avatar2.png',
-  '/assests/img/avatar3.png',
-  '/assests/img/avatar4.png',
-];
-
+const availableImages = avatarImages;
 export default function CreateLobby() {
   const { user } = useContext(UserContext);
   const [showAvatarModal, setShowAvatarModal] = useState(false);
@@ -53,9 +48,11 @@ export default function CreateLobby() {
 
   return (
     <div className="create-lobby">
-      <h1>Crear Sala</h1>
+      <div className="create-bg-anim"></div>
+     
       {user ? (
         <div className="user-session">
+           <h1>Crear Sala</h1>
           <p>Bienvenido</p>
           <img src={user.profile_picture || selectedAvatar} alt="Avatar" className="avatar-preview" />
           <h2>{user.username}</h2>
@@ -63,6 +60,8 @@ export default function CreateLobby() {
         </div>
       ) : (
         <div className="guest-form">
+           <h1>Crear Sala</h1>
+          <p>Ingresa un nombre de usuario</p>
           <input
             type="text"
             placeholder="Nombre de usuario"

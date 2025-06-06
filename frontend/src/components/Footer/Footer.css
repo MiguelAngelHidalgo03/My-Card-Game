@@ -11,7 +11,10 @@ html, body {
   display: flex;
   flex-direction: column;
 }
-
+.footer {
+  position: relative;
+  z-index: 1;
+}
 /* Footer siempre al final */
 .footer {
   background-color: #1a1a1a;
