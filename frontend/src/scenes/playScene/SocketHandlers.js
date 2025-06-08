@@ -19,6 +19,7 @@ export default function registerSocketHandlers(scene, gameLogic) {
   // socket.off('draw-error');
   socket.off('uno-alert');
   socket.off('uno-resolved');
+  socket.off('game-ended');
 
 
   // ——— Reconexión (re-emite estado completo, sin animaciones) —————
@@ -209,5 +210,18 @@ socket.on('uno-resolved', ({ winner, penalized, unoPlayer }) => {
   } else if (unoPlayer === scene.playerId) {
     scene.showNotification?.('¡Te libraste de la penalización UNO!', '', 'avatar-local');
   }
+});
+socket.on('game-ended', ({ winnerPlayerId, reason }) => {
+  // ...existing code...
+  scene.scene.start('WinScene', {
+    winnerName: winnerPlayerId
+      ? (scene.allPlayers.find(p => p.playerId === winnerPlayerId)?.username || 'Nadie')
+      : null,
+    code: scene.code,
+    players: scene.allPlayers,
+    gameSettings: scene.gameSettings,
+    mySocketId: scene.mySocketId,
+    isDraw: reason === 'draw'
+  });
 });
 }

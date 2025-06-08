@@ -295,15 +295,18 @@ export default class WinScene extends Phaser.Scene {
 });
 
     // Mensaje central
-    let msg = '';
-    if (this.withScenePlayers.length < 2) {
-      msg = 'Tu rival ha abandonado la sala.\nVuelve al lobby para continuar.';
-    } else {
-      msg = this.isWinner()
-        ? `¡HAS GANADO!\n${this.getMyName()}, eres el campeón 👑`
-        : `¡HAS PERDIDO!\nGanador: ${this.winnerName}`;
-    }
-    this.title.setText(msg);
+   // ...existing code...
+let msg = '';
+if (this.isDraw) {
+  msg = '¡EMPATE!\nNadie pudo jugar ni robar durante varios turnos.';
+} else if (this.withScenePlayers.length < 2) {
+  msg = 'Tu rival ha abandonado la sala.\nVuelve al lobby para continuar.';
+} else {
+  msg = this.isWinner()
+    ? `¡HAS GANADO!\n${this.getMyName()}, eres el campeón 👑`
+    : `¡HAS PERDIDO!\nGanador: ${this.winnerName}`;
+}
+this.title.setText(msg);
 
     if (this.rematchBtn) { this.rematchBtn.destroy(); this.rematchBtn = null; }
     if (this.waitMsg) { this.waitMsg.destroy(); this.waitMsg = null; }

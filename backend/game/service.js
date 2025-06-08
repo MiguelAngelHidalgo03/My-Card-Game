@@ -375,8 +375,9 @@ room.players[idx].where = null;
                         game.pendingPenalty = { type: '+4', amount: 4, playerId };
                     }
                     // Suma la penalización
-                    const added = (cardType === '+2') ? 2 : 4;
-                    game.pendingPenalty.amount += added;
+                   game.pendingPenalty.amount += (cardType === '+2') ? 2 : 4;
+        game.pendingPenalty.playerId = playerId;
+
                     console.log(`[handlePlayCard] STACKING: ${cardType} jugado, penalización acumulada: ${game.pendingPenalty.amount}`);
 
                     io.to(code).emit('card-played', {
@@ -638,13 +639,38 @@ room.players[idx].where = null;
             }
 
             // Roba solo UNA carta normal
-            refillDrawPileIfNeeded(game);
-            const drawnCard = game.drawPile.shift();
-            if (!drawnCard) {
-                console.log('[BACKEND] drawPile vacío, no se puede robar');
-                return;
-            }
-            game.hands[playerId].push(drawnCard);
+           refillDrawPileIfNeeded(game);
+if (!Array.isArray(game.drawPile)) {
+    console.error('[BACKEND] drawPile es undefined o no es un array:', game.drawPile, 'game:', game);
+    return;
+}
+const drawnCard = game.drawPile.shift();
+game.hands[playerId].push(drawnCard);
+
+
+      if (!drawnCard) {
+    console.log('[BACKEND] drawPile vacío, no se puede robar');
+    game.consecutivePasses = (game.consecutivePasses || 0) + 1;
+    if (game.consecutivePasses >= 5) {
+        io.to(code).emit('game-ended', { winnerPlayerId: null, reason: 'draw' });
+        delete games[code];
+        return;
+    }
+    // Cambia turno al siguiente jugador
+    const playerIds = game.players.map(p => p.playerId);
+    const nextPlayerId = playerIds.find(id => id !== playerId);
+    game.currentPlayerId = nextPlayerId;
+    await setCurrentPlayer({ gameCode: code, playerId: nextPlayerId });
+    io.to(code).emit('game-state', {
+        ...game,
+        currentPlayerId: nextPlayerId,
+        pendingPenalty: game.pendingPenalty,
+        chosenColor: game.chosenColor
+    });
+    return;
+}
+
+               game.consecutivePasses = 0; 
 
             io.to(code).emit('card-drawn', {
                 by: game.players.find(p => p.playerId === playerId).username,
@@ -780,14 +806,17 @@ setWhere(socket, code, where) {
         });
         return true;
     }
-    function refillDrawPileIfNeeded(game, threshold = 4) {
-        if (game.drawPile.length < threshold && game.discardPile.length > 1) {
-            const last = game.discardPile.pop();
-            game.drawPile = shuffle([...game.discardPile]);
-            game.discardPile = [last];
-        }
+ function refillDrawPileIfNeeded(game, threshold = 4) {
+    if (!Array.isArray(game.drawPile)) {
+        console.error('[BACKEND] refillDrawPileIfNeeded: drawPile no es array', game.drawPile);
+        game.drawPile = [];
     }
-
+    if (game.drawPile.length < threshold && game.discardPile.length > 1) {
+        const last = game.discardPile.pop();
+        game.drawPile = shuffle([...game.discardPile]);
+        game.discardPile = [last];
+    }
+}
     function isSkipCard(card) {
         const parsed = parseCardFrame(card.frame);
         return parsed.value === 'Bloqueo' || parsed.value === 'Skip';
