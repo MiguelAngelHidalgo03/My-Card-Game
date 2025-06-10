@@ -10,10 +10,20 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.8.4",
     "dotenv": "^16.5.0",
+<<<<<<< Updated upstream
+=======
+    "lil-gui": "^0.20.0",
+    "phaser": "^3.90.0",
+>>>>>>> Stashed changes
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.5.0",
     "react-scripts": "5.0.1",
+<<<<<<< Updated upstream
+=======
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
+>>>>>>> Stashed changes
     "web-vitals": "^2.1.4"
   },
   "scripts": {
