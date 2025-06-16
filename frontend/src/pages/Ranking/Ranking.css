@@ -1,0 +1,91 @@
+.ranking-page {
+  max-width: 700px;
+  margin: 3rem auto 2rem auto;
+  background: var(--cl-card, #fffbf2);
+  border-radius: 18px;
+  box-shadow: 0 4px 18px var(--cl-shadow, #00000022);
+  border: 3px solid var(--cl-card-border, #231f20);
+  padding: 2.5rem 1.5rem 2rem 1.5rem;
+  text-align: center;
+}
+
+.ranking-page h1 {
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: var(--cl-accent2, #272725);
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.03em;
+}
+
+.ranking-desc {
+  color: var(--cl-text-secondary, #523a20);
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.ranking-loading {
+  font-size: 1.2rem;
+  color: #888;
+  margin: 2rem 0;
+}
+
+.ranking-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 0.5rem;
+  justify-content: left;
+}
+.ranking-user-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  justify-content: left;
+}
+.ranking-table th,
+.ranking-table td {
+    justify-content: left;
+  padding: 0.7rem 0.5rem;
+  font-size: 1.08rem;
+  border-bottom: 1.5px solid #e0d7c6;
+}
+
+.ranking-table th {
+  background: #fffbe6;
+  color: var(--cl-accent2, #272725);
+  font-weight: bold;
+}
+
+.ranking-table tr:nth-child(1) td {
+  background: #ffe95a22;
+  font-weight: bold;
+}
+.ranking-table tr:nth-child(2) td {
+  background: #d2f56222;
+}
+.ranking-table tr:nth-child(3) td {
+  background: #f5a26722;
+}
+
+.ranking-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2.5px solid var(--cl-accent3, #2b2d2d);
+  box-shadow: 0 2px 8px var(--cl-shadow, #00000022);
+  background: #fff;
+}
+
+@media (max-width: 600px) {
+  .ranking-page {
+    padding: 1rem 0.2rem;
+  }
+  .ranking-table th,
+  .ranking-table td {
+    font-size: 0.95rem;
+    padding: 0.4rem 0.2rem;
+  }
+  .ranking-avatar {
+    width: 32px;
+    height: 32px;
+  }
+}

@@ -22,6 +22,7 @@ export default function initGameService(io) {
 
     return {
         handleUnoPressed,
+        debugEmptyHand,
         // ── join-room ─────────────────────────────────────────────────────────
         async joinRoom(socket, code, userId, clientId, username, avatar, isHost) {
             console.log(`>>> join-room → code=${code}, isHost=${isHost}`);
@@ -879,18 +880,28 @@ setWhere(socket, code, where) {
             });
         }
     }
-
-    function checkForWinner(game, code) {
-        // Busca si algún jugador tiene 0 cartas
-        const winner = Object.entries(game.hands).find(([playerId, hand]) => hand.length === 0);
-        if (winner) {
-            const winnerPlayerId = winner[0];
-            io.to(code).emit('game-ended', { winnerPlayerId });
-            // Limpia el estado de la partida
-            delete games[code];
-            return true;
-        }
-        return false;
+function debugEmptyHand({ code, playerId }) {
+  const game = games[code];
+  if (!game) return;
+  if (game.currentPlayerId !== playerId) return;
+  game.hands[playerId] = [];
+  checkForWinner(game, code);
+  io.to(code).emit('hand-updated', { playerId, hand: [] });
+}
+   async function checkForWinner(game, code) {
+  const winner = Object.entries(game.hands).find(([playerId, hand]) => hand.length === 0);
+  if (winner) {
+    const winnerPlayerId = winner[0];
+    try {
+      await finishGame({ gameCode: code, winnerPlayerId });
+    } catch (err) {
+      console.error('Error en finishGame:', err);
     }
+    io.to(code).emit('game-ended', { winnerPlayerId });
+    delete games[code];
+    return true;
+  }
+  return false;
+}
 
 }

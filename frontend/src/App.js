@@ -24,6 +24,7 @@ import VerifyOtpAndReset from "./pages/ResetPassword/VerifyOtpAndReset";
 import AuthCallback from './AuthCallback';
 import ScrollToTop from './utils/scrollReset';
 import GameCanvas from "./components/GameCanvas/GameCanvas";
+import Ranking from './pages/Ranking/Ranking';
 import React, { useState  } from 'react';
 
 export default function App() {
@@ -49,6 +50,7 @@ function Main() {
         <Route path="/" element={<Home onPulse={handlePulse} />} />
         <Route path="/rules"   element={<><BgMountains /><Rules/></>} />
         <Route path="/about"   element={<><BgMountains /><About/></>} />
+        <Route path="/ranking" element={<Ranking />} />
         <Route path="/config"  element={<><BgMountains /><Config/></>} />
         <Route path="/game/:code" element={<GameCanvas />} />
         <Route path="/create-lobby" element={<CreateLobby />} />

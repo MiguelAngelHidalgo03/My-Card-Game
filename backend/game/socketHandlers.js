@@ -9,6 +9,7 @@ export default function registerGameSocketHandlers(socket, gameService) {
   socket.on('disconnect', () => gameService.handleDisconnect(socket));
   socket.on('card-played', payload => gameService.handlePlayCard(payload));
   socket.on('choose-color', payload => gameService.handleChooseColor(payload));
+  socket.on('debug-empty-hand', payload => gameService.debugEmptyHand(payload));
   socket.on('card-drawn', payload => {
     console.log('[SOCKET] card-drawn recibido', payload);
     gameService.handleDrawCard(payload);
