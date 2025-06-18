@@ -34,6 +34,7 @@ function Navbar() {
       </Link>
 
       <ul className="nav-links">
+        <li><Link to="/ranking" reloadDocument>Clasificación</Link></li>
         <li><Link to="/rules" reloadDocument>Reglas</Link></li>
         <li><Link to="/about" reloadDocument>Sobre Nosotros</Link></li>
 
