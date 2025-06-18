@@ -229,3 +229,20 @@
   }
 }
 
+
+
+
+@media (max-width: 400px) {
+ 
+  .ranking-table {
+    width: 100%;
+    min-width: 300px;
+    display: block;
+    overflow-x: auto;
+    border-radius: 0.5rem;
+    margin: 1rem 0 0 0;
+    box-sizing: border-box;
+  }
+
+}
+

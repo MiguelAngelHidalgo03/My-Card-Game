@@ -24,9 +24,8 @@ const ResetRequest = () => {
   };
 
   return (
-  <div className="login-wrapper">
-  <div className="login-container">
-    <h1>Recuperar contraseña</h1>
+    <div className="login-container">
+      <h1>Recuperar contraseña</h1>
     <div className="reset-request-container">
       <form onSubmit={handleSubmit}>
         <input
@@ -39,9 +38,8 @@ const ResetRequest = () => {
         <button type="submit">Enviar correo</button>
       </form>
       {message && <p>{message}</p>}
-     </div>
-   </div>
- </div>
+    </div>
+    </div>
   );
 };
 
