@@ -134,9 +134,11 @@ const Profile = () => {
 
         <div className="profile-stats">
           <h2>Estadísticas</h2>
+          <div className="stats-item">
           <p><strong>Partidas jugadas:</strong> {stats.gamesPlayed}</p>
           <p><strong>Victorias:</strong> {stats.wins}</p>
           <p><strong>Derrotas:</strong> {stats.losses}</p>
+          </div>
         </div>
 
         <Modal

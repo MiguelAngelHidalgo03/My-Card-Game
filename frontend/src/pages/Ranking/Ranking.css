@@ -1,92 +1,231 @@
 .ranking-page {
-  max-width: 700px;
-  margin: 3rem auto 2rem auto;
-  background: var(--cl-card, #fffbf2);
-  border-radius: 18px;
-  box-shadow: 0 4px 18px var(--cl-shadow, #00000022);
-  border: 3px solid var(--cl-card-border, #231f20);
-  padding: 2.5rem 1.5rem 2rem 1.5rem;
-  text-align: center;
-  margin-top: 10%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 8rem;
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
+}
+
+.ranking-container{
+  padding: 2rem;
+  background:  rgba(0, 0, 0, 0.764) ;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
 }
 
 .ranking-page h1 {
-  font-size: 2.2rem;
-  font-weight: bold;
-  color: var(--cl-accent2, #272725);
-  margin-bottom: 0.5rem;
-  letter-spacing: 0.03em;
+  text-align: center;
+  color: #6450F5;
+  margin-bottom: 1.5rem;
+  font-size: 2.5rem;
 }
 
 .ranking-desc {
-  color: var(--cl-text-secondary, #523a20);
-  margin-bottom: 1.5rem;
-  font-size: 1.1rem;
+  text-align: center;
+  font-size: 1.2rem;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
 }
 
 .ranking-loading {
-  font-size: 1.2rem;
-  color: #888;
-  margin: 2rem 0;
+  font-size: 1.3rem;
+  color: #6450F5;
+  margin-top: 2rem;
+  font-weight: bold;
 }
 
 .ranking-table {
-  width: 100%;
+  width: 90%;
+  max-width: 800px;
+  margin: 2rem auto 0 auto;
   border-collapse: separate;
-  border-spacing: 0 0.5rem;
-  justify-content: left;
+  border-spacing: 0;
+  background:  #3a3a55;
+  color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  overflow: hidden;
 }
-.ranking-user-cell {
-  display: flex;
-  align-items: center;
-  gap: 0.7em;
-  justify-content: left;
-}
-.ranking-table th,
-.ranking-table td {
-    justify-content: left;
-  padding: 0.7rem 0.5rem;
-  font-size: 1.08rem;
-  border-bottom: 1.5px solid #e0d7c6;
+
+.ranking-table thead tr {
+  background-color: #6450F5;
 }
 
 .ranking-table th {
-  background: #fffbe6;
-  color: var(--cl-accent2, #272725);
-  font-weight: bold;
+  padding: 1rem;
+  text-align: center;
+  font-size: 1.1rem;
 }
 
-.ranking-table tr:nth-child(1) td {
-  background: #ffe95a22;
+.ranking-table td {
+  padding: 1rem;
+  text-align: left;
+  font-size: 1.1rem;
+}
+
+.ranking-table th {
+  color: #f4bc55;
+  font-size: 1.2rem;
   font-weight: bold;
+  letter-spacing: 1px;
 }
-.ranking-table tr:nth-child(2) td {
-  background: #d2f56222;
+
+.ranking-table tbody tr {
+  transition: background 0.2s;
 }
-.ranking-table tr:nth-child(3) td {
-  background: #f5a26722;
+
+.ranking-table tbody tr:nth-child(even) {
+  background-color: rgba(255,255,255,0.05);
+}
+
+.ranking-table tbody tr:hover {
+  background-color: #141423;
+}
+
+.ranking-user-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  justify-content: left;
 }
 
 .ranking-avatar {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  border: 2.5px solid var(--cl-accent3, #2b2d2d);
-  box-shadow: 0 2px 8px var(--cl-shadow, #00000022);
+  object-fit: cover;
+  border: 2px solid #6450F5;
   background: #fff;
+  margin-right: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
 @media (max-width: 600px) {
-  .ranking-page {
-    padding: 1rem 0.2rem;
+  html, body {
+    width: 100vw;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
   }
+
+  .ranking-container {
+    width: 95vw;
+    max-width: 100vw;
+    min-width: 0;
+    border-radius: 0.5rem;
+    margin: 0;
+    padding: 1rem 0.2rem 1.5rem 0.2rem;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+
+  .ranking-table {
+    width: 100%;
+    min-width: 400px;
+    display: block;
+    overflow-x: auto;
+    border-radius: 0.5rem;
+    margin: 1rem 0 0 0;
+    box-sizing: border-box;
+  }
+
+  .ranking-table table,
+  .ranking-table thead,
+  .ranking-table tbody,
   .ranking-table th,
-  .ranking-table td {
-    font-size: 0.95rem;
-    padding: 0.4rem 0.2rem;
+  .ranking-table td,
+  .ranking-table tr {
+    display: revert;
+    /* Mantiene el comportamiento de tabla dentro del scroll */
   }
-  .ranking-avatar {
-    width: 32px;
-    height: 32px;
+
+  .ranking-desc {
+  font-size: 1rem;
+  margin-left:1.5rem;
+  margin-right: 1.5rem;
+  }
+
+
+
+  .profile-background {
+    width: 100vw;
+    min-height: 100vh;
+    padding-top: 3.5rem;
+    padding-bottom: 1.5rem;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+
+  .profile-container {
+    width: 100vw;
+    max-width: 100vw;
+    min-width: 0;
+    min-height: 100vh;
+    border-radius: 0;
+    margin: 0;
+    padding: 1.2rem 0.5rem 1.5rem 0.5rem;
+    box-shadow: none;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+
+  .profile-container h1 {
+    font-size: 1.3rem;
+    margin-bottom: 1.2rem;
+    word-break: break-word;
+  }
+
+  .profile-image-section {
+    margin-bottom: 1.2rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .profile-image {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 0.7rem;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .username {
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    word-break: break-word;
+    text-align: center;
+  }
+
+  .btn-pixel {
+    font-size: 0.95rem;
+    padding: 0.5rem 1.1rem;
+    margin-top: 0.3rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .profile-stats {
+    padding: 0.8rem 0.3rem 1rem 0.3rem;
+    margin-bottom: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    overflow-x: auto;
+  }
+
+  .profile-stats h2 {
+    font-size: 1.05rem;
+    margin-bottom: 0.7rem;
+    word-break: break-word;
+  }
+
+  .stats-item {
+    font-size: 0.98rem;
+    gap: 0.3rem;
+    word-break: break-word;
   }
 }
+

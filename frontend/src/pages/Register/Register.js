@@ -61,6 +61,7 @@ const Register = () => {
   };
 
   return (
+  <div className="register-wrapper">
     <div className="register-container">
       <h1>Crear Cuenta</h1>
       <form onSubmit={handleRegister}>
@@ -120,6 +121,7 @@ const Register = () => {
       </p>
       {message && <p>{message}</p>}
     </div>
+  </div>
   );
 };
 

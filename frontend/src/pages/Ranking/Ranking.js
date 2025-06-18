@@ -66,6 +66,7 @@ export default function Ranking() {
 
     return (
         <div className="ranking-page">
+        <div className="ranking-container">
             <h1>🏆 TOP 10</h1>
             <p className="ranking-desc">
                 Mejores jugadores en 1pa1
@@ -109,6 +110,7 @@ export default function Ranking() {
                     </tbody>
                 </table>
             )}
+         </div>
         </div>
     );
 }

@@ -35,19 +35,19 @@ const Modal = ({
     }
   }}
 >
-      <DialogTitle
+     <Typography
         sx={{
           textAlign: 'center',
           borderBottom: 'none',
           fontSize: '2rem',
-          color: 'var(--cl-accent2, #272725)',
+          color: 'white',
           fontWeight: 'bold',
           letterSpacing: '0.03em',
           pb: 0,
         }}
       >
         Selecciona tu avatar
-      </DialogTitle>
+     </Typography>
 
    <DialogContent
   sx={{
@@ -64,7 +64,6 @@ const Modal = ({
       position: 'sticky',
       top: 0,
       zIndex: 10,
-      background: 'var(--cl-card, #fffbf2)',
       borderBottom: '2px solid var(--cl-accent3, #2b2d2d)',
       display: 'flex',
       flexDirection: 'column',
@@ -79,7 +78,7 @@ const Modal = ({
     />
     <Typography
       variant="subtitle1"
-      sx={{ color: 'var(--cl-accent2, #272725)', fontWeight: 'bold' }}
+      sx={{ color: 'white', fontWeight: 'bold' }}
     >
       Actual
     </Typography>

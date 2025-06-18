@@ -11,7 +11,6 @@ const About = () => {
         <button onClick={() => setSeccion('equipo')}>👨‍💻 Nuestro Equipo</button>
         <button onClick={() => setSeccion('idea')}>💡 Cómo Surgió la Idea</button>
         <button onClick={() => setSeccion('herramientas')}>🛠️ Herramientas</button>
-        <button onClick={() => setSeccion('contacto')}>📬 Contacto</button>
       </div>
     </div>
   );
@@ -89,26 +88,6 @@ const About = () => {
             <li>Figma para el diseño de interfaces.</li>
             <li>GitHub para la colaboración y control de versiones.</li>
           </ul>
-        </div>
-      )}
-
-      {seccion === 'contacto' && (
-        <div className="about-section">
-            {NavBotones}
-          <h2>Contacto</h2>
-          <p>Escríbenos y cuéntanos qué mejorarías o simplemente salúdanos. ¡Nos encantaría saber de ti!</p>
-          <form className="contact-form">
-            <label htmlFor="name">Nombre:</label>
-            <input type="text" id="name" name="name" placeholder="Tu nombre" required />
-
-            <label htmlFor="email">Correo Electrónico:</label>
-            <input type="email" id="email" name="email" placeholder="Tu correo electrónico" required />
-
-            <label htmlFor="message">Mensaje:</label>
-            <textarea id="message" name="message" placeholder="Escribe tu mensaje aquí..." required></textarea>
-
-            <button type="submit">Enviar</button>
-          </form>
         </div>
       )}
     </div>

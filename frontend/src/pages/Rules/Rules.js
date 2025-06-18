@@ -4,7 +4,7 @@ import CartaSprite from './CartaSprite';
 import {useTheme, useMediaQuery } from '@mui/material';
 
 const Rules = () => {
-  const [seccion, setSeccion] = useState('objetivo'); // Sección inicial
+  const [seccion, setSeccion] = useState('cartas'); // Sección inicial
   const [cartaIndex, setCartaIndex] = useState(0); // índice para cartas especiales
   const carouselRef = useRef(null);
   const scrollByAmount = 200;
@@ -63,7 +63,6 @@ const scrollLeft = () => {
   const NavBotones = (
   <div className="rules-nav">
     <div className="rules-nav-buttons">
-      <button onClick={() => setSeccion('objetivo')}>🎯 Objetivo</button>
       <button onClick={() => setSeccion('cartas')}>✨ Cartas Especiales</button>
       <button onClick={() => setSeccion('modos')}>⚙️ Modos de Juego</button>
     </div>
@@ -73,18 +72,6 @@ const scrollLeft = () => {
   return (
    <div className="rules-page">
     {/* Contenido dinámico */}
-    {seccion === 'objetivo' && (
-      <div className="rules-section">
-          {NavBotones}  {/* Aquí adentro */}
-          <h1>🎯 Objetivo del Juego</h1>
-          <p className="highlight">
-            El objetivo principal es ser el primer jugador en quedarse sin cartas en la mano.
-          </p>
-          <p>
-            Para lograrlo, los jugadores deben ir colocando cartas que coincidan en color o número con la que está en la pila del centro. Si no pueden jugar, deben robar una carta. Quien se quede sin cartas primero, gana la partida.
-          </p>
-        </div>
-      )}
        {seccion === 'cartas' && (
         <div className="rules-section">
           {NavBotones}

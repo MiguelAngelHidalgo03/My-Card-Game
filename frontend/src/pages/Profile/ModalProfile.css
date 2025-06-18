@@ -1,5 +1,5 @@
 .profile-modal-content {
-  background: var(--cl-card, #fffbf2) !important;
+  background: rgba(0, 0, 0, 0.741) !important;
   border: 3px solid var(--cl-card-border, #231f20) !important;
   border-radius: 22px !important;
   box-shadow: 0 4px 18px var(--cl-shadow, #00000022) !important;
