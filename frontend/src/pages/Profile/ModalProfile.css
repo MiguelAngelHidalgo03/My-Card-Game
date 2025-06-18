@@ -8,6 +8,41 @@
   padding: 2rem !important;
 }
 
+/* Limita altura y hace scroll */
+.profile-modal-content .MuiDialogContent-root {
+  max-height: 400px;
+  overflow-y: auto;
+  padding-top: 0.5rem !important;
+  padding-bottom: 0 !important;
+}
+
+/* Scrollbar para Chrome, Edge y Safari */
+.profile-modal-content .MuiDialogContent-root::-webkit-scrollbar {
+  width: 8px;
+}
+
+.profile-modal-content .MuiDialogContent-root::-webkit-scrollbar-track {
+  background: var(--cl-card, #fffbf2);
+  border-radius: 10px;
+}
+
+.profile-modal-content .MuiDialogContent-root::-webkit-scrollbar-thumb {
+  background-color: var(--cl-accent3, #2b2d2d);
+  border-radius: 10px;
+  border: 2px solid var(--cl-card, #fffbf2);
+}
+
+.profile-modal-content .MuiDialogContent-root::-webkit-scrollbar-thumb:hover {
+  background-color: var(--cl-accent4, #d2f562);
+}
+
+/* Scrollbar para Firefox */
+.profile-modal-content .MuiDialogContent-root {
+  scrollbar-width: thin;
+  scrollbar-color: var(--cl-accent3, #2b2d2d) var(--cl-card, #fffbf2);
+}
+
+/* Título */
 .profile-modal-content h2,
 .profile-modal-content .MuiDialogTitle-root {
   color: var(--cl-accent2, #272725);
@@ -17,18 +52,57 @@
   margin-bottom: 1.2rem;
 }
 
+/* Avatar grande actual sticky */
+.profile-modal-content .sticky-avatar-container {
+  position: sticky;
+  top: 0;
+  background: var(--cl-card, #fffbf2);
+  z-index: 10;
+  padding: 0.5rem 0;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--cl-accent3, #2b2d2d);
+}
+
+/* Avatar grande actual */
+.profile-modal-content .MuiAvatar-root.actual-avatar {
+  border: 3px solid var(--cl-accent3, #2b2d2d);
+  background: #fff;
+  box-shadow: 0 2px 8px var(--cl-shadow, #00000022);
+  width: 120px !important;
+  height: 120px !important;
+  margin-bottom: 0.5rem;
+}
+
+/* Texto debajo avatar actual */
+.profile-modal-content .actual-avatar-text {
+  color: var(--cl-accent2, #272725);
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Avatares en grid */
 .profile-modal-content .MuiAvatar-root {
   border: 3px solid var(--cl-accent3, #2b2d2d);
   background: #fff;
   box-shadow: 0 2px 8px var(--cl-shadow, #00000022);
+  width: 70px !important; 
+  height: 70px !important;
+  cursor: pointer;
+  transition: transform 0.18s, border-color 0.18s, box-shadow 0.18s;
 }
 
-.profile-modal-content .MuiAvatar-root[aria-selected="true"],
-.profile-modal-content .MuiAvatar-root.selected {
+.profile-modal-content .MuiAvatar-root.selected,
+.profile-modal-content .MuiAvatar-root[aria-selected="true"] {
   border-color: var(--cl-accent4, #d2f562);
   box-shadow: 0 0 12px #ffe95a55;
 }
 
+.profile-modal-content .MuiAvatar-root:hover {
+  border-color: var(--cl-accent3, #2b2d2d);
+  transform: scale(1.08);
+}
+
+/* Botones */
 .profile-modal-content .MuiButton-root {
   font-family: 'Arial Black', Arial, sans-serif;
   font-size: 1.08rem;
@@ -48,4 +122,77 @@
   background: #fff;
   color: var(--cl-accent3, #2b2d2d);
   border-color: var(--cl-accent4, #d2f562);
+}
+
+/* Botón cancelar (outline) */
+.profile-modal-content .MuiButton-root.outlined {
+  background: #fff;
+  color: var(--cl-accent2, #272725);
+}
+
+.profile-modal-content .MuiButton-root.outlined:hover {
+  background: var(--cl-accent4, #d2f562);
+  color: var(--cl-accent2, #272725);
+  border-color: var(--cl-accent4, #d2f562);
+}
+
+
+
+
+@media (max-width: 600px) {
+  .profile-modal-content {
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: none !important;
+    max-height: none !important;
+    border-radius: 0 !important;
+    padding: 1rem !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .profile-modal-content .MuiDialogContent-root {
+    max-height: unset !important;
+    overflow-y: auto;
+  }
+
+  .profile-modal-content .MuiDialogTitle-root {
+    display: none;
+  }
+
+  .profile-modal-content .actual-avatar {
+    width: 120px !important;
+    height: 120px !important;
+  }
+
+  .profile-modal-content .MuiAvatar-root {
+    width: 56px !important;
+    height: 56px !important;
+  }
+
+  .profile-modal-content .MuiButton-root {
+    font-size: 1rem;
+    padding: 0.6rem 1rem;
+    flex: 1;
+  }
+
+  .profile-modal-content .MuiButton-root.outlined {
+    display: none; /* oculta el botón Cancelar en móvil */
+  }
+
+  .mobile-close-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: none;
+    border: none;
+    color: red;
+    font-size: 1.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 20;
+  }
+
+
 }

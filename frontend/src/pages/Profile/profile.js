@@ -1,16 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import './Profile.css';
 import { getUserProfile, getUserStats } from '../../services/playerService';
-import Modal from './ModalProfile'; // Asegúrate que la ruta esté correcta
-import {
-  Box,
-  Typography,
-  Avatar,
-  Grid,
-  Button,
-  Paper,
-  useTheme,
-} from '@mui/material';
+import Modal from './ModalProfile';
+import avatarImages from '../../utils/avatar';
+
 const Profile = () => {
   const storedUser = JSON.parse(localStorage.getItem('user'));
   const userId = storedUser?.userId;
@@ -21,23 +14,18 @@ const Profile = () => {
 
   const googleAvatar = localStorage.getItem('google_avatar') || null;
   const localProfilePicture = storedUser?.profile_picture;
-  const theme = useTheme();
 
-  const baseAvatars = [
-    '/assests/img/avatar1.png',
-    '/assests/img/avatar2.png',
-    '/assests/img/avatar3.png',
-    '/assests/img/avatar4.png',
-  ];
+  const baseAvatars = avatarImages;
 
- const [selectedImage, setSelectedImage] = useState(
-  localProfilePicture || baseAvatars[0]
-);
+  const [selectedImage, setSelectedImage] = useState(
+    localProfilePicture || baseAvatars[0]
+  );
   const [stats, setStats] = useState({
     gamesPlayed: 0,
     wins: 0,
     losses: 0,
   });
+
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const availableImages = googleAvatar ? [googleAvatar, ...baseAvatars] : baseAvatars;
@@ -56,7 +44,6 @@ const Profile = () => {
       setStats(await getUserStats(userId));
       setSelectedImage(user.profile_picture || selectedImage);
 
-      // Verificación y actualización en base de datos si profile_picture de Google cambió
       const isGoogleUrl = user.profile_picture?.includes('googleusercontent.com');
       if (
         isGoogleUrl &&
@@ -70,23 +57,19 @@ const Profile = () => {
             'Authorization': `Bearer ${storedUser?.token}`,
           },
           body: JSON.stringify({
-            userId: userId,
+            userId,
             profile_picture: localProfilePicture,
           }),
         });
       }
     } catch (error) {
       console.error('Error al cargar el perfil:', error);
-      // setError('Error al cargar el perfil');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleImageChange = (image) => {
-    setSelectedImage(image);
-  };
-
+  const handleImageChange = (image) => setSelectedImage(image);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
@@ -99,7 +82,7 @@ const Profile = () => {
           'Authorization': `Bearer ${storedUser?.token}`,
         },
         body: JSON.stringify({
-          userId: userId,
+          userId,
           profile_picture: imageToSave,
         }),
       });
@@ -135,79 +118,37 @@ const Profile = () => {
 
   return (
     <div className="profile-background">
-     <div className="profile-container">
-  <Typography variant="h4" fontWeight={700} color="#6450F5" gutterBottom>
-    Perfil del Usuario
-  </Typography>
+      <div className="create-bg-anim"></div>
+      <div className="profile-container">
+        <h1>Perfil del Usuario</h1>
 
-  <Grid container spacing={4} justifyContent="center" alignItems="flex-start">
-    {/* Imagen de perfil y botón */}
-    <Grid item xs={12} sm={4} textAlign="center">
-      <Typography
-        variant="h6"
-        fontWeight="bold"
-        sx={{ mb: 1 }}
-      >
-        {profile?.username}
-      </Typography>
-    <Avatar
-      src={selectedImage}
-     alt="Avatar"
-      sx={{
-       width: 140,
-       height: 140,
-       border: '3px solid #333',
-       boxShadow: 3,
-       objectFit: 'cover',
-      imageRendering: 'auto', // mejor en pantallas retina
-      }}
-    />
+        <div className="profile-image-section">
+          <img
+            src={selectedImage}
+            alt="Avatar"
+            className="profile-image"
+          />
+          <p className="username">{profile?.username}</p>
+          <button onClick={openModal} className="btn-pixel">Editar Avatar</button>
+        </div>
 
+        <div className="profile-stats">
+          <h2>Estadísticas</h2>
+          <p><strong>Partidas jugadas:</strong> {stats.gamesPlayed}</p>
+          <p><strong>Victorias:</strong> {stats.wins}</p>
+          <p><strong>Derrotas:</strong> {stats.losses}</p>
+        </div>
 
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={openModal}
-        sx={{ mt: 2 }}
-      >
-        Editar Avatar
-      </Button>
-    </Grid>
-
-    {/* Estadísticas */}
-    <Grid item xs={12} sm={6}>
-      <Typography
-        variant="h5"
-        fontWeight="bold"
-        color="#6450F5"
-        gutterBottom
-      >
-        Estadísticas
-      </Typography>
-      <Typography variant="body1" sx={{ mb: 1 }}>
-        <strong>Partidas jugadas:</strong> {stats.gamesPlayed}
-      </Typography>
-      <Typography variant="body1" sx={{ mb: 1 }}>
-        <strong>Victorias:</strong> {stats.wins}
-      </Typography>
-      <Typography variant="body1">
-        <strong>Derrotas:</strong> {stats.losses}
-      </Typography>
-    </Grid>
-  </Grid>
-
-  {/* Modal */}
-  <Modal
-    isOpen={isModalOpen}
-    onClose={closeModal}
-    availableImages={availableImages}
-    selectedImage={selectedImage}
-    handleImageChange={handleImageChange}
-    onSave={handleSaveAvatar}
-  />
-</div>
-
-          </div>
+        <Modal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          availableImages={availableImages}
+          selectedImage={selectedImage}
+          handleImageChange={handleImageChange}
+          onSave={handleSaveAvatar}
+        />
+      </div>
+    </div>
   );
 };
 

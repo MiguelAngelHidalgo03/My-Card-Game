@@ -1,0 +1,31 @@
+.MuiDialog-paper {
+  position: relative !important;
+  background-color: #fff !important; /* fondo blanco sólido */
+  box-shadow: none !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  padding: 24px !important;
+}
+
+/* fondo svg (opcional) */
+.modal-bg-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+/* contenido encima del svg */
+.modal-content-wrapper {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+/* avatares y otros estilos permanecen igual */

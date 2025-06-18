@@ -33,6 +33,7 @@ const VerifyOtpAndReset = () => {
   };
 
   return (
+  <div className="login-wrapper">
     <div className="login-container">
       <h1>Restablecer contraseña</h1>
     <div className="verify-otp-container">
@@ -50,6 +51,7 @@ const VerifyOtpAndReset = () => {
       {message && <p>{message}</p>}
     </div>
     </div>
+   </div>
   );
 };
 export default VerifyOtpAndReset;

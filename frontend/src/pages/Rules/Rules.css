@@ -1,13 +1,10 @@
 .rules-container {
-  /* max-width: 800px;
-  margin: 3rem auto; */
   padding: 2rem;
   background: #f9f9f9;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   font-family: 'Segoe UI', sans-serif;
   color: #333;
-  /* padding-top: 180px; */
 }
 
 .rules-container h1 {
@@ -87,6 +84,13 @@
   min-height: 150px;
 }
 
+.image-container {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  flex-shrink: 0;
+}
+
 .special-card-image {
   width: 150px;
   height: 150px;
@@ -95,9 +99,278 @@
   object-fit: cover;
 }
 
+.image-container.coming-soon .special-card-image {
+  filter: grayscale(100%) brightness(0.85); 
+}
+
+.coming-soon-badge {
+  position: absolute;
+  top: 50%;
+  left: 2%;
+  background-color: #ff4757;
+  color: white;
+  padding: 1px 4px;
+  font-size: 1.3rem;
+  font-weight: 500;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  z-index: 2;
+  line-height: 1;
+}
 .special-card p {
   font-size: 1.2rem;
   line-height: 1.6;
-  flex: 1;
   margin: 0;
+  text-indent: -1.6em; 
+  padding-left: 1.6em; 
+}
+
+
+/* Estilos botones dinamicos */
+.rules-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin: 1.5rem auto;
+  max-width: 95%;
+}
+
+.rules-nav-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: -10%;
+  width: 100%;
+}
+
+.rules-nav-buttons button {
+  flex: 1 1 150px;
+  max-width: 200px;
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f6f6f2;
+  background-color: #3a3a55;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.rules-nav-buttons button:hover {
+  background-color: #57577a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.rules-nav-buttons button:focus {
+  outline: 2px solid #9c9cff;
+  outline-offset: 2px;
+}
+
+/* Estilos cartas grandes */
+.special-card.big-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.big-card-nav {
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+  background-color:transparent; /* color sólido más limpio */
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  user-select: none;
+  transition: background-color 0.3s ease;
+  z-index: 10;
+}
+
+.big-card-nav-wrapper.mobile {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  position: static; /* para asegurarte de que no se solape */
+}
+.big-card-nav.left {
+  left: 0.5rem;
+}
+
+.big-card-nav.right {
+  right: 0.5rem;
+}
+
+.big-card-name {
+  margin-top: -2rem;
+  font-weight: bold;
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+
+/* El carrusel */
+.mini-carousel {
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
+  padding: 10px 0;
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #f6f6df; 
+}
+
+.mini-carousel::-webkit-scrollbar {
+  height: 8px; /* ancho horizontal */
+  background-color: #f6f6f2;
+  border-radius: 8px;
+}
+
+/* Mini cartas */
+.mini-card-wrapper {
+  display: flex;               
+  flex-direction: column;       
+  align-items: center;          
+  justify-content: flex-start;
+  flex: 0 0 auto;
+  cursor: pointer;
+  padding: 0.3rem;
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+  text-align: center;           
+}
+.mini-card-wrapper.active {
+  transform: scale(1.1);
+}
+
+.mini-card-wrapper:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.carousel-buttons {
+  display: flex;
+  margin: 0.5rem 0;
+  gap: 10px;
+  justify-content: center;
+}
+
+.carousel-buttons button {
+  font-size: 2rem;
+  padding: 0.4rem 0.8rem;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.carousel-buttons button:hover {
+  background: #5d2c2c;
+}
+
+
+.mini-card-name {
+  font-size: 0.75rem;
+  margin-top: 4px;
+  color: #ffffff;
+  max-width: 80px;
+  white-space: normal;
+  overflow-wrap: break-word;
+  text-align: center; /* Centrado de texto dentro del propio bloque */
+}
+
+/* Carta grande */
+.special-card.big-card {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.special-card-image-large {
+  margin-bottom: 1rem;
+}
+.card-description {
+  text-align: center;
+  max-width: 500px;
+ margin-top: -50px;
+}
+/* ======== ESTILOS MÓVIL ======== */
+@media (max-width: 600px) {
+  .rules-page {
+    padding: 1rem;
+    padding-top: 4rem;
+    min-height: 100vh;
+    width: 100vw;
+    box-sizing: border-box;
+  }
+
+  .rules-section {
+    width: 100vw;
+    max-width: 100vw;
+    border-radius: 0;
+    padding: 1.5rem 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .rules-section h1, .rules-section h2 {
+    font-size: 1.8rem;
+  }
+
+  .rules-section p, .special-card p {
+    font-size: 1rem;
+  }
+
+  .mini-carousel {
+    padding: 8px 0;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .mini-card-wrapper {
+    padding: 0.2rem;
+    margin: 0 5px;
+  }
+
+  .mini-card-name {
+    max-width: 60px;
+    font-size: 0.65rem;
+  }
+
+ 
+
+  .special-card.big-card {
+    margin-top: 1rem;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card-description {
+    max-width: 90vw;
+    font-size: 1rem;
+  }
+  .big-card-nav {
+    position: static !important;
+    border-radius: 10px;
+    margin-top: -5%;
+  }
+
+  .big-card-nav-wrapper.mobile {
+    width: 100%;
+    justify-content: space-around;
+  }
+  
+
+
 }

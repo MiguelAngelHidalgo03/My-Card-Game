@@ -244,16 +244,36 @@
 /* ─── MEDIA QUERIES ─────────────────────────────── */
 
 /* Tablets y pantallas medias */
-@media (max-width: 1024px) {
+@media (max-width: 1324px) {
   .home-rules {
-    gap: 1.5rem;
-    padding: 0 0.5rem;
+    gap: 1.5rem !important;
+    padding: 0 0.5rem !important;
   }
+
   .rules-image,
   .rules-text {
-    flex: 1 1 45%;          /* dos columnas en tablets */
+    flex: 1 1 45% !important;
+  }
+
+  /* Reducir tamaño del logo */
+  .logo-normal {
+    width: 70% !important;
+    max-width: 280px !important;
+  }
+
+  /* Desplazar menos y reducir tamaño en tablets */
+  .logo-container.moved-right {
+    transform: translateX(-180px) scale(1) !important;
+    width: 350px !important;
+  }
+
+  /* Botones más pequeños */
+  .option-button {
+    min-width: 250px !important;
   }
 }
+
+
 
 /* Móviles grandes */
 @media (max-width: 768px) {
@@ -716,9 +736,6 @@
  
 
  
-
-
-
 
 :root{
   --punch-start : -140%;

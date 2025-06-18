@@ -51,6 +51,7 @@ const Login = () => {
   };
 
   return (
+    <div className="login-wrapper">
     <div className="login-container">
       <h1>Iniciar Sesión</h1>
       <form onSubmit={handleLogin}>
@@ -95,6 +96,7 @@ const Login = () => {
 
       {message && <p className="login-message">{message}</p>}
     </div>
+     </div>
   );
 };
 

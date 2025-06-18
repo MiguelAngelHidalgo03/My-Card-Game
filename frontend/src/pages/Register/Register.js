@@ -2,7 +2,7 @@
 import React, { useState, useContext } from 'react';
 import './Register.css';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../../context/UserContext';
 import { handleGoogleLogin, useGoogleAuthListener } from '../../utils/useGoogleLoginRegistrer';
 
@@ -112,6 +112,12 @@ const Register = () => {
         />
         Registrarse con Google
       </button>
+       <p>
+        ¿Ya tienes cuenta? <Link to="/login">Inicia sesión</Link>
+      </p>
+      <p>
+        <Link to="/reset-request">¿Se te olvidó la contraseña?</Link>
+      </p>
       {message && <p>{message}</p>}
     </div>
   );

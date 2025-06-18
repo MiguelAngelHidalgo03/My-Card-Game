@@ -1,12 +1,50 @@
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
 .login-container {
   max-width: 400px;
-  margin: 3rem auto;
-  padding: 3rem 2rem;
+  width: 100%;
+  padding: 2rem 1.5rem;
   border-radius: 15px;
   background: linear-gradient(145deg, #ffffff, #f1f1f1);
   box-shadow: 0 8px 20px rgba(100, 80, 245, 0.15);
-  font-family: 'Segoe UI', sans-serif;
-  margin-top: 8rem;
+  box-sizing: border-box;
+}
+
+/* Ajustes para dispositivos móviles */
+@media (max-width: 480px) {
+  .login-container {
+    padding: 1.5rem 1rem;
+    max-width: 320px;
+    margin: 0 10px;
+  }
+
+  .login-container h1 {
+    font-size: 1.5rem;
+  }
+
+  .login-container input {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+
+  .login-container button.normal-btn,
+  .login-container .google-login-button {
+    padding: 10px;
+    font-size: 0.95rem;
+  }
+
+  .google-logo {
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+  }
 }
 
 .login-container h1 {
@@ -48,13 +86,13 @@
   color: #F54A67;
 }
 
-/* Google button con más especificidad */
+/* Google button */
 .login-container .google-login-button {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
-  background-color: #ffffff !important; /* importante para test */
+  background-color: #ffffff !important;
   color: #444;
   border: 1px solid #ddd;
   border-radius: 50px;

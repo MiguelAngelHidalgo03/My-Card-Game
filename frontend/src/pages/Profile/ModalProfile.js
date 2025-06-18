@@ -22,16 +22,19 @@ const Modal = ({
   if (!isOpen) return null;
 
   return (
-    <Dialog
-      open={isOpen}
-      onClose={onClose}
-      maxWidth="xs"
-      fullWidth
-      PaperProps={{
-        className: 'profile-modal-content',
-        style: { overflow: 'visible' }
-      }}
-    >
+ <Dialog
+  open={isOpen}
+  onClose={onClose}
+  maxWidth={false} // para desactivar valores predefinidos
+  PaperProps={{
+    className: 'profile-modal-content',
+    style: { 
+      overflow: 'visible',
+      width: 800,  // ancho fijo en px
+      maxWidth: '90vw' // que no pase de 90% viewport width
+    }
+  }}
+>
       <DialogTitle
         sx={{
           textAlign: 'center',
@@ -46,70 +49,92 @@ const Modal = ({
         Selecciona tu avatar
       </DialogTitle>
 
-      <DialogContent sx={{ pt: 1, pb: 0 }}>
-        {/* Avatar grande actual */}
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2 }}>
-          <Avatar
-            src={selectedImage}
-            alt="Avatar seleccionado"
-            sx={{
-              width: 110,
-              height: 110,
-              border: '3px solid var(--cl-accent3, #2b2d2d)',
-              boxShadow: '0 2px 8px var(--cl-shadow, #00000022)',
-              background: '#fff',
-              mb: 1,
-            }}
-          />
-          <Typography variant="subtitle1" sx={{ color: 'var(--cl-accent2, #272725)', fontWeight: 'bold' }}>
-            Actual
-          </Typography>
-        </Box>
-
-        {/* Grid de avatares */}
-        <Grid container spacing={2} justifyContent="center">
-          {availableImages.map((image, index) => (
-         <Grid
-  item
-  xs={4}
-  sm={3}
-  key={index}
+   <DialogContent
   sx={{
+    pt: 0,
+    pb: 0,
     display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minWidth: 80, // Asegura espacio extra para el hover
-    minHeight: 80,
-    // Puedes ajustar estos valores según el tamaño máximo del avatar escalado
+    flexDirection: 'column',
+    height: 500,             // o la altura que quieras para el scrollable
   }}
 >
-              <Avatar
-                src={image}
-                alt={`Avatar ${index + 1}`}
-                className={selectedImage === image ? 'selected' : ''}
-                sx={{
-                  width: 64,
-                  height: 64,
-                  cursor: 'pointer',
-                  border: selectedImage === image
-                    ? '3px solid var(--cl-accent4, #d2f562)'
-                    : '3px solid transparent',
-                  boxShadow: selectedImage === image
-                    ? '0 0 12px #ffe95a55'
-                    : '0 2px 8px var(--cl-shadow, #00000022)',
-                  background: '#fff',
-                  transition: 'transform 0.18s, border-color 0.18s, box-shadow 0.18s',
-                  '&:hover': {
-                    borderColor: 'var(--cl-accent3, #2b2d2d)',
-                    transform: 'scale(1.08)',
-                  },
-                }}
-                onClick={() => handleImageChange(image)}
-              />
-            </Grid>
-          ))}
+  {/* Sticky header */}
+  <Box
+    sx={{
+      position: 'sticky',
+      top: 0,
+      zIndex: 10,
+      background: 'var(--cl-card, #fffbf2)',
+      borderBottom: '2px solid var(--cl-accent3, #2b2d2d)',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      py: 2,
+    }}
+  >
+    <Avatar
+     src={selectedImage}
+     alt="Avatar seleccionado"
+     className="actual-avatar"
+    />
+    <Typography
+      variant="subtitle1"
+      sx={{ color: 'var(--cl-accent2, #272725)', fontWeight: 'bold' }}
+    >
+      Actual
+    </Typography>
+  </Box>
+
+  {/* Scrollable area */}
+  <Box
+    sx={{
+      overflowY: 'auto',
+      flexGrow: 1,
+      pt: 2,
+    }}
+  >
+    <Grid container spacing={2} justifyContent="center">
+      {availableImages.map((image, index) => (
+        <Grid
+          item
+          xs={4}
+          sm={3}
+          key={index}
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            minWidth: 80,
+            minHeight: 80,
+          }}
+        >
+          <Avatar
+            src={image}
+            alt={`Avatar ${index + 1}`}
+            className={selectedImage === image ? 'selected' : ''}
+            sx={{
+              cursor: 'pointer',
+              border: selectedImage === image
+                ? '3px solid var(--cl-accent4, #d2f562)'
+                : '3px solid transparent',
+              boxShadow: selectedImage === image
+                ? '0 0 12px #ffe95a55'
+                : '0 2px 8px var(--cl-shadow, #00000022)',
+              background: '#fff',
+              transition: 'transform 0.18s, border-color 0.18s, box-shadow 0.18s',
+              '&:hover': {
+                borderColor: 'var(--cl-accent3, #2b2d2d)',
+                transform: 'scale(1.08)',
+              },
+            }}
+            onClick={() => handleImageChange(image)}
+          />
         </Grid>
-      </DialogContent>
+      ))}
+    </Grid>
+  </Box>
+</DialogContent>
+
 
       {/* Botones abajo */}
       <Box
@@ -123,6 +148,7 @@ const Modal = ({
         }}
       >
         <Button
+          className="cancel-button"
           variant="outlined"
           color="primary"
           onClick={onClose}
