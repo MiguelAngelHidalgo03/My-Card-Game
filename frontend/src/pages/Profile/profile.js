@@ -11,7 +11,6 @@ import {
   Paper,
   useTheme,
 } from '@mui/material';
-import avatarImages from '../../utils/avatar';
 const Profile = () => {
   const storedUser = JSON.parse(localStorage.getItem('user'));
   const userId = storedUser?.userId;
@@ -24,7 +23,12 @@ const Profile = () => {
   const localProfilePicture = storedUser?.profile_picture;
   const theme = useTheme();
 
-  const baseAvatars = avatarImages;
+  const baseAvatars = [
+    '/assests/img/avatar1.png',
+    '/assests/img/avatar2.png',
+    '/assests/img/avatar3.png',
+    '/assests/img/avatar4.png',
+  ];
 
  const [selectedImage, setSelectedImage] = useState(
   localProfilePicture || baseAvatars[0]
@@ -181,7 +185,7 @@ const Profile = () => {
         Estadísticas
       </Typography>
       <Typography variant="body1" sx={{ mb: 1 }}>
-        <strong>Partidas jugadas:</strong> {stats.total_games}
+        <strong>Partidas jugadas:</strong> {stats.gamesPlayed}
       </Typography>
       <Typography variant="body1" sx={{ mb: 1 }}>
         <strong>Victorias:</strong> {stats.wins}
