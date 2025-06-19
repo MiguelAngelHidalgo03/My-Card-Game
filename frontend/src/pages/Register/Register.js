@@ -17,7 +17,7 @@ const Register = () => {
     username: '',
     email: '',
     password: '',
-    profile_picture: `/assets/img/avatar${randomAvatar}.png`, 
+    profile_picture: '/assests/img/Avatares/avatar1.png', 
     language: '',
   });
   const [message, setMessage] = useState('');

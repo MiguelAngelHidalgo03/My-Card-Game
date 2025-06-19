@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-
+import { supabase } from "../utils/supabaseClient";
 export const UserContext = createContext();
 
 export function UserProvider({ children }) {
@@ -20,9 +20,12 @@ export function UserProvider({ children }) {
   };
 
   // Función para cerrar sesión
-  const logout = () => {
+  const logout = async () => {
     setUser(null);
     localStorage.removeItem("user");
+    await supabase.auth.signOut();
+    localStorage.clear();
+    sessionStorage.clear();
   };
 
   return (

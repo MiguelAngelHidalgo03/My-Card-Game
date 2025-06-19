@@ -38,7 +38,7 @@ const Login = () => {
       login({
         username: user.username,
         userId: user.user_id,
-        profile_picture: user.profile_picture || '/assets/img/avatar1.png',
+        profile_picture: user.profile_picture || '/assests/img/Avatares/avatar1.png',
         token: session?.access_token || null,
       });
 

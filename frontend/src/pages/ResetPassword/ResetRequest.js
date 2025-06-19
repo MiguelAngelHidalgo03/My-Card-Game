@@ -1,5 +1,5 @@
 import { useState } from "react";
-import './ResetRequest.css'; // Add this line to import the CSS
+import './ResetRequest.css';
 
 const ResetRequest = () => {
   const [email, setEmail] = useState("");
@@ -7,15 +7,12 @@ const ResetRequest = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-        // const { error } = await supabase.auth.resetPasswordForEmail(email); parte quitada
       const res = await fetch("http://localhost:5000/api/reset-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
-
       const data = await res.json();
       setMessage(res.ok ? data.message : data.error);
     } catch (err) {
@@ -24,21 +21,22 @@ const ResetRequest = () => {
   };
 
   return (
-    <div className="login-container">
-      <h1>Recuperar contraseña</h1>
-    <div className="reset-request-container">
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Tu correo"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <button type="submit">Enviar correo</button>
-      </form>
-      {message && <p>{message}</p>}
-    </div>
+    <div className="reset-wrapper">
+      <div className="reset-box">
+        <h1>Recuperar contraseña</h1>
+        <form className="reset-form" onSubmit={handleSubmit}>
+          <input
+            type="email"
+            className="reset-input"
+            placeholder="Tu correo"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <button type="submit" className="reset-btn">Enviar correo</button>
+        </form>
+        {message && <p className="reset-message">{message}</p>}
+      </div>
     </div>
   );
 };

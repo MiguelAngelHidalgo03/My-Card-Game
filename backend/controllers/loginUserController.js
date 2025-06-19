@@ -21,13 +21,18 @@ export const loginUser = async (req, res) => {
 
     if (error) {
       console.log('Error en autenticación con Supabase:', error);
-      return res.status(401).json({ error: error.message || 'Credenciales incorrectas' });
+
+      if (error.code === 'email_not_confirmed') {
+        return res.status(401).json({ error: 'Se ha enviado un correo electronico de confirmación a tu cuenta, es posible que este en el correo de spam.' });
+      }
+
+      return res.status(401).json({ error: 'Credenciales incorrectas' });
     }
 
     const { user, session } = data;
 
     // Obtener datos adicionales del usuario desde tu tabla 'users'
-    const { data: userData, error: userError } = await supabase
+    const { datarError } = await supabase
       .from('users')
       .select('*')
       .eq('user_id', user.id)
@@ -77,4 +82,3 @@ export const logoutUser = async (req, res) => {
     }
   };
 
-  

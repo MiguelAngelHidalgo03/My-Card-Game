@@ -49,4 +49,3 @@ export const createUser = async (req, res) => {
   return res.status(201).json({ message: 'Usuario creado exitosamente', data });
 };
 
-

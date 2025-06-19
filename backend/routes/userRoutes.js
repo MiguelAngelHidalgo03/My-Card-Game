@@ -51,7 +51,7 @@ router.post('/google-auth', async (req, res) => {
     const { data: existingUser, error: userError } = await supabase
       .from('users')
       .select('*')
-      .eq('user_id', user.id)
+       .or(`user_id.eq.${user.id},email.eq.${user.email}`)
       .maybeSingle(); 
 
     if (userError) {

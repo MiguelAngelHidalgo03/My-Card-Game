@@ -3,12 +3,15 @@ import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { UserContext } from '../../context/UserContext';
 import './Navbar.css';
+import {useTheme, useMediaQuery } from '@mui/material';
 
 function Navbar() {
   const { user, logout } = useContext(UserContext);
   const [showMenu, setShowMenu] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const toggleMenu = () => setShowMenu(prev => !prev);
 
@@ -25,7 +28,7 @@ function Navbar() {
   const isColoredBackground = ["/login", "/register", "/reset-request", "/reset-password"].includes(location.pathname);
 
   // Altura del navbar depende si se hizo scroll o no
-  const navbarHeight = isScrolled ? 60 : 70;
+  const navbarHeight = isMobile? isScrolled ? 50 : 60 : isScrolled ? 60 : 70;
 
   return (
     <nav className={`navbar ${isScrolled ? 'navbar-scrolled' : ''} ${isColoredBackground ? 'navbar-colored' : ''}`}>

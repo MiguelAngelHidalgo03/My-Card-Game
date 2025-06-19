@@ -230,7 +230,7 @@ useEffect(() => {
         <hr />
 
         {isGoogleUser && (
-          <p style={{ color: 'red', fontWeight: 'bold' }}>
+          <p style={{ color: 'red ', fontWeight: 'bold' }}>
             Has iniciado sesión con Google, por lo que no puedes cambiar la contraseña ni el correo desde aquí.
           </p>
         )}
