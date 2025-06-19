@@ -11,7 +11,8 @@ export default class PlayerPanel {
     const { width, height } = s.scale;
 
     // PANEL RIVAL
-    const rivalAvatarKey = s.textures.exists('avatar-remote') ? 'avatar-remote' : 'avatar-def';
+    const rivalPlayer = s.remotePlayer;
+    const rivalAvatarKey = rivalPlayer.avatar ? 'avatar-' + rivalPlayer.playerId : 'avatar-def';
     const rivalAv = s.add.image(0, 0, rivalAvatarKey)
       .setDisplaySize(d.avatarSize, d.avatarSize);
 
@@ -39,7 +40,8 @@ export default class PlayerPanel {
     s.rivalPanel = s.add.container(0, d.panelOffsetY, [rivalAv, s.rivalCountText]);
 
     // PANEL LOCAL
-    const localAvatarKey = s.textures.exists('avatar-local') ? 'avatar-local' : 'avatar-def';
+    const localPlayer = s.localPlayer;
+    const localAvatarKey = localPlayer.avatar ? 'avatar-' + localPlayer.playerId : 'avatar-def';
     const localAv = s.add.image(0, 0, localAvatarKey)
       .setDisplaySize(d.avatarSize, d.avatarSize);
 

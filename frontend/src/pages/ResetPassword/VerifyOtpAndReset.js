@@ -35,12 +35,11 @@ const VerifyOtpAndReset = () => {
       <div className="reset-box">
         <h1>Restablecer contraseña</h1>
         <div className="reset-verify-container">
-          <h2 className="reset-verify-title">Restablecer contraseña</h2>
           <form className="reset-form" onSubmit={handleSubmit}>
             <input
               type="password"
               className="reset-input"
-              placeholder="Nueva contraseña"
+              placeholder="Introduzca nueva contraseña"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               required

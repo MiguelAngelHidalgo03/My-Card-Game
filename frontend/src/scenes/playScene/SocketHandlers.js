@@ -39,6 +39,7 @@ export default function registerSocketHandlers(scene, gameLogic) {
 
   // ——— Fin de partida —————————————————————————————————————
   socket.on('game-ended', ({ winnerPlayerId }) => {
+     console.log('[SocketHandlers] allPlayers:', scene.allPlayers);
     const winner = scene.allPlayers.find(p => p.playerId === winnerPlayerId);
     scene.scene.start('WinScene', {
       winnerName: winner?.username || 'Nadie',

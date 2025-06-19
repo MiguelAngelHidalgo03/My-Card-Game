@@ -1,3 +1,19 @@
+:root {
+  --cl-bg-main: #692626;
+  --cl-bg-lines: #231f20;
+  --cl-card: #fffbf2;
+  --cl-card-border: #231f20;
+  --cl-accent: #181b1b;
+  --cl-accent2: #272725;
+  --cl-accent3: #2b2d2d;
+  --cl-accent4: #d2f562;
+  --cl-marron: #2b2926;
+  --cl-gold: #ffffff;
+  --cl-shadow: #00000022;
+  --cl-text-main: #1d1c1c;
+  --cl-text-secondary: #523a20;
+}
+
 
 /* NUEVO BACKGROUND - mesa cálida y elementos tipo cartas */
 .create-bg-anim {
@@ -30,22 +46,6 @@
     url("data:image/svg+xml;utf8,<svg width='100%' height='100%' viewBox='0 0 1000 1000' xmlns='http://www.w3.org/2000/svg'> <rect x='80' y='70' width='38' height='60' rx='8' fill='%23d2f562' fill-opacity='0.64'/> <rect x='180' y='120' width='38' height='60' rx='8' fill='%2311a4a2' fill-opacity='0.64'/> <rect x='300' y='60' width='38' height='60' rx='8' fill='%23f5a267' fill-opacity='0.64'/> <rect x='420' y='100' width='38' height='60' rx='8' fill='%23c868f5' fill-opacity='0.64'/> <rect x='540' y='80' width='38' height='60' rx='8' fill='%23d2f562' fill-opacity='0.64'/> <rect x='660' y='130' width='38' height='60' rx='8' fill='%2311a4a2' fill-opacity='0.64'/> <rect x='780' y='60' width='38' height='60' rx='8' fill='%23f5a267' fill-opacity='0.64'/> <rect x='900' y='110' width='38' height='60' rx='8' fill='%23c868f5' fill-opacity='0.64'/> <rect x='120' y='300' width='38' height='60' rx='8' fill='%23c868f5' fill-opacity='0.64'/> <rect x='240' y='350' width='38' height='60' rx='8' fill='%23d2f562' fill-opacity='0.64'/> <rect x='360' y='320' width='38' height='60' rx='8' fill='%2311a4a2' fill-opacity='0.64'/> <rect x='480' y='370' width='38' height='60' rx='8' fill='%23f5a267' fill-opacity='0.64'/> <rect x='600' y='340' width='38' height='60' rx='8' fill='%23c868f5' fill-opacity='0.64'/> <rect x='720' y='390' width='38' height='60' rx='8' fill='%23d2f562' fill-opacity='0.64'/> <rect x='840' y='320' width='38' height='60' rx='8' fill='%2311a4a2' fill-opacity='0.64'/> <rect x='960' y='370' width='38' height='60' rx='8' fill='%23f5a267' fill-opacity='0.64'/> <rect x='60' y='600' width='38' height='60' rx='8' fill='%23f5a267' fill-opacity='0.64'/> <rect x='180' y='650' width='38' height='60' rx='8' fill='%23c868f5' fill-opacity='0.64'/> <rect x='300' y='620' width='38' height='60' rx='8' fill='%23d2f562' fill-opacity='0.64'/> <rect x='420' y='670' width='38' height='60' rx='8' fill='%2311a4a2' fill-opacity='0.64'/> <rect x='540' y='640' width='38' height='60' rx='8' fill='%23f5a267' fill-opacity='0.64'/> <rect x='660' y='690' width='38' height='60' rx='8' fill='%23c868f5' fill-opacity='0.64'/> <rect x='780' y='620' width='38' height='60' rx='8' fill='%23d2f562' fill-opacity='0.64'/> <rect x='900' y='670' width='38' height='60' rx='8' fill='%2311a4a2' fill-opacity='0.64'/> <rect x='120' y='850' width='38' height='60' rx='8' fill='%2311a4a2' fill-opacity='0.64'/> <rect x='240' y='900' width='38' height='60' rx='8' fill='%23f5a267' fill-opacity='0.64'/> <rect x='360' y='870' width='38' height='60' rx='8' fill='%23c868f5' fill-opacity='0.64'/> <rect x='480' y='920' width='38' height='60' rx='8' fill='%23d2f562' fill-opacity='0.64'/> <rect x='600' y='890' width='38' height='60' rx='8' fill='%2311a4a2' fill-opacity='0.64'/> <rect x='720' y='940' width='38' height='60' rx='8' fill='%23f5a267' fill-opacity='0.64'/> <rect x='840' y='870' width='38' height='60' rx='8' fill='%23c868f5' fill-opacity='0.64'/> <rect x='960' y='920' width='38' height='60' rx='8' fill='%23d2f562' fill-opacity='0.64'/> </svg>");
   opacity: 0.35;
 }
-:root {
-  --cl-bg-main: #692626;
-  --cl-bg-lines: #231f20;
-  --cl-card: #fffbf2;
-  --cl-card-border: #231f20;
-  --cl-accent: #181b1b;
-  --cl-accent2: #272725;
-  --cl-accent3: #2b2d2d;
-  --cl-accent4: #d2f562;
-  --cl-marron: #2b2926;
-  --cl-gold: #ffffff;
-  --cl-shadow: #00000022;
-  --cl-text-main: #1d1c1c;
-  --cl-text-secondary: #523a20;
-}
-
 .create-lobby {
   min-height: 100vh;
   background: none;
@@ -67,7 +67,7 @@
   font-weight: bold;
   text-shadow: 0 2px 8px #fffbe6cc;
   letter-spacing: 0.04em;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0;
   background: #fffbf2;
   border-radius: 12px;
   padding: 0.5rem 2.2rem;
@@ -77,7 +77,8 @@
 }
 
 /* Card de usuario */
-.create-lobby .user-session {
+.create-lobby .user-session,
+.create-lobby .guest-form {
   background: var(--cl-card);
   padding: 2.2rem 2rem 1.5rem 2rem;
   border-radius: 22px;
@@ -86,11 +87,17 @@
   text-align: center;
   max-width: 400px;
   width: 100%;
+  height: 600px;
   border: 3px solid var(--cl-card-border);
   margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
 }
 
-.create-lobby .user-session p {
+.create-lobby .user-session p,
+.create-lobby .guest-form p {
   font-size: 1.18rem;
   margin-bottom: 0.7rem;
   color: var(--cl-text-secondary);
@@ -102,8 +109,8 @@
   margin: 0.7rem 0 1.2rem 0;
   font-weight: bold;
 }
-
-.create-lobby .user-session button {
+.create-lobby .user-session button,
+.create-lobby .guest-form button {
   padding: 1rem 2.2rem;
   font-size: 1.15rem;
   background: #000000;
@@ -116,8 +123,11 @@
   margin-top: 1rem;
 }
 
+
 .create-lobby .user-session button:hover,
-.create-lobby .user-session button:focus {
+.create-lobby .user-session button:focus,
+.create-lobby .guest-form button:hover,
+.create-lobby .guest-form button:focus {
   background: #ffffff;
   color: #000000;
   border-color: #000000;
@@ -131,6 +141,7 @@
   border-radius: 50%;
   border: 3px solid var(--cl-accent3);
   object-fit: cover;
+  margin-top: 1rem !important;
   box-shadow: 0 2px 8px var(--cl-shadow);
   background: #fff;
 }
@@ -148,6 +159,7 @@
   border: 3px solid var(--cl-accent2);
   padding: 2rem;
   margin-bottom: 1.5rem;
+  overflow: hidden;
 }
 
 .guest-form input {
@@ -305,42 +317,164 @@
   background: var(--cl-gold);
   color: var(--cl-text-main);
   border-color: var(--cl-accent2);
+  
 }
+
+  .create-lobby .user-session h2,
+  .create-lobby .guest-form h2 {
+    font-size: 1.5rem;   
+  }
+  .create-lobby .user-session p,
+  .create-lobby .guest-form p {
+    font-size: 2rem;  
+  }
 
 /* Responsive */
 @media (max-width: 600px) {
-  .guest-form {
-     padding: 0.5rem;
-     gap: 0.5rem;
+  html, body {
+    width: 100vw;
+    max-width: 100vw;
+    overflow-x: hidden !important;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
   }
   .create-lobby {
-    padding: 0.7rem;
-    padding-top: 4rem;
-    gap: 1.5rem;
+    min-height: 100vh !important;
+    padding: 1.5rem 0.5rem 2rem 0.5rem;
+    margin-top: -5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Centra verticalmente */
+    gap: 2rem;
   }
   .create-lobby h1 {
-    font-size: 1.3rem;
-    padding: 0.3rem 0.7rem;
+    font-size: 1.85rem ;
+    padding: 1rem 2rem;
+    margin-bottom: 0;
+    margin-top: 9rem;
   }
   .create-lobby .user-session,
-  .guest-form {
-    border-radius: 14px;
+  .create-lobby .guest-form {
+    max-width: 90vw;
+    width: 90vw;
+    min-width: 0;
+    padding: 1.5rem 0.5rem 1.5rem 0.5rem;
+    border-radius: 18px;
+    margin-bottom: 1.2rem;
+    align-items: center;
+    justify-content: center;
+  }
+  .guest-form p{
+    max-width: 300px;
+    font-size: 1.70rem !important;
   }
   .guest-form input,
   .guest-form button,
   .create-lobby .user-session button {
-    font-size: 0.9rem;
-    padding: 0.8rem 1.5rem;
-    justify-content: center;
-    margin: 0 2.5rem;
+    font-size: 1.1rem;
+    padding: 1rem 1.5rem;
+    margin: 0.5rem 0;
   }
   .avatar-preview,
   .selected-avatar-preview img {
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
   }
   .avatar-option {
-    width: 38px;
-    height: 38px;
+    width: 48px;
+    height: 48px;
+  }
+
+  .avatar-preview {
+  margin: 0 auto 0.7rem auto !important;
+  width: 100px !important;
+  height: 100px !important;
+  border-radius: 50%;
+  border: 3px solid var(--cl-accent3);
+  object-fit: cover;
+  margin-top: 1rem !important;
+  box-shadow: 0 2px 8px var(--cl-shadow);
+  background: #fff;
+}
+
+.user-session  {
+    max-width: 90vh !important;
+    width: 40vh !important;
+  }
+}
+
+
+/* Responsive */
+@media (max-width: 400px) {
+  html, body {
+    width: 100vw;
+    max-width: 100vw;
+    overflow-x: hidden !important;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  .create-lobby {
+    min-height: 100vh !important;
+    padding: 1.5rem 0.5rem 2rem 0.5rem;
+    display: flex;
+    margin-top: 0 ;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Centra verticalmente */
+    gap: 2rem;
+  }
+  .create-lobby h1 {
+    font-size: 1.85rem;
+    padding: 1rem 2rem;
+    margin-top: 5rem;
+    margin-bottom: 0;
+  }
+  .create-lobby .user-session,
+  .create-lobby .guest-form {
+    max-width: 90vw;
+    width: 90vw;
+    min-width: 0;
+    padding: 1.5rem 0.5rem 1.5rem 0.5rem;
+    border-radius: 18px;
+    margin-bottom: 1.2rem;
+    align-items: center;
+    justify-content: center;
+  }
+  .guest-form input,
+  .guest-form button,
+  .create-lobby .user-session button {
+    font-size: 1.1rem;
+    padding: 1rem 1.5rem;
+    margin: 0.5rem 0;
+  }
+  .avatar-preview,
+  .selected-avatar-preview img {
+    width: 80px;
+    height: 80px;
+  }
+  .avatar-option {
+    width: 48px;
+    height: 48px;
+  }
+
+
+  .avatar-preview {
+  margin: 0 auto 0.7rem auto !important;
+  width: 100px !important;
+  height: 100px !important;
+  border-radius: 50%;
+  border: 3px solid var(--cl-accent3);
+  object-fit: cover;
+  margin-top: 1rem !important;
+  box-shadow: 0 2px 8px var(--cl-shadow);
+  background: #fff;
+}
+
+.user-session  {
+    max-width: 90vh !important;
+    width: 50vh !important;
   }
 }

@@ -14,37 +14,37 @@ const Rules = () => {
     {
       nombre: "lumos.svg",
       alt: "Carta Hechizo Lumos",
-      descripcion: "🔮 Carta “Hechizo Lumos”: Inspirada en Harry Potter. El jugador que la use puede mirar cartas del oponente, dependiendo del número de la carta."
+      descripcion: "Carta “Hechizo Lumos”: Inspirada en Harry Potter. El jugador que la use puede mirar cartas del oponente, dependiendo del número de la carta."
     },
     {
       nombre: "perder_apuesta.svg",
       alt: "Carta Perdí mi apuesta",
-      descripcion: "♻️ Carta “Perdí mi apuesta”: Te permite intercambiar tu mano completa con la del oponente."
+      descripcion: "Carta “Perdí mi apuesta”: Te permite intercambiar tu mano completa con la del oponente."
     },
     {
       nombre: "multa.svg",
       alt: "Carta Multa por ser tan sexy",
-      descripcion: "🚫 Carta “Multa por ser tan sexy”: Impide que el rival use un tipo de carta concreta durante 1 o 2 turnos."
+      descripcion: "Carta “Multa por ser tan sexy”: Impide que el rival use un tipo de carta concreta durante 1 o 2 turnos."
     },
     {
       nombre: "ten_huevos_robar.svg",
       alt: "Carta Ten huevos a robar",
-      descripcion: "🥚 Carta “Ten huevos a robar”: El oponente tendrá que robar todas las cartas durante los dos próximos turnos."
+      descripcion: "Carta “Ten huevos a robar”: El oponente tendrá que robar todas las cartas durante los dos próximos turnos."
     },
     {
       nombre: "1pa1_sin_camiseta.svg",
       alt: "Carta 1 pa 1 sin camiseta",
-      descripcion: "🥊 Carta “1 pa 1 sin camiseta”: Ambos jugadores tiran su carta más alta. El que tenga la más baja roba dos cartas."
+      descripcion: "Carta “1 pa 1 sin camiseta”: Ambos jugadores tiran su carta más alta. El que tenga la más baja roba dos cartas."
     },
     {
       nombre: "misteriosa.svg",
       alt: "Carta Misteriosa",
-      descripcion: "❓ Carta “Misteriosa”: Se elige una carta especial al azar para aplicar su efecto."
+      descripcion: "Carta “Misteriosa”: Se elige una carta especial al azar para aplicar su efecto."
     },
     {
       nombre: "lgtb.svg",
       alt: "Carta LGTB",
-      descripcion: "🏳️‍🌈 Carta “LGTB”: Cambia el color de todas las cartas normales de un jugador."
+      descripcion: "Carta “LGTB”: Cambia el color de todas las cartas normales de un jugador."
     }
   ];
 
@@ -104,7 +104,7 @@ const scrollLeft = () => {
     nombre={cartasEspeciales[cartaIndex].nombre}
     className="special-card-image-large"
     alt={cartasEspeciales[cartaIndex].alt}
-    scale={isMobile ? 0.6 : 0.7}
+    scale={isMobile ? 0.4 : 0.7}
   />
 
   {/* NUEVO CONTENEDOR SOLO PARA MÓVIL */}

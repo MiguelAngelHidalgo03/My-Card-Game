@@ -40,14 +40,14 @@ export default class WinScene extends Phaser.Scene {
     const { width, height } = this.scale;
     socket.emit('set-where', this.code, 'withscene');
 
-    this.gameStartedListener = (payload) => {
-      this.scene.start('PlayScene', {
-        ...payload,
-        mySocketId: this.mySocketId,
-        debugMode: this.sys.game.config.physics.arcade?.debug || false,
-        isMobile: window.innerWidth < 1024 || navigator.maxTouchPoints > 0
-      });
-    };
+   this.gameStartedListener = (payload) => {
+  this.scene.start('LoadingScene', {
+    ...payload,
+    mySocketId: this.mySocketId,
+    debugMode: this.sys.game.config.physics.arcade?.debug || false,
+    isMobile: window.innerWidth < 1024 || navigator.maxTouchPoints > 0
+  });
+};
     socket.on('game-started', this.gameStartedListener);
 
     this.events.once('shutdown', () => {
@@ -142,6 +142,10 @@ export default class WinScene extends Phaser.Scene {
     socket.on('players-list', this.playersListListener);
 
     this.withScenePlayers = this.players.filter(p => p.where === 'withscene');
+if (this.withScenePlayers.length === 0) {
+  this.withScenePlayers = this.players;
+}
+this.updatePlayersPanel();
     this.updatePlayersPanel();
 
     this.panelGroup.setScale(0.92).setAlpha(0);
@@ -157,6 +161,8 @@ export default class WinScene extends Phaser.Scene {
     else this.launchSoftParticles(width, height);
 
     this.scale.on('resize', this.handleResize, this);
+    window._phaserActiveScene = this.scene.key;
+window.dispatchEvent(new Event('phaser-scene-changed'));
   }
 
   updateScaleVars() {
@@ -175,7 +181,7 @@ export default class WinScene extends Phaser.Scene {
     // Avatares: límite estricto y responsivo (nunca más del 32% del ancho entre todos, ni 16% del alto, ni 56px)
     const maxAvatarW = (this.panelW * 0.32) / n;
     const maxAvatarH = this.panelH * 0.16;
-    this.avatarSize = Math.min(56, maxAvatarW, maxAvatarH);
+    this.avatarSize = Math.min(186, maxAvatarW, maxAvatarH);
 
     // Espacio para nombres debajo del avatar (máximo 14px)
     this.avatarNameOffsetY = Math.max(8, Math.min(this.avatarSize * 0.18, 14));
@@ -200,13 +206,14 @@ export default class WinScene extends Phaser.Scene {
     this.iconY = y + this.iconFontSize / 2;
     y += this.iconFontSize + Math.max(8, this.panelH * 0.015);
 
-    this.avatarPanelY = y + avatarBlockH / 2;
+    const avatarTopMargin = Math.max(18, Math.floor(this.panelH * 0.06));
+this.avatarPanelY = y + avatarBlockH / 2 + avatarTopMargin;
     y += avatarBlockH + Math.max(8, this.panelH * 0.015);
 
     this.titleY = y + this.titleFontSize / 2;
     y += this.titleFontSize + Math.max(8, this.panelH * 0.015);
 
-    this.lobbyBtnY = y + this.lobbyBtnFontSize / 2 + this.btnPadY;
+    this.lobbyBtnY = y + this.lobbyBtnFontSize / 3 + this.btnPadY + 80; // +24 píxeles extra
 
     // Si se sale del panel, ajusta todo hacia arriba
     const bottomY = this.lobbyBtnY + this.lobbyBtnFontSize / 2 + this.btnPadY + marginY;
@@ -233,9 +240,11 @@ export default class WinScene extends Phaser.Scene {
     const isHorizontal = width > 420;
     const avatarSize = this.avatarSize;
     const nameOffset = this.avatarNameOffsetY;
+    const btnSeparation = this.lobbyBtnFontSize + 32; // Más separación
+
     const gap = isHorizontal && n > 1
-      ? Math.max(avatarSize + 8, Math.min(this.panelW - 40, Math.floor((this.panelW * 0.8) / n)))
-      : avatarSize + 18;
+      ? avatarSize +50
+      : avatarSize;
 
     // Renderiza primero los avatares, luego los nombres (ambos en el mismo bucle, pero el nombre SIEMPRE encima)
    this.withScenePlayers.forEach((p, i) => {
@@ -284,9 +293,9 @@ export default class WinScene extends Phaser.Scene {
 
   // Corona si es host
   if (p.isHost) {
-    const crown = this.add.text(avatarSize / 2 - 10, -avatarSize / 2 + 12, '👑', {
-      fontSize: Math.floor(avatarSize / 2.2) + 'px'
-    }).setOrigin(0.5);
+    const crown = this.add.text(0, -avatarSize / 4 - Math.floor(avatarSize * 0.18), '👑', {
+  fontSize: Math.floor(avatarSize / 3) + 'px'
+}).setOrigin(0.5);
     playerContainer.add(crown);
   }
 
@@ -311,19 +320,23 @@ export default class WinScene extends Phaser.Scene {
     const myPlayer = this.withScenePlayers.find(p => p.socketId === this.mySocketId);
     const isHost = myPlayer && myPlayer.isHost;
     if (this.withScenePlayers.length === 2 && isHost) {
-      this.rematchBtn = this.add.text(0, this.lobbyBtnY - this.lobbyBtnFontSize - 17, 'Nueva Partida', {
-        fontSize: Math.floor(this.lobbyBtnFontSize * 0.93) + 'px',
-        backgroundColor: '#FFD700',
-        color: '#000',
-        fontFamily: 'Arial Black, Arial, sans-serif',
-        padding: { x: this.btnPadX, y: this.btnPadY },
-        borderRadius: 18,
-        shadow: { offsetX: 0, offsetY: 2, color: '#111', blur: 6, fill: true }
-      })
-        .setOrigin(0.5)
-        .setDepth(16)
-        .setInteractive({ useHandCursor: true });
-
+  this.rematchBtn = this.add.text(
+    0,
+    this.lobbyBtnY - btnSeparation, // Más espacio arriba del botón lobby
+    'Nueva Partida',
+    {
+      fontSize: Math.floor(this.lobbyBtnFontSize * 0.93) + 'px',
+      backgroundColor: '#FFD700',
+      color: '#000',
+      fontFamily: 'Arial Black, Arial, sans-serif',
+      padding: { x: this.btnPadX, y: this.btnPadY },
+      borderRadius: 18,
+      shadow: { offsetX: 0, offsetY: 2, color: '#111', blur: 6, fill: true }
+    }
+  )
+    .setOrigin(0.5)
+    .setDepth(16)
+    .setInteractive({ useHandCursor: true });
       this.rematchBtn.on('pointerover', () => {
         this.tweens.add({
           targets: this.rematchBtn,
@@ -341,10 +354,11 @@ export default class WinScene extends Phaser.Scene {
         });
       });
       this.rematchBtn.on('pointerdown', () => {
-        if (this.withScenePlayers.length === 2) {
-          socket.emit('start-game', this.code, this.gameSettings);
-        }
-      });
+  if (this.withScenePlayers.length === 2) {
+    socket.emit('start-game', this.code, this.gameSettings);
+    window.location.reload(); // <-- Añade esto aquí
+  }
+});
       this.panelGroup.add(this.rematchBtn);
     } else if (this.withScenePlayers.length === 2) {
       this.waitMsg = this.add.text(0, this.lobbyBtnY - this.lobbyBtnFontSize - 13,
@@ -368,6 +382,7 @@ export default class WinScene extends Phaser.Scene {
 
   handleResize(gameSize) {
     const { width, height } = gameSize;
+    const btnSeparation = this.lobbyBtnFontSize + 32;
     this.bgRect.setSize(width, height);
     this.updateScaleVars();
 
@@ -377,8 +392,9 @@ export default class WinScene extends Phaser.Scene {
     if (this.playerPanelsGroup) this.playerPanelsGroup.setY(this.avatarPanelY);
     if (this.title) this.title.setY(this.titleY).setFontSize(this.titleFontSize + 'px');
     if (this.lobbyBtn) this.lobbyBtn.setY(this.lobbyBtnY).setFontSize(this.lobbyBtnFontSize + 'px');
-    if (this.rematchBtn) this.rematchBtn.setY(this.lobbyBtnY - this.lobbyBtnFontSize - 17).setFontSize(Math.floor(this.lobbyBtnFontSize * 0.93) + 'px');
-    if (this.waitMsg) this.waitMsg.setY(this.lobbyBtnY - this.lobbyBtnFontSize - 13).setFontSize(Math.floor(this.lobbyBtnFontSize * 0.74) + 'px');
+   if (this.rematchBtn)
+  this.rematchBtn.setY(this.lobbyBtnY - btnSeparation)
+    .setFontSize(Math.floor(this.lobbyBtnFontSize * 0.93) + 'px');if (this.waitMsg) this.waitMsg.setY(this.lobbyBtnY - this.lobbyBtnFontSize - 13).setFontSize(Math.floor(this.lobbyBtnFontSize * 0.74) + 'px');
     if (this.codeTxt) {
       this.codeTxt.setY(height - this.codePadY).setFontSize(this.codeFontSize + 'px');
     }

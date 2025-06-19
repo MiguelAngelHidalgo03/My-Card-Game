@@ -28,7 +28,7 @@ const ResetRequest = () => {
           <input
             type="email"
             className="reset-input"
-            placeholder="Tu correo"
+            placeholder="Introduce tu correo electrónico"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required

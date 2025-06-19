@@ -135,15 +135,7 @@ const handleLogoClick = () => {
           {/* ─── BLOQUE 3: Reglas ──────────────────────────── */}
 
           {/* ─── BLOQUE 4: Vídeo ───────────────────────────── */}
-          <div className="home-video scroll-block">
-            {video ? (
-              <video src={video} controls />
-            ) : (
-              <div className="video-placeholder">
-                <p className="animate-text">El video estará disponible pronto.</p>
-              </div>
-            )}
-          </div>
+          
 
         </div>
          <OptionsModal visible={modalOpen} onClose={() => setModalOpen(false)} />

@@ -28,6 +28,7 @@ export default function initGameService(io) {
             console.log(`>>> join-room → code=${code}, isHost=${isHost}`);
 
             // 1) Si la partida ya arrancó: sólo reconexión
+
             if (games[code]) {
                 const room = games[code];
                 const ex = room.players.find(p =>
@@ -35,13 +36,11 @@ export default function initGameService(io) {
                     (!userId && p.clientId === clientId)
                 );
                 if (ex) {
+                    const wasDisconnected = !ex.status;
                     ex.socketId = socket.id;
                     ex.status = true;
                     socket.join(code);
 
-                    console.log(`[BACKEND][joinRoom] chosenColor actual para ${code}:`, room.chosenColor);
-
-                    // ENVÍA EL ESTADO COMPLETO AL RECONECTAR
                     const payload =
                     {
                         code,
@@ -54,22 +53,12 @@ export default function initGameService(io) {
                         currentPlayerId: room.currentPlayerId,
                         chosenColor: room.chosenColor
                     };
-                    console.log('[BACKEND] Emitiendo game-started:', {
-                        code,
-                        players: room.players.map(p => ({
-                            username: p.username,
-                            userId: p.userId,
-                            clientId: p.clientId,
-                            playerId: p.playerId,
-                            socketId: p.socketId,
-                            isHost: p.isHost,
-                            status: p.status
-                        })),
-                        currentPlayerId: room.currentPlayerId
-                    });
                     socket.emit('game-started', payload);
 
-                    socket.emit('reconnected');
+                    if (wasDisconnected) {
+                        socket.emit('reconnected');
+                    }
+
                     console.log(`→ Reconectado a partida ${code}`);
                 } else {
                     socket.emit('error', 'Partida ya en curso');
@@ -77,7 +66,6 @@ export default function initGameService(io) {
                 }
                 return;
             }
-
             // 2) Crear lobby si no existe
             if (!rooms[code]) {
                 try {
@@ -318,7 +306,7 @@ export default function initGameService(io) {
                     hostTimeouts[code] = { timeout: to, interval: iv };
                 } else {
                     room.players[idx].status = false;
-room.players[idx].where = null;
+                    room.players[idx].where = null;
                     io.to(code).emit('players-list', room.players);
                 }
             }
@@ -337,6 +325,7 @@ room.players[idx].where = null;
         // backend/game/service.js (ejemplo)
         async handlePlayCard({ code, playerId, cardIndex }) {
             const game = games[code];
+
             if (!game) {
                 console.warn(`[handlePlayCard] No existe la partida con código ${code}`);
                 return;
@@ -345,7 +334,12 @@ room.players[idx].where = null;
                 console.warn(`[handlePlayCard] No es el turno del jugador ${playerId}`);
                 return;
             }
-
+            if (hostTimeouts[code]) {
+                clearTimeout(hostTimeouts[code].timeout);
+                clearInterval(hostTimeouts[code].interval);
+                delete hostTimeouts[code];
+                console.log(`→ Periodo de gracia cancelado por actividad en partida ${code}`);
+            }
             const hand = game.hands[playerId];
             if (!hand || !hand[cardIndex]) {
                 console.warn(`[handlePlayCard] Mano vacía o índice inválido para jugador ${playerId}`);
@@ -368,7 +362,7 @@ room.players[idx].where = null;
                     game.discardPile.push(card);
                     checkUnoAlert(game, playerId, code);
                     // ...después de modificar las manos y antes de emitir el nuevo estado...
-                    if (checkForWinner(game, code)) return;
+                    if (await checkForWinner(game, code)) return;
                     if (cardType === '+2') {
                         game.pendingPenalty = { type: '+2', amount: 2, playerId };
                     }
@@ -376,8 +370,8 @@ room.players[idx].where = null;
                         game.pendingPenalty = { type: '+4', amount: 4, playerId };
                     }
                     // Suma la penalización
-                   game.pendingPenalty.amount += (cardType === '+2') ? 2 : 4;
-        game.pendingPenalty.playerId = playerId;
+                    game.pendingPenalty.amount += (cardType === '+2') ? 2 : 4;
+                    game.pendingPenalty.playerId = playerId;
 
                     console.log(`[handlePlayCard] STACKING: ${cardType} jugado, penalización acumulada: ${game.pendingPenalty.amount}`);
 
@@ -408,7 +402,7 @@ room.players[idx].where = null;
                         ...game,
                         currentPlayerId: nextPlayerId,
                         pendingPenalty: game.pendingPenalty,
-                        chosenColor: game.chosenColor,
+                        chosenColor: game.chosenColor ?? null,
                     });
                     return;
                 } else {
@@ -431,7 +425,7 @@ room.players[idx].where = null;
                         game.discardPile.push(card);
                         checkUnoAlert(game, playerId, code);
                         // ...después de modificar las manos y antes de emitir el nuevo estado...
-                        if (checkForWinner(game, code)) return;
+                        if (await checkForWinner(game, code)) return;
                         io.to(code).emit('card-played', {
                             by: game.players.find(p => p.playerId === playerId).username,
                             cardFrame: card.frame,
@@ -446,7 +440,7 @@ room.players[idx].where = null;
                             ...game,
                             currentPlayerId: playerId,
                             pendingPenalty: game.pendingPenalty,
-                            chosenColor: game.chosenColor
+                            chosenColor: game.chosenColor ?? null
                         });
                         return;
                     }
@@ -454,7 +448,7 @@ room.players[idx].where = null;
                     game.discardPile.push(card);
                     checkUnoAlert(game, playerId, code);
                     // ...después de modificar las manos y antes de emitir el nuevo estado...
-                    if (checkForWinner(game, code)) return;
+                    if (await checkForWinner(game, code)) return;
 
                     if (cardType === '+2') {
                         game.pendingPenalty = { type: '+2', amount: 2, playerId };
@@ -491,7 +485,7 @@ room.players[idx].where = null;
                         ...game,
                         currentPlayerId: nextPlayerId,
                         pendingPenalty: game.pendingPenalty,
-                        chosenColor: game.chosenColor
+                        chosenColor: game.chosenColor ?? null
                     });
                     return;
                 }
@@ -503,7 +497,7 @@ room.players[idx].where = null;
                 game.discardPile.push(card);
                 checkUnoAlert(game, playerId, code);
                 // ...después de modificar las manos y antes de emitir el nuevo estado...
-                if (checkForWinner(game, code)) return;
+                if (await checkForWinner(game, code)) return;
 
                 if (cardType === '+2') {
                     game.pendingPenalty = { type: '+2', amount: 2, playerId };
@@ -539,7 +533,7 @@ room.players[idx].where = null;
                         ...game,
                         currentPlayerId: nextPlayerId,
                         pendingPenalty: game.pendingPenalty,
-                        chosenColor: game.chosenColor
+                        chosenColor: game.chosenColor ?? null
                     });
                 }
                 return;
@@ -560,7 +554,7 @@ room.players[idx].where = null;
             game.discardPile.push(card);
             checkUnoAlert(game, playerId, code);
             // ...después de modificar las manos y antes de emitir el nuevo estado...
-            if (checkForWinner(game, code)) return;
+            if (await checkForWinner(game, code)) return;
 
             io.to(code).emit('card-played', {
                 by: game.players.find(p => p.playerId === playerId).username,
@@ -590,7 +584,7 @@ room.players[idx].where = null;
                 ...game,
                 currentPlayerId: nextPlayerId,
                 pendingPenalty: game.pendingPenalty,
-                chosenColor: game.chosenColor
+                chosenColor: game.chosenColor ?? null
             });
         },
 
@@ -598,7 +592,12 @@ room.players[idx].where = null;
             const game = games[code];
             if (!game) return;
             if (game.currentPlayerId !== playerId) return;
-
+            if (hostTimeouts[code]) {
+                clearTimeout(hostTimeouts[code].timeout);
+                clearInterval(hostTimeouts[code].interval);
+                delete hostTimeouts[code];
+                console.log(`→ Periodo de gracia cancelado por actividad en partida ${code}`);
+            }
             const hand = game.hands[playerId];
             const topDiscard = game.discardPile[game.discardPile.length - 1];
             const hasPlayable = hand.some(card => isCardPlayable(card, topDiscard, game.chosenColor));
@@ -634,44 +633,44 @@ room.players[idx].where = null;
                     ...game,
                     currentPlayerId: game.currentPlayerId,
                     pendingPenalty: game.pendingPenalty,
-                    chosenColor: game.chosenColor
+                    chosenColor: game.chosenColor ?? null
                 });
                 return;
             }
 
             // Roba solo UNA carta normal
-           refillDrawPileIfNeeded(game);
-if (!Array.isArray(game.drawPile)) {
-    console.error('[BACKEND] drawPile es undefined o no es un array:', game.drawPile, 'game:', game);
-    return;
-}
-const drawnCard = game.drawPile.shift();
-game.hands[playerId].push(drawnCard);
+            refillDrawPileIfNeeded(game);
+            if (!Array.isArray(game.drawPile)) {
+                console.error('[BACKEND] drawPile es undefined o no es un array:', game.drawPile, 'game:', game);
+                return;
+            }
+            const drawnCard = game.drawPile.shift();
+            game.hands[playerId].push(drawnCard);
 
 
-      if (!drawnCard) {
-    console.log('[BACKEND] drawPile vacío, no se puede robar');
-    game.consecutivePasses = (game.consecutivePasses || 0) + 1;
-    if (game.consecutivePasses >= 5) {
-        io.to(code).emit('game-ended', { winnerPlayerId: null, reason: 'draw' });
-        delete games[code];
-        return;
-    }
-    // Cambia turno al siguiente jugador
-    const playerIds = game.players.map(p => p.playerId);
-    const nextPlayerId = playerIds.find(id => id !== playerId);
-    game.currentPlayerId = nextPlayerId;
-    await setCurrentPlayer({ gameCode: code, playerId: nextPlayerId });
-    io.to(code).emit('game-state', {
-        ...game,
-        currentPlayerId: nextPlayerId,
-        pendingPenalty: game.pendingPenalty,
-        chosenColor: game.chosenColor
-    });
-    return;
-}
+            if (!drawnCard) {
+                console.log('[BACKEND] drawPile vacío, no se puede robar');
+                game.consecutivePasses = (game.consecutivePasses || 0) + 1;
+                if (game.consecutivePasses >= 5) {
+                    io.to(code).emit('game-ended', { winnerPlayerId: null, reason: 'draw' });
+                    delete games[code];
+                    return;
+                }
+                // Cambia turno al siguiente jugador
+                const playerIds = game.players.map(p => p.playerId);
+                const nextPlayerId = playerIds.find(id => id !== playerId);
+                game.currentPlayerId = nextPlayerId;
+                await setCurrentPlayer({ gameCode: code, playerId: nextPlayerId });
+                io.to(code).emit('game-state', {
+                    ...game,
+                    currentPlayerId: nextPlayerId,
+                    pendingPenalty: game.pendingPenalty,
+                    chosenColor: game.chosenColor ?? null
+                });
+                return;
+            }
 
-               game.consecutivePasses = 0; 
+            game.consecutivePasses = 0;
 
             io.to(code).emit('card-drawn', {
                 by: game.players.find(p => p.playerId === playerId).username,
@@ -682,7 +681,7 @@ game.hands[playerId].push(drawnCard);
                 ...game,
                 currentPlayerId: game.currentPlayerId,
                 pendingPenalty: game.pendingPenalty,
-                chosenColor: game.chosenColor
+                chosenColor: game.chosenColor ?? null
             });
         },
 
@@ -692,7 +691,12 @@ game.hands[playerId].push(drawnCard);
             if (!game) return;
             game.chosenColor = color;
             console.log(`[BACKEND] Color seleccionado: ${color}`);
-
+            if (hostTimeouts[code]) {
+                clearTimeout(hostTimeouts[code].timeout);
+                clearInterval(hostTimeouts[code].interval);
+                delete hostTimeouts[code];
+                console.log(`→ Periodo de gracia cancelado por actividad en partida ${code}`);
+            }
             // Guarda el username del que eligió el color
             const chooser = game.players.find(p => p.playerId === game.currentPlayerId)?.username;
 
@@ -706,21 +710,26 @@ game.hands[playerId].push(drawnCard);
             // emite estado completo con chosenColor y lastColorChooser
             io.to(code).emit('game-state', {
                 ...game,
-                chosenColor: color,
+                chosenColor: color ?? null,
                 currentPlayerId: next,
                 lastColorChooser: chooser,
                 pendingPenalty: game.pendingPenalty
             });
+            if (game._unoPendingAfterColor) {
+                const { playerId, code: unoCode } = game._unoPendingAfterColor;
+                checkUnoAlert(game, playerId, unoCode, true); // fuerza el uno-alert
+                game._unoPendingAfterColor = null;
+            }
         },
-setWhere(socket, code, where) {
-    const room = rooms[code];
-    if (!room) return;
-    const player = room.players.find(p => p.socketId === socket.id);
-    if (player) {
-        player.where = where;
-        io.to(code).emit('players-list', room.players);
-    }
-}
+        setWhere(socket, code, where) {
+            const room = rooms[code];
+            if (!room) return;
+            const player = room.players.find(p => p.socketId === socket.id);
+            if (player) {
+                player.where = where;
+                io.to(code).emit('players-list', room.players);
+            }
+        }
 
     };
 
@@ -788,7 +797,7 @@ setWhere(socket, code, where) {
         hand.splice(hand.indexOf(card), 1);
         game.discardPile.push(card);
         // ...después de modificar las manos y antes de emitir el nuevo estado...
-        if (checkForWinner(game, code)) return;
+        if (await checkForWinner(game, code)) return;
 
         io.to(code).emit('card-played', {
             by: game.players.find(p => p.playerId === playerId).username,
@@ -803,21 +812,21 @@ setWhere(socket, code, where) {
             ...game,
             currentPlayerId: playerId,
             pendingPenalty: game.pendingPenalty,
-            chosenColor: game.chosenColor
+            chosenColor: game.chosenColor ?? null
         });
         return true;
     }
- function refillDrawPileIfNeeded(game, threshold = 4) {
-    if (!Array.isArray(game.drawPile)) {
-        console.error('[BACKEND] refillDrawPileIfNeeded: drawPile no es array', game.drawPile);
-        game.drawPile = [];
+    function refillDrawPileIfNeeded(game, threshold = 4) {
+        if (!Array.isArray(game.drawPile)) {
+            console.error('[BACKEND] refillDrawPileIfNeeded: drawPile no es array', game.drawPile);
+            game.drawPile = [];
+        }
+        if (game.drawPile.length < threshold && game.discardPile.length > 1) {
+            const last = game.discardPile.pop();
+            game.drawPile = shuffle([...game.discardPile]);
+            game.discardPile = [last];
+        }
     }
-    if (game.drawPile.length < threshold && game.discardPile.length > 1) {
-        const last = game.discardPile.pop();
-        game.drawPile = shuffle([...game.discardPile]);
-        game.discardPile = [last];
-    }
-}
     function isSkipCard(card) {
         const parsed = parseCardFrame(card.frame);
         return parsed.value === 'Bloqueo' || parsed.value === 'Skip';
@@ -880,28 +889,36 @@ setWhere(socket, code, where) {
             });
         }
     }
-function debugEmptyHand({ code, playerId }) {
-  const game = games[code];
-  if (!game) return;
-  if (game.currentPlayerId !== playerId) return;
-  game.hands[playerId] = [];
-  checkForWinner(game, code);
-  io.to(code).emit('hand-updated', { playerId, hand: [] });
-}
-   async function checkForWinner(game, code) {
-  const winner = Object.entries(game.hands).find(([playerId, hand]) => hand.length === 0);
-  if (winner) {
-    const winnerPlayerId = winner[0];
-    try {
-      await finishGame({ gameCode: code, winnerPlayerId });
-    } catch (err) {
-      console.error('Error en finishGame:', err);
+    function debugEmptyHand({ code, playerId }) {
+        const game = games[code];
+        if (!game) return;
+        if (game.currentPlayerId !== playerId) return;
+        game.hands[playerId] = [];
+        checkForWinner(game, code);
+        io.to(code).emit('hand-updated', { playerId, hand: [] });
     }
-    io.to(code).emit('game-ended', { winnerPlayerId });
-    delete games[code];
-    return true;
-  }
-  return false;
-}
+    async function checkForWinner(game, code) {
+        const winner = Object.entries(game.hands).find(([playerId, hand]) => hand.length === 0);
+        if (winner) {
+            const winnerPlayerId = winner[0];
+            try {
+                await finishGame({ gameCode: code, winnerPlayerId });
+            } catch (err) {
+                console.error('Error en finishGame:', err);
+            }
+            io.to(code).emit('game-ended', { winnerPlayerId });
+
+            // RECONSTRUYE EL LOBBY para permitir nueva partida
+            rooms[code] = {
+                gameId: game.gameId,
+                players: game.players,
+                settings: game.settings
+            };
+
+            delete games[code];
+            return true;
+        }
+        return false;
+    }
 
 }

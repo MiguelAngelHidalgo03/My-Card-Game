@@ -92,13 +92,21 @@ export default function JoinLobby() {
         </div>
       ) : (
         <div className="guest-formJ">
-          <p>Ingresa un nombre de usuario</p>
+          <p class="p1">Ingresa un nombre de usuario</p>
           <input
             type="text"
             placeholder="Nombre de usuario"
             value={tempUsername}
             onChange={e => setTempUsername(e.target.value)}
           />
+          
+          <div className="selected-avatar-preview">
+            <p>Avatar seleccionado:</p>
+            <img src={selectedAvatar} alt="Avatar seleccionado" className="avatar-preview" />
+          </div>
+          <button type="button" onClick={() => setShowAvatarModal(true)}>
+            Elegir Avatar
+          </button>
            <p>Ingresa codigo de sala</p>
           <input
             type="text"
@@ -106,14 +114,7 @@ export default function JoinLobby() {
             value={lobbyCode}
             onChange={e => setLobbyCode(e.target.value)}
           />
-          <button type="button" onClick={() => setShowAvatarModal(true)}>
-            Elegir Avatar
-          </button>
-          <div className="selected-avatar-preview">
-            <p>Avatar seleccionado:</p>
-            <img src={selectedAvatar} alt="Avatar seleccionado" className="avatar-preview" />
-          </div>
-          <button onClick={handleJoinLobby}>Unirse</button>
+          <button onClick={handleJoinLobby} class="joinBtn">Unirse</button>
         </div>
       )}
 

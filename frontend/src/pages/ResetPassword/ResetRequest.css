@@ -36,14 +36,15 @@
   width: 100%;
   padding: 12px;
   margin: 0.5rem 0;
-  border: 1px solid #ccc;
+  border: 1px solid #6450f5;
   border-radius: 10px;
   font-size: 1rem;
   transition: border 0.3s;
 }
 
 .reset-input:focus {
-  border-color: #6450F5;
+  border: 1.5px solid #6450F5;
+  box-shadow: #6450F5 0px 0px 2px;
   outline: none;
 }
 

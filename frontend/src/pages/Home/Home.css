@@ -541,7 +541,7 @@
  
   
   #impact-wave{
-    top:45%;                       /* 5 % más arriba */
+    top:1% !important;                       /* 5 % más arriba */
     transform:translate(-50%, -55%) scale(0); /* resta un poco menos */
   }
   
@@ -550,7 +550,6 @@
   justify-content: center;
   inset:0;          /* top:0; right:0; bottom:0; left:0; */
   margin:auto; 
-  margin-top: 5rem;
   }
   .logo-normal {
     width: 300px;
@@ -558,12 +557,34 @@
     margin-bottom: 10rem;
     /* transform: scale(2.5); */
   }
+
+    .intro-container {
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 6rem; /* Ajusta según la altura del logo */
+  }
+  .guante-izquierdo,
+  .guante-derecho {
+    width: 38vw;          
+    max-width: 160px;
+    top: 40% !important;              /* Ajusta para que coincida con el logo */
+    transform: translateY(-50%);
+    opacity: 0;
+  }
+  .guante-izquierdo {
+    left: 8vw;            
+  }
+  .guante-derecho {
+    right: 8vw;
+  }
 }
 @media (max-width:480px){
   #impact-wave{
     top:40%;                       /* 10 % más arriba respecto al centro */
     transform:translate(-50%, -60%) scale(0); /* resta todavía menos */
   }
+
+  
 }
 .page-content{
   opacity:0;                 /* invisible al principio            */

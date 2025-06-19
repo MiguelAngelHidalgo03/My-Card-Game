@@ -241,6 +241,7 @@ useEffect(() => {
           <input
             type="password"
             value={currentPassword}
+            placeholder="Contraseña actual"
             onChange={(e) => setCurrentPassword(e.target.value)}
             disabled={isGoogleUser}
           />
@@ -249,6 +250,7 @@ useEffect(() => {
           <input
             type="password"
             value={newPassword}
+            placeholder="Nueva contraseña"
             onChange={(e) => setNewPassword(e.target.value)}
             disabled={isGoogleUser}
           />

@@ -1,5 +1,5 @@
 import GUI from 'lil-gui';
-
+import socket from '../../utils/sockets';
 export default function mountDebugGUI(scene, debug, applyLayout) {
   const gui = new GUI();
 
@@ -112,6 +112,16 @@ export default function mountDebugGUI(scene, debug, applyLayout) {
   fTest
     .add({ addTestCard: () => scene.addDebugCard() }, 'addTestCard')
     .name('Añadir carta de prueba');
+  fTest
+  .add({ emptyHand: () => {
+    // Solo si es tu turno
+    if (scene.gameState.currentPlayerId === scene.playerId) {
+      socket.emit('debug-empty-hand', { code: scene.code, playerId: scene.playerId });
+    } else {
+      alert('Solo puedes vaciar tu mano en tu turno');
+    }
+  }}, 'emptyHand')
+  .name('Vaciar mi mano (debug)');
   fTest.open();
 
   const fUno = gui.addFolder('🟩 Botón UNO');
@@ -151,6 +161,7 @@ export default function mountDebugGUI(scene, debug, applyLayout) {
   });
   folder.open();
 });
+
 
 
 

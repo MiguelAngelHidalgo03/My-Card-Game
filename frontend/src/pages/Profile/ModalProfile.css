@@ -85,9 +85,10 @@
   border: 3px solid var(--cl-accent3, #2b2d2d);
   background: #fff;
   box-shadow: 0 2px 8px var(--cl-shadow, #00000022);
-  width: 70px !important; 
-  height: 70px !important;
+  width: 100px !important; 
+  height: 100px !important;
   cursor: pointer;
+  margin: 6px !important;
   transition: transform 0.18s, border-color 0.18s, box-shadow 0.18s;
 }
 
@@ -166,9 +167,10 @@
     height: 120px !important;
   }
 
-  .profile-modal-content .MuiAvatar-root {
-    width: 56px !important;
-    height: 56px !important;
+ .profile-modal-content .MuiAvatar-root {
+    width: 72px !important;   /* Más grandes en móvil también */
+    height: 72px !important;
+    margin: 4px !important;   /* Menos espacio en móvil */
   }
 
   .profile-modal-content .MuiButton-root {

@@ -106,10 +106,8 @@
 }
 
 .profile-stats {
-  background: rgba(255,255,255,0.08);
   border-radius: 10px;
   width: 100%;
-  margin-bottom: 1rem;
   box-shadow: 0 2px 8px rgba(0,0,0,0.10);
   text-align: center;
 }
@@ -120,14 +118,15 @@
   flex-direction: column;
   text-align:left ;
   margin: 0 auto;
-  max-width: 21%;
-  margin-bottom: 1rem;
+  max-width: 30%;
+  margin-bottom: 1rem; 
 }
 
 .profile-stats h2 {
   color: #F5A623;
   font-size: 1.4rem;
   margin-bottom: 1rem;
+  
 }
 
 .profile-stats p {
@@ -209,12 +208,11 @@
   .profile-container {
     width: 90vw !important;
     max-width: 90vw !important;
-    min-height: 600px !important; 
+    min-height: 500px !important; 
     max-height: 80vh !important;
     border-radius: 0;
-    padding: 1.2rem 0.5rem 1.2rem 0.5rem;
-    margin: 2rem 0 1rem 0;
     margin-top: 5rem !important;
+    padding: 0;
     box-shadow: none;
     display: flex;
     flex-direction: column;
@@ -239,9 +237,15 @@
     height: 44px;
   }
   .profile-stats p {
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #fff;
   margin-left: 1.8rem;
+}
+.profile-stats h2 {
+  color: #F5A623;
+  font-size: 1.4rem !important;
+  margin-bottom: 1rem;
+  
 }
   .stats-item{
   position: relative;
@@ -249,22 +253,21 @@
   flex-direction: column;
   text-align:left ;
   margin: 0 auto;
-  max-width: 41% !important;
-  margin-bottom: 1rem;
+  max-width: 50% !important;
 }
-
-.stats-item{
-  max-width: 40%;
+.btn-pixel {
+  padding: 0.7rem  !important;
+  max-width: 125px;
 }
-
+}
   
 @media (max-width: 400px) {
 
   .profile-container {
-    min-height: 600px !important;
+    min-height: 450px !important;
     max-height: none !important;
     height: auto !important;
-    
+    padding: 0 ;
   }
 
   .profile-image {
@@ -294,7 +297,7 @@
   flex-direction: column;
   text-align:left ;
   margin: 0 auto;
-  max-width: 41% !important;
+  max-width: 50% !important;
   margin-bottom: 1rem;
 }
 
@@ -305,5 +308,5 @@
   
 }
 
-}
+
 

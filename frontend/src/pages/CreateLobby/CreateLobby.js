@@ -47,31 +47,29 @@ export default function CreateLobby() {
   };
 
   return (
-    <div className="create-lobby">
-      <div className="create-bg-anim"></div>
-     
-      {user ? (
-        <div className="user-session">
-           <h1>Crear Sala</h1>
-          <p>Bienvenido</p>
-          <img src={user.profile_picture || selectedAvatar} alt="Avatar" className="avatar-preview" />
-          <h2>{user.username}</h2>
-          <button onClick={handleCreateLobby}>Crear Sala</button>
-        </div>
-      ) : (
-        <div className="guest-form">
-           <h1>Crear Sala</h1>
-          <p>Ingresa un nombre de usuario</p>
-          <input
-            type="text"
-            placeholder="Nombre de usuario"
-            value={tempUsername}
-            onChange={e => setTempUsername(e.target.value)}
-          />
-          <button onClick={() => setShowAvatarModal(true)}>Elegir Avatar</button>
-          <img src={selectedAvatar} alt="Avatar" className="avatar-preview" />
-          <button onClick={handleCreateLobby}>Crear Sala</button>
-        </div>
+     <div className="create-lobby">
+    <div className="lobby-bg-anim"></div>
+    <h1>Crear Sala</h1>
+    {user ? (
+      <div className="user-session">
+        <p>Bienvenido</p>
+        <img src={user.profile_picture || selectedAvatar} alt="Avatar" className="avatar-preview" />
+        <h2>{user.username}</h2>
+        <button onClick={handleCreateLobby}>Crear Sala</button>
+      </div>
+    ) : (
+      <div className="guest-form">
+        <p>Ingresa un nombre de usuario</p>
+        <input
+          type="text"
+          placeholder="Nombre de usuario"
+          value={tempUsername}
+          onChange={e => setTempUsername(e.target.value)}
+        />
+        <button onClick={() => setShowAvatarModal(true)}>Elegir Avatar</button>
+        <img src={selectedAvatar} alt="Avatar" className="avatar-preview" />
+        <button onClick={handleCreateLobby}>Crear Sala</button>
+      </div>
       )}
       <Modal
         isOpen={showAvatarModal}

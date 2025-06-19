@@ -17,19 +17,14 @@ export default class ChatManager {
 
   phaserChatHandler({ username, text, avatar }) {
     // No notifiques si es tu propio mensaje o el chat está abierto
-     console.log('[ChatManager] phaserChatHandler', username, text, avatar);
-
     if (this.scene.localPlayer && username === this.scene.localPlayer.username) return;
     if (window.__chatOpen) return;
 
-    // Elige avatar
-    let avatarKey = 'avatar-def';
-    if (this.scene.textures.exists('avatar-remote') && username !== this.scene.localPlayer.username) {
-      avatarKey = 'avatar-remote';
-    }
-    if (this.scene.textures.exists('avatar-local') && username === this.scene.localPlayer.username) {
-      avatarKey = 'avatar-local';
-    }
+    // Busca el playerId por username
+    const player = this.scene.allPlayers?.find(p => p.username === username);
+    const avatarKey = player && this.scene.textures.exists('avatar-' + player.playerId)
+      ? 'avatar-' + player.playerId
+      : 'avatar-def';
 
     this.showNotification(username, text, avatarKey);
   }
@@ -37,23 +32,23 @@ export default class ChatManager {
   showNotification(username, text, avatarKey) {
     // --- Toast visual usando Phaser ---
     console.log('[ChatManager] Mostrando notificación:', username, text, avatarKey);
-  if (!this.scene.activeToasts) this.scene.activeToasts = [];
+    if (!this.scene.activeToasts) this.scene.activeToasts = [];
 
-  const toastW  = 300;
-  const toastH  = 80;
-  const pad     = 12;
-  const avatarS = 48;
-  const border  = 3;
-  const baseX   = Math.max(0, this.scene.scale.width - toastW - 20);
-  const startY  = 120;
-  const gapY    = 10;
+    const toastW = 300;
+    const toastH = 80;
+    const pad = 12;
+    const avatarS = 48;
+    const border = 3;
+    const baseX = Math.max(0, this.scene.scale.width - toastW - 20);
+    const startY = 120;
+    const gapY = 10;
 
-  const toast = this.scene.add.container(
-    this.scene.scale.width + 20,
-    startY + (this.scene.activeToasts.length)*(toastH+gapY)
-  );
-  
-  const bg = this.scene.add.rectangle(0, 0, toastW, toastH, 0xffffff)
+    const toast = this.scene.add.container(
+      this.scene.scale.width + 20,
+      startY + (this.scene.activeToasts.length) * (toastH + gapY)
+    );
+
+    const bg = this.scene.add.rectangle(0, 0, toastW, toastH, 0xffffff)
       .setOrigin(0)
       .setStrokeStyle(border, 0x000000);
 
@@ -62,7 +57,7 @@ export default class ChatManager {
       .setOrigin(0);
 
     const nameText = this.scene.add.text(
-      pad + avatarS + pad/2,
+      pad + avatarS + pad / 2,
       pad,
       username,
       {
@@ -75,7 +70,7 @@ export default class ChatManager {
 
     const msgText = this.scene.add.text(
       nameText.x,
-      pad + avatarS/2,
+      pad + avatarS / 2,
       text,
       {
         fontFamily: 'Montserrat, sans-serif',
@@ -85,7 +80,7 @@ export default class ChatManager {
       }
     ).setOrigin(0, 0);
 
-    toast.add([ bg, av, nameText, msgText ]);
+    toast.add([bg, av, nameText, msgText]);
     toast.setSize(toastW, toastH);
     toast.setDepth(2000);
     toast.setAlpha(0);

@@ -108,13 +108,12 @@
 
   .register-container {
     min-width: 0;
-    max-width: 80vw;
+    max-width: 85vw;
     width: 90vw;
     border-radius: 0.5rem;
-    margin-top: 10rem;
+    margin-top: 7rem;
     margin-bottom: 10rem;
-    padding: 1.2rem 0.5rem 2rem 0.5rem;
-    box-shadow: none;
+    padding: 1.5rem 1rem;
     box-sizing: border-box;
   }
 
