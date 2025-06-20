@@ -23,8 +23,6 @@ const allowedOrigins = [
   'http://localhost:3000',
   'https://1pa1.xyz',
   'https://www.1pa1.xyz',
-  'http://1pa1.xyz',
-  'http://www.1pa1.xyz'
 ];
 
 app.use(cors({
