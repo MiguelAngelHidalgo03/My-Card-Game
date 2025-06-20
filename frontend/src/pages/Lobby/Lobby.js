@@ -12,8 +12,8 @@ import {
 } from './LobbyAnimation';
 
 const AVAILABLE_MODES = [
-  { key: 'normal', title: '🎲 Modo Normal', description: 'Se juega con las reglas estándar y nuestras cartas especiales.', img: '/assests/img/GameModes/1pa1mode.png' },
   { key: 'noSpecials', title: '🚫 Modo Clásico', description: 'El juego clásico sin nuestras cartas especiales.', img: '/assests/img/GameModes/ClassicMode.png' },
+  { key: 'normal', title: '🎲 Modo Normal', description: 'Se juega con las reglas estándar y nuestras cartas especiales.', img: '/assests/img/GameModes/1pa1mode.png' },
   { key: 'quick', title: '⏱️ Modo Rápido', description: 'Perfecto para partidas cortas y emocionantes.', img: '/assests/img/GameModes/FastMode.png' },
   { key: 'challenge', title: '🎯 Modo Desafío', description: 'Objetivos adicionales en cada partida.', img: '/assests/img/GameModes/Challenge.png' },
 ];
@@ -280,7 +280,7 @@ socket.off('player-left', handlePlayersList);
 </div>
     <div className="lobby-mode-cards">
   {AVAILABLE_MODES.map((m, idx) => {
-  const isComingSoon = idx >= AVAILABLE_MODES.length - 2;
+  const isComingSoon = idx >= AVAILABLE_MODES.length - 3;
   return (
     <div
       key={m.key}
