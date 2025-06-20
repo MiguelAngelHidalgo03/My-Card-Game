@@ -15,6 +15,7 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   font-family: 'Segoe UI', sans-serif;
   color: #333;
+  margin-bottom: 4rem;
 }
 
 .ranking-page h1 {
@@ -111,6 +112,9 @@
     margin: 0;
     padding: 0;
   }
+  .ranking-page {
+  margin-bottom: -10rem !important;
+}
 
   .ranking-container {
     width: 95vw;
@@ -125,12 +129,14 @@
 
   .ranking-table {
     width: 100%;
-    min-width: 400px;
+    max-width: 350px !important;
     display: block;
     overflow-x: auto;
     border-radius: 0.5rem;
-    margin: 1rem 0 0 0;
+    margin: 0 auto;
+    margin-top: 1rem;
     box-sizing: border-box;
+    
   }
 
   .ranking-table table,
@@ -234,15 +240,42 @@
 
 @media (max-width: 400px) {
  
-  .ranking-table {
+.ranking-table {
     width: 100%;
-    min-width: 300px;
+    max-width: 320px !important;
     display: block;
     overflow-x: auto;
     border-radius: 0.5rem;
-    margin: 1rem 0 0 0;
+    margin: 0 auto;
+    margin-top: 1rem;
     box-sizing: border-box;
   }
+    .ranking-page {
+  margin-bottom: 4rem !important;
+}
+
+.ranking-table thead tr {
+  background-color: #6450F5;
+}
+
+.ranking-table th {
+  padding: 0.8rem;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.ranking-table td {
+  padding: 0.8rem;
+  text-align: left;
+  font-size: 1rem;
+}
+
+.ranking-table th {
+  color: #f4bc55;
+  font-size: 1rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
 
 }
 

@@ -31,7 +31,7 @@ export default class ChatManager {
 
   showNotification(username, text, avatarKey) {
     // --- Toast visual usando Phaser ---
-    console.log('[ChatManager] Mostrando notificación:', username, text, avatarKey);
+    // console.log('[ChatManager] Mostrando notificación:', username, text, avatarKey);
     if (!this.scene.activeToasts) this.scene.activeToasts = [];
 
     const toastW = 300;

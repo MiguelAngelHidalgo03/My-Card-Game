@@ -23,7 +23,7 @@ export default function registerSocketHandlers(scene, gameLogic) {
 
   // ——— Reconexión (re-emite estado completo, sin animaciones) —————
   socket.on('reconnected', payload => {
-    console.log('[SocketHandlers] reconnected', payload);
+    // console.log('[SocketHandlers] reconnected', payload);
     scene.gameState = GameState.fromServerPayload(payload);
     // fuerza re-render inmediato de mano/tablero/panel
     scene.applyGameState(scene.gameState);
@@ -39,7 +39,7 @@ export default function registerSocketHandlers(scene, gameLogic) {
 
   // ——— Fin de partida —————————————————————————————————————
   socket.on('game-ended', ({ winnerPlayerId }) => {
-     console.log('[SocketHandlers] allPlayers:', scene.allPlayers);
+    //  console.log('[SocketHandlers] allPlayers:', scene.allPlayers);
     const winner = scene.allPlayers.find(p => p.playerId === winnerPlayerId);
     scene.scene.start('WinScene', {
       winnerName: winner?.username || 'Nadie',
@@ -82,7 +82,7 @@ export default function registerSocketHandlers(scene, gameLogic) {
   // ——— Inicio de partida: inicializa módulos con el estado inicial —————
   socket.on('game-started', payload => {
     // limpio cualquier animación previa
-    console.log('[SocketHandlers] game-started payload:', payload);
+    // console.log('[SocketHandlers] game-started payload:', payload);
     scene._remotePlayAnimating = false;
     scene.isAnimating = false;
     scene.input.enabled = true;
@@ -111,7 +111,7 @@ export default function registerSocketHandlers(scene, gameLogic) {
     scene.showToast?.(reason || 'No puedes robar carta');
     scene.isDrawing = false;
     scene.input.enabled = true;
-    console.log('[isDrawing] draw-error recibido, desbloqueando:', scene.isDrawing);
+    // console.log('[isDrawing] draw-error recibido, desbloqueando:', scene.isDrawing);
   });
 
   // ——— Estado de juego continuo: pausa si hay animación remota —————
@@ -197,11 +197,11 @@ socket.on('choose-color-request', ({ code }) => {
 });
 
 socket.on('uno-alert', ({ playerId, position }) => {
-   console.log(`[UNO][FRONTEND] Recibido uno-alert: playerId=${playerId}, position=${position}`);
+  //  console.log(`[UNO][FRONTEND] Recibido uno-alert: playerId=${playerId}, position=${position}`);
   scene.showUnoButton(playerId, position);
 });
 socket.on('uno-resolved', ({ winner, penalized, unoPlayer }) => {
-  console.log(`[UNO][FRONTEND] Recibido uno-resolved: winner=${winner}, penalized=${penalized}, unoPlayer=${unoPlayer}`);
+  // console.log(`[UNO][FRONTEND] Recibido uno-resolved: winner=${winner}, penalized=${penalized}, unoPlayer=${unoPlayer}`);
   scene.hideUnoButton();
   if (penalized === scene.playerId) {
     scene.showNotification?.('¡No pulsaste UNO a tiempo! +2 cartas', '', 'avatar-local');

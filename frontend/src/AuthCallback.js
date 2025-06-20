@@ -28,7 +28,7 @@ const AuthCallback = () => {
           if (error) {
             console.error('Error al restaurar la sesión:', error.message)
           } else {
-            console.log('Sesión restaurada y email actualizado correctamente.')
+            // console.log('Sesión restaurada y email actualizado correctamente.')
           }
 
           navigate('/')  

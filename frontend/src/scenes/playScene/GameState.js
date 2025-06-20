@@ -11,7 +11,7 @@ export default class GameState {
     this.chosenColor = chosenColor || null;
     this.lastColorChooser = lastColorChooser || null;
     this.pendingPenalty = pendingPenalty || null;
-    console.log('[GameState] Construido con currentPlayerId:', currentPlayerId);
+    // console.log('[GameState] Construido con currentPlayerId:', currentPlayerId);
   }
 
   // Factory que podrías usar en el cliente tras recibir payload:
@@ -74,7 +74,7 @@ export default class GameState {
 
   // Opcional: para la UI
   isCardPlayable(card, topDiscard) {
-    console.log('[isCardPlayable] card:', card, 'topDiscard:', topDiscard, 'chosenColor:', this.chosenColor);
+    // console.log('[isCardPlayable] card:', card, 'topDiscard:', topDiscard, 'chosenColor:', this.chosenColor);
     const c = this.parseCardFrame(card.frame);
     const t = this.parseCardFrame(topDiscard.frame);
 

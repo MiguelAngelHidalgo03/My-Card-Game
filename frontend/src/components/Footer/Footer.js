@@ -6,12 +6,6 @@ function Footer() {
     <div className="footer">
       <div className="footer-content">
         <div className="footer-section">
-          <h4>Contactos</h4>
-          <p>Miguel Ángel</p>
-          <p>Kang Ping</p>
-          <p>Juan Aleksander</p>
-        </div>
-        <div className="footer-section">
           <h4>GitHub</h4>
           <ul>
             <li><a href="https://github.com/MiguelAngelHidalgo03" target="_blank" rel="noopener noreferrer">Miguel Ángel</a></li>
@@ -30,13 +24,17 @@ function Footer() {
         </div>
       </div>
       <div className="footer-bottom">
-        <p>© 2025 1pa1. Todos los derechos reservados.</p>
-        <p>Creado con ❤️ por el equipo.</p>
-        <div className="footer-links">
-          <a href="/privacy-policy" className="footer-link">Privacy Policy</a>
-          <span> | </span>
-          <a href="/manage-cookies" className="footer-link">Manage Cookies</a>
-        </div>
+        <p>
+          <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">
+            <img class="creativeImg" src="https://licensebuttons.net/l/by-sa/4.0/88x31.png" alt="Licencia Creative Commons" />
+          </a>
+          </p>
+          <p class="CC">
+          Esta obra está bajo una{' '}
+          <a class="creativeEn" href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">
+             licencia de Creative Commons Reconocimiento - Compartir Igual 4.0 Internacional
+          </a>.
+        </p>
       </div>
     </div>
   );

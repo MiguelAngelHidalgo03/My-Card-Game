@@ -30,7 +30,7 @@ export default function GameCanvas() {
     if (!id) {
       id = crypto.randomUUID();
       localStorage.setItem('clientId', id);
-      console.log('[GameCanvas] Nuevo clientId generado:', id);
+      // console.log('[GameCanvas] Nuevo clientId generado:', id);
     }
     return id;
   }, []);

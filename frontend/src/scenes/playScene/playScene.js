@@ -157,16 +157,16 @@ export default class PlayScene extends Phaser.Scene {
       this.remotePlayer = this.allPlayers[1];
       console.warn('No se pudo determinar el jugador local, usando el primero de la lista');
     }
-    console.log('[PlayScene:init] data.userId:', data.userId, 'data.clientId:', data.clientId);
+    // console.log('[PlayScene:init] data.userId:', data.userId, 'data.clientId:', data.clientId);
     console.log('[PlayScene:init] allPlayers:', this.allPlayers.map(p => ({
       username: p.username,
       userId: p.userId,
       clientId: p.clientId,
       playerId: p.playerId
     })));
-    console.log('[PlayScene:init] localPlayer:', this.localPlayer);
-    console.log('[PlayScene:init] remotePlayer:', this.remotePlayer);
-    console.log('[PlayScene:init] playerId:', this.playerId);
+    // console.log('[PlayScene:init] localPlayer:', this.localPlayer);
+    // console.log('[PlayScene:init] remotePlayer:', this.remotePlayer);
+    // console.log('[PlayScene:init] playerId:', this.playerId);
     // FUERZA EL ORDEN: local primero, rival después
     const players = [this.localPlayer, this.remotePlayer];
 
@@ -422,7 +422,7 @@ window.dispatchEvent(new Event('phaser-scene-changed'));
     if (this.turnManager) this.turnManager.update();
     this.isAnimating = false;
     this.input.enabled = true;
-    console.log('[FRONTEND] applyGameState: localHand', this.gameState.localHand);
+    // console.log('[FRONTEND] applyGameState: localHand', this.gameState.localHand);
   }
   showUnoButton(playerId, position) {
     if (this.unoBtn) return;
@@ -516,14 +516,14 @@ window.dispatchEvent(new Event('phaser-scene-changed'));
         graphics.setAlpha(1);
         unoText.setScale(1.1);
         this.time.delayedCall(80, () => unoText.setScale(1), [], this);
-        console.log('[UNO][FRONTEND] Botón UNO pulsado. Emitiendo uno-pressed:', { code: this.code, playerId: this.playerId });
+        // console.log('[UNO][FRONTEND] Botón UNO pulsado. Emitiendo uno-pressed:', { code: this.code, playerId: this.playerId });
         socket.emit('uno-pressed', { code: this.code, playerId: this.playerId });
         this.hideUnoButton();
       });
   }
   hideUnoButton() {
     if (this.unoBtn) {
-      console.log('[UNO][FRONTEND] Ocultando botón UNO');
+      // console.log('[UNO][FRONTEND] Ocultando botón UNO');
       this.unoBtn.destroy();
       this.unoBtn = null;
       this.unoBtnPosition = null;

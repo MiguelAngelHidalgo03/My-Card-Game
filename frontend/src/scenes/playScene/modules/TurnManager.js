@@ -10,10 +10,10 @@ export default class TurnManager {
 
   update() {
   const s = this.scene;
-  console.log('[TurnManager] playerId:', s.playerId, 'currentPlayerId:', this.gameState.currentPlayerId);
+  // console.log('[TurnManager] playerId:', s.playerId, 'currentPlayerId:', this.gameState.currentPlayerId);
 
   const isLocal = this.gameState.isLocalTurn(s.playerId);
-  console.log('[TurnManager] update: s.playerId=', s.playerId, 'gameState.currentPlayerId=', this.gameState.currentPlayerId);
+  // console.log('[TurnManager] update: s.playerId=', s.playerId, 'gameState.currentPlayerId=', this.gameState.currentPlayerId);
 
   // 1) Enable or disable all Phaser input based on whose turn it is
   s.input.enabled = isLocal;

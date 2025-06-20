@@ -57,9 +57,22 @@ html, body {
   transition: color 0.3s;
 }
 
+.footer-bottom  a {
+  color: #C86BF5;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-bottom  a:hover {
+  color: #D2F567;
+}
+
 .footer-section ul li a:hover {
   color: #D2F567;
 }
+.CC{
+  max-width: 450px;
+  margin: 0 auto;}
 
 .footer-bottom {
   margin-top: 2rem;

@@ -15,10 +15,14 @@ export const createUser = async (req, res) => {
     return res.status(400).json({ error: 'Todos los campos son obligatorios' });
   }
 
-  // Validar longitud de la contraseña
-  if (password.length < 6) {
-    return res.status(400).json({ error: 'La contraseña debe tener al menos 6 caracteres' });
-  }
+ // Validar que las contraseñas sean correctas
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+
+  if (!passwordRegex.test(password)) {
+  return res.status(400).json({
+    error: 'La contraseña debe tener al menos 8 caracteres, incluyendo una letra mayúscula, una minúscula, un número y un carácter especial'
+  });
+}
 
   // Crear un usuario en Supabase Auth
   const { data: authData, error: authError } = await supabase.auth.signUp({

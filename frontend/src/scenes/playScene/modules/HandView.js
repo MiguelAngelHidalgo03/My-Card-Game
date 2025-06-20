@@ -183,7 +183,7 @@ export default class HandView {
     animateRemotePlay(cardIndex, cardFrame, onComplete) {
         const s = this.scene;
         const d = s.debug;
-        console.log(`[HandView] Animando jugada remota: cardIndex=${cardIndex}, cardFrame=${cardFrame}`);
+        // console.log(`[HandView] Animando jugada remota: cardIndex=${cardIndex}, cardFrame=${cardFrame}`);
 
         // Si hay cartas rivales, busca el sprite de origen
         let sprite = null;
@@ -658,7 +658,7 @@ export default class HandView {
         const s = this.scene;
         const width = s.scale.width;
         const isTouch = s.isTouch;
-        console.log('showHandModal: isTouch =', isTouch, 'width =', s.scale.width);
+        // console.log('showHandModal: isTouch =', isTouch, 'width =', s.scale.width);
         s.modalLock = false;
 
         // Si ya existe el modal, no lo crees de nuevo

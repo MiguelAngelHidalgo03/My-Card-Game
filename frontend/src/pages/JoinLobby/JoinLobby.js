@@ -20,7 +20,7 @@ export default function JoinLobby() {
     if (!id) {
       id = crypto.randomUUID();
       localStorage.setItem('clientId', id);
-      console.log('[JoinLobby] Nuevo clientId generado:', id);
+      // console.log('[JoinLobby] Nuevo clientId generado:', id);
     }
     return id;
   }, []);
@@ -42,7 +42,7 @@ export default function JoinLobby() {
     try {
       const res = await fetch(`/api/lobby/${code}`);
       if (!res.ok) throw new Error('Sala no existe');
-      console.log('[JoinLobby] Sala encontrada:', code);
+      // console.log('[JoinLobby] Sala encontrada:', code);
     } catch (e) {
       console.error('[JoinLobby] Validación fallida:', e);
       return alert('Sala no encontrada.');
@@ -65,7 +65,7 @@ export default function JoinLobby() {
       userId,
       clientId
     };
-    console.log('[JoinLobby] navega a /lobby con state:', state);
+    // console.log('[JoinLobby] navega a /lobby con state:', state);
 
     // 4) Navegar a Lobby (ahí se hará el join-room)
     navigate('/lobby', { state });

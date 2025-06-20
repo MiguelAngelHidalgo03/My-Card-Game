@@ -85,7 +85,7 @@ export default class BoardRenderer {
                     atlas = 'mas4';
                 }
                 // Dentro de create() y updateDiscard(), después de calcular frame y atlas:
-                console.log('[BoardRenderer] chosenColor:', s.gameState.chosenColor, 'frame:', frame, 'atlas:', atlas);
+                // console.log('[BoardRenderer] chosenColor:', s.gameState.chosenColor, 'frame:', frame, 'atlas:', atlas);
                 const tex = s.textures.get(atlas).get(frame);
                 if (!tex) {
                     console.error(`[BoardRenderer] No existe el frame ${frame} en el atlas ${atlas}`);

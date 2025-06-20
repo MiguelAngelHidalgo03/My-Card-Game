@@ -71,7 +71,7 @@ useEffect(() => {
       blocks[blocks.length - 1].items.push(m);
     }
   });
-  console.log('ChatWindow: sceneName =', sceneName);
+  // console.log('ChatWindow: sceneName =', sceneName);
 if (sceneName !== 'PlayScene') return null;
 
   return (

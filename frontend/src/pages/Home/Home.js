@@ -74,7 +74,7 @@ const handleLogoClick = () => {
 
   if (logoRef.current) {
     logoRef.current.stopAnimation && logoRef.current.stopAnimation();
-    console.log('Click detectado y animación detenida');
+    // console.log('Click detectado y animación detenida');
   }
 };
   
