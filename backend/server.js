@@ -48,8 +48,18 @@ app.use('/api',       recordRoutes);
 app.use('/api',       resetRoutes);
 
 // — HTTP + WS —
-const server = http.createServer(app);
-const io     = new Server(server, { cors: { origin: 'http://localhost:3000' } });
+const io = new Server(server, {
+  cors: {
+    origin: [
+      'http://localhost:3000',
+      'https://1pa1.xyz',
+      'https://www.1pa1.xyz'
+    ],
+    methods: ['GET', 'POST'],
+    credentials: true
+  }
+});
+
 
 // crea UNA sola instancia del service
 const gameService = initGameService(io);
