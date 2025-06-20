@@ -15,13 +15,13 @@ export default class BoardRenderer {
         this._personaAnimTimer = null;
         this.lastDiscardAngle = 0;
         this.discardSprites = [];
-    this.discardAngles = [];
+        this.discardAngles = [];
     }
     create() {
         const s = this.scene;
         const d = s.debug;
         const { width, height } = s.scale;
-        
+
 
         // --- FONDO, MESA Y BORDES EN COORDENADAS ABSOLUTAS ---
         this.bg = s.add.image(width / 2, height / 2, s.isMobile ? 'fondoMobile' : 'fondoDesktop')
@@ -43,7 +43,7 @@ export default class BoardRenderer {
         // --- DESCARTE ---
         const topDiscard = s.gameState?.discardPile?.slice(-1)[0];
         if (topDiscard) {
-            
+
             if (!this.discard) {
                 // Usa la lógica de wild/mas4 coloreado
                 let frame = topDiscard.frame;
@@ -60,39 +60,39 @@ export default class BoardRenderer {
                     atlas = 'mas4';
                 }
                 const tex = s.textures.get(atlas).get(frame);
-if (!tex) {
-    console.error(`[BoardRenderer] No existe el frame ${frame} en el atlas ${atlas}`);
-}
-const cardW = tex ? tex.width * d.discardScale : 100;
-const cardH = tex ? tex.height * d.discardScale : 150;
-this.discard = s.add.image(d.discardX, d.discardY, atlas, frame)
-    .setDisplaySize(cardW, cardH)
-    .setOrigin(0.5)
-    .setTint(d.discardTint);
-s.discard = this.discard;
+                if (!tex) {
+                    console.error(`[BoardRenderer] No existe el frame ${frame} en el atlas ${atlas}`);
+                }
+                const cardW = tex ? tex.width * d.discardScale : 100;
+                const cardH = tex ? tex.height * d.discardScale : 150;
+                this.discard = s.add.image(d.discardX, d.discardY, atlas, frame)
+                    .setDisplaySize(cardW, cardH)
+                    .setOrigin(0.5)
+                    .setTint(d.discardTint);
+                s.discard = this.discard;
             } else {
-    let frame = topDiscard.frame;
-    let atlas = 'cards';
-    if (frame === 'cambia_color.svg' && s.gameState.chosenColor) {
-        frame = getWildFrame('cambia_color', s.gameState.chosenColor);
-        atlas = 'cambiacolor';
-    } else if (frame === 'mas4.svg' && s.gameState.chosenColor) {
-        frame = getWildFrame('mas4', s.gameState.chosenColor);
-        atlas = 'mas4';
-    } else if (frame.startsWith('cambia_color')) {
-        atlas = 'cambiacolor';
-    } else if (frame.startsWith('mas4')) {
-        atlas = 'mas4';
-    }
-    // Dentro de create() y updateDiscard(), después de calcular frame y atlas:
-console.log('[BoardRenderer] chosenColor:', s.gameState.chosenColor, 'frame:', frame, 'atlas:', atlas);
-    const tex = s.textures.get(atlas).get(frame);
-if (!tex) {
-    console.error(`[BoardRenderer] No existe el frame ${frame} en el atlas ${atlas}`);
-}
-    this.discard.setTexture(atlas, frame);
-    this.discard.setDisplaySize(tex.width * d.discardScale, tex.height * d.discardScale);
-}
+                let frame = topDiscard.frame;
+                let atlas = 'cards';
+                if (frame === 'cambia_color.svg' && s.gameState.chosenColor) {
+                    frame = getWildFrame('cambia_color', s.gameState.chosenColor);
+                    atlas = 'cambiacolor';
+                } else if (frame === 'mas4.svg' && s.gameState.chosenColor) {
+                    frame = getWildFrame('mas4', s.gameState.chosenColor);
+                    atlas = 'mas4';
+                } else if (frame.startsWith('cambia_color')) {
+                    atlas = 'cambiacolor';
+                } else if (frame.startsWith('mas4')) {
+                    atlas = 'mas4';
+                }
+                // Dentro de create() y updateDiscard(), después de calcular frame y atlas:
+                console.log('[BoardRenderer] chosenColor:', s.gameState.chosenColor, 'frame:', frame, 'atlas:', atlas);
+                const tex = s.textures.get(atlas).get(frame);
+                if (!tex) {
+                    console.error(`[BoardRenderer] No existe el frame ${frame} en el atlas ${atlas}`);
+                }
+                this.discard.setTexture(atlas, frame);
+                this.discard.setDisplaySize(tex.width * d.discardScale, tex.height * d.discardScale);
+            }
         }
 
         // --- DRAWPILE ---
@@ -242,59 +242,59 @@ if (!tex) {
     }
 
     updateDiscard(angle = null) {
-    const s = this.scene;
-    const d = s.debug;
-    const discardPile = s.gameState?.discardPile || [];
-    const topN = 4;
-    // Si llega un ángulo, guárdalo para la última carta
-    if (angle !== null) {
-        if (!this.discardAngles) this.discardAngles = [];
-        this.discardAngles.push(angle);
-        // Limita a las últimas 4
-        if (this.discardAngles.length > topN) this.discardAngles = this.discardAngles.slice(-topN);
-    }
-    // Si no llega ángulo, rellena con 0s si hace falta
-    while (this.discardAngles.length < Math.min(topN, discardPile.length)) {
-        this.discardAngles.unshift(0);
-    }
-
-    // Elimina sprites viejos
-    this.discardSprites.forEach(spr => spr.destroy());
-    this.discardSprites = [];
-
-    // Crea hasta 4 sprites de discard apilados
-    const start = Math.max(0, discardPile.length - topN);
-    for (let i = start; i < discardPile.length; i++) {
-        let frame = discardPile[i].frame;
-        let atlas = 'cards';
-        if (frame === 'cambia_color.svg' && s.gameState.chosenColor) {
-            frame = getWildFrame('cambia_color', s.gameState.chosenColor);
-            atlas = 'cambiacolor';
-        } else if (frame === 'mas4.svg' && s.gameState.chosenColor) {
-            frame = getWildFrame('mas4', s.gameState.chosenColor);
-            atlas = 'mas4';
-        } else if (frame.startsWith('cambia_color')) {
-            atlas = 'cambiacolor';
-        } else if (frame.startsWith('mas4')) {
-            atlas = 'mas4';
+        const s = this.scene;
+        const d = s.debug;
+        const discardPile = s.gameState?.discardPile || [];
+        const topN = 4;
+        // Si llega un ángulo, guárdalo para la última carta
+        if (angle !== null) {
+            if (!this.discardAngles) this.discardAngles = [];
+            this.discardAngles.push(angle);
+            // Limita a las últimas 4
+            if (this.discardAngles.length > topN) this.discardAngles = this.discardAngles.slice(-topN);
         }
-        const tex = s.textures.get(atlas).get(frame);
-        const cardW = tex ? tex.width * d.discardScale : 100;
-        const cardH = tex ? tex.height * d.discardScale : 150;
-        // Desplaza cada carta un poco para que se vean apiladas
-        // const offset = (i - start) * 10; 
-        const spr = s.add.image(d.discardX , d.discardY, atlas, frame)
-            .setDisplaySize(cardW, cardH)
-            .setOrigin(0.5)
-            .setTint(d.discardTint)
-            .setDepth(1000 + i)
-            .setAngle(this.discardAngles[i - start] || 0);
-        this.discardSprites.push(spr);
+        // Si no llega ángulo, rellena con 0s si hace falta
+        while (this.discardAngles.length < Math.min(topN, discardPile.length)) {
+            this.discardAngles.unshift(0);
+        }
+
+        // Elimina sprites viejos
+        this.discardSprites.forEach(spr => spr.destroy());
+        this.discardSprites = [];
+
+        // Crea hasta 4 sprites de discard apilados
+        const start = Math.max(0, discardPile.length - topN);
+        for (let i = start; i < discardPile.length; i++) {
+            let frame = discardPile[i].frame;
+            let atlas = 'cards';
+            if (frame === 'cambia_color.svg' && s.gameState.chosenColor) {
+                frame = getWildFrame('cambia_color', s.gameState.chosenColor);
+                atlas = 'cambiacolor';
+            } else if (frame === 'mas4.svg' && s.gameState.chosenColor) {
+                frame = getWildFrame('mas4', s.gameState.chosenColor);
+                atlas = 'mas4';
+            } else if (frame.startsWith('cambia_color')) {
+                atlas = 'cambiacolor';
+            } else if (frame.startsWith('mas4')) {
+                atlas = 'mas4';
+            }
+            const tex = s.textures.get(atlas).get(frame);
+            const cardW = tex ? tex.width * d.discardScale : 100;
+            const cardH = tex ? tex.height * d.discardScale : 150;
+            // Desplaza cada carta un poco para que se vean apiladas
+            // const offset = (i - start) * 10; 
+            const spr = s.add.image(d.discardX, d.discardY, atlas, frame)
+                .setDisplaySize(cardW, cardH)
+                .setOrigin(0.5)
+                .setTint(d.discardTint)
+                .setDepth(1000 + i)
+                .setAngle(this.discardAngles[i - start] || 0);
+            this.discardSprites.push(spr);
+        }
+        // El sprite superior es el "oficial" para efectos
+        this.discard = this.discardSprites[this.discardSprites.length - 1];
+        s.discard = this.discard;
     }
-    // El sprite superior es el "oficial" para efectos
-    this.discard = this.discardSprites[this.discardSprites.length - 1];
-    s.discard = this.discard;
-}
 }
 function getWildFrame(base, color) {
     // base: 'cambia_color' o 'mas4'

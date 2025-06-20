@@ -8,6 +8,7 @@ import socket    from '../../utils/sockets';
 import Alert     from '@mui/material/Alert';
 import Slide     from '@mui/material/Slide';
 import ChatWindow from '../../scenes/playScene/ChatWindows';
+import LoadingScene from '../../scenes/LoadingScene';
 
 // import { debug } from 'console';
 
@@ -106,7 +107,7 @@ export default function GameCanvas() {
       gm.scene.stop('WinScene');
     }
     // Ahora arrancamos PlayScene con el nuevo estado
-    gm.scene.start('PlayScene', {
+    gm.scene.start('LoadingScene', {
       ...newState,
       debugMode, isMobile
     });
@@ -199,7 +200,7 @@ const {
     resolution: window.devicePixelRatio  // esto sube la resolución de todo: sprites, texto, etc.
   },
         physics: { default: 'arcade' },
-        scene: [ PlayScene, WinScene ]
+        scene: [ LoadingScene, PlayScene, WinScene ]
       };
       const game = new Phaser.Game(cfg);
       window._phaserGame = game;
@@ -207,11 +208,15 @@ const {
         navigate('/lobby');
       });
       game.events.on('restart-game', payload => {
-        game.scene.start('PlayScene', { ...payload, debugMode, isMobile });
+          const gm = window._phaserGame;
+       gm.scene.start('LoadingScene', {
+  ...newState,
+  debugMode, isMobile
+});
       });
 
       const enriched = { ...newState, mySocketId: socket.id, debugMode, isMobile };
-      game.scene.start('PlayScene', enriched);
+      game.scene.start('LoadingScene', enriched);
 
       // Debounce resize
       onResizeHandler = () => {
@@ -314,11 +319,13 @@ const {
           overflow:'hidden'
         }}
       />
-      <ChatWindow
-      code={urlCode}
-      username={chatUsername}
-      avatar={chatAvatar}
-      />
+     {window._phaserGame?.scene.isActive('WinScene') || window._phaserGame?.scene.isActive('LoadingScene') ? null : (
+  <ChatWindow
+    code={urlCode}
+    username={chatUsername}
+    avatar={chatAvatar}
+  />
+)}
     </>
   );
 }

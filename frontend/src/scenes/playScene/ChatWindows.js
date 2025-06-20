@@ -7,9 +7,15 @@ export default function ChatWindow({ code, username, avatar, onToggle }) {
   const [msgs, setMsgs] = useState([]);
   const [text, setText] = useState('');
   const listRef = useRef();
-  
-  
-
+  const [sceneName, setSceneName] = useState('');
+  useEffect(() => {
+  const checkScene = () => {
+    setSceneName(window._phaserActiveScene || '');
+  };
+  checkScene();
+  window.addEventListener('phaser-scene-changed', checkScene);
+  return () => window.removeEventListener('phaser-scene-changed', checkScene);
+}, []);
 useEffect(() => {
   // sigue manteniendo el pointer-events para móvil…
   const wrapper = document.querySelector('.game-canvas');
@@ -23,7 +29,7 @@ useEffect(() => {
       ? 'disable-phaser-input'
       : 'enable-phaser-input'
   ));
-
+    
   return () => {
     if (wrapper) wrapper.style.pointerEvents = 'auto';
     if (canvas)  canvas .style.pointerEvents = 'auto';
@@ -65,8 +71,11 @@ useEffect(() => {
       blocks[blocks.length - 1].items.push(m);
     }
   });
+  console.log('ChatWindow: sceneName =', sceneName);
+if (sceneName !== 'PlayScene') return null;
 
   return (
+    
    <div className={`chat-window ${open ? 'open' : ''}`}>
     <button className="chat-toggle" onClick={() => setOpen(o => !o)}>
         {open ? '×' : '💬'}

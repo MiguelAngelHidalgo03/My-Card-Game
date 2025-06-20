@@ -15,6 +15,10 @@ export default class HandView {
 
     updateHandsAndLayout() {
         const s = this.scene;
+        if (!s || !s.add || !s.textures.exists('cards')) {
+            console.warn('[HandView] Escena o textura cards no lista, no se puede crear sprites.');
+            return;
+        }
         const d = s.debug;
         const isLocal = this.gameState.isLocalTurn(s.playerId);
 
@@ -33,6 +37,10 @@ export default class HandView {
         }
         // 2) crear sprites de mano local
         this.gameState.localHand.forEach((card, idx) => {
+            if (!s.textures.get('cards').has(card.frame)) {
+                console.error('[HandView] Frame no encontrado:', card.frame);
+                return; // O usa un placeholder
+            }
             const img = s.add.image(0, 0, 'cards', card.frame)
                 .setOrigin(0.5)
                 .setTint(d.cardTint)
@@ -102,40 +110,40 @@ export default class HandView {
     }
 
     // Nueva función auxiliar para el vuelo al discard
-   _flyToDiscard(sprite, card, idx, d) {
-    const s = this.scene;
-    const discardX = s.discard ? s.discard.x : d.discardX;
-    const discardY = s.discard ? s.discard.y : d.discardY;
+    _flyToDiscard(sprite, card, idx, d) {
+        const s = this.scene;
+        const discardX = s.discard ? s.discard.x : d.discardX;
+        const discardY = s.discard ? s.discard.y : d.discardY;
 
-    if (sprite && sprite.sys) {
-        sprite.disableInteractive().setDepth(1000);
-    } else if (sprite) {
-        sprite.setDepth(1000);
-    }
-
-    sprite.disableInteractive().setDepth(1000);
-    const angle = Phaser.Math.Between(-16, 16); // Ángulo aleatorio más realista
-
-    s.tweens.add({
-        targets: sprite,
-        x: discardX,
-        y: discardY,
-        angle,
-        scale: d.discardScale,
-        duration: 700,
-        ease: 'Cubic.easeIn',
-        onComplete: () => {
-            if (s.board && typeof s.board.updateDiscard === 'function') {
-                s.board.updateDiscard(angle); // <-- PASA EL ÁNGULO
-            }
-            this.handlePlayCard(card, idx);
-            const isWild = card.frame === 'cambia_color.svg';
-            if (isWild) {
-                s.events.emit('wild-played', { x: discardX, y: discardY });
-            }
+        if (sprite && sprite.sys) {
+            sprite.disableInteractive().setDepth(1000);
+        } else if (sprite) {
+            sprite.setDepth(1000);
         }
-    });
-}
+
+        sprite.disableInteractive().setDepth(1000);
+        const angle = Phaser.Math.Between(-16, 16); // Ángulo aleatorio más realista
+
+        s.tweens.add({
+            targets: sprite,
+            x: discardX,
+            y: discardY,
+            angle,
+            scale: d.discardScale,
+            duration: 700,
+            ease: 'Cubic.easeIn',
+            onComplete: () => {
+                if (s.board && typeof s.board.updateDiscard === 'function') {
+                    s.board.updateDiscard(angle); // <-- PASA EL ÁNGULO
+                }
+                this.handlePlayCard(card, idx);
+                const isWild = card.frame === 'cambia_color.svg';
+                if (isWild) {
+                    s.events.emit('wild-played', { x: discardX, y: discardY });
+                }
+            }
+        });
+    }
 
     handlePlayCard(card, idx) {
         const s = this.scene;
@@ -173,147 +181,148 @@ export default class HandView {
     }
 
     animateRemotePlay(cardIndex, cardFrame, onComplete) {
-    const s = this.scene;
-    const d = s.debug;
-    console.log(`[HandView] Animando jugada remota: cardIndex=${cardIndex}, cardFrame=${cardFrame}`);
+        const s = this.scene;
+        const d = s.debug;
+        console.log(`[HandView] Animando jugada remota: cardIndex=${cardIndex}, cardFrame=${cardFrame}`);
 
-    // Si hay cartas rivales, busca el sprite de origen
-    let sprite = null;
-    let useFallback = false;
-    if (cardIndex !== null && cardIndex !== undefined) {
-        const remoteSprites = [...s.rivalSprites].reverse();
-        sprite = remoteSprites[cardIndex];
-    } else if (s.rivalSprites && s.rivalSprites.length > 0) {
-        // Si no hay índice, usa la carta más a la derecha (la última jugada)
-        sprite = [...s.rivalSprites].reverse()[0];
-    } else {
-        useFallback = true;
-    }
+        // Si hay cartas rivales, busca el sprite de origen
+        let sprite = null;
+        let useFallback = false;
+        if (cardIndex !== null && cardIndex !== undefined) {
+            const remoteSprites = [...s.rivalSprites].reverse();
+            sprite = remoteSprites[cardIndex];
+        } else if (s.rivalSprites && s.rivalSprites.length > 0) {
+            // Si no hay índice, usa la carta más a la derecha (la última jugada)
+            sprite = [...s.rivalSprites].reverse()[0];
+        } else {
+            useFallback = true;
+        }
 
-    if (sprite) {
-        const discardX = s.discard ? s.discard.x : d.discardX;
-        const discardY = s.discard ? s.discard.y : d.discardY;
-        const discardW = s.discard ? s.discard.displayWidth : 110 * d.discardScale;
-        const discardH = s.discard ? s.discard.displayHeight : 154 * d.discardScale;
+        if (sprite) {
+            const discardX = s.discard ? s.discard.x : d.discardX;
+            const discardY = s.discard ? s.discard.y : d.discardY;
+            const discardW = s.discard ? s.discard.displayWidth : 110 * d.discardScale;
+            const discardH = s.discard ? s.discard.displayHeight : 154 * d.discardScale;
 
-        const temp = s.add.image(sprite.x, sprite.y, 'cards', 'Reverso_Carta.svg')
-            .setOrigin(0.5)
-            .setDisplaySize(sprite.displayWidth, sprite.displayHeight)
-            .setDepth(2000);
+            const temp = s.add.image(sprite.x, sprite.y, 'cards', 'Reverso_Carta.svg')
+                .setOrigin(0.5)
+                .setDisplaySize(sprite.displayWidth, sprite.displayHeight)
+                .setDepth(2000);
 
-        const startW = sprite.displayWidth;
-        const startH = sprite.displayHeight;
+            const startW = sprite.displayWidth;
+            const startH = sprite.displayHeight;
 
-        // Vuelo al discard interpolando tamaño y posición de forma suave
-        s.tweens.add({
-            targets: temp,
-            x: discardX,
-            y: discardY,
-            duration: 700,
-            ease: 'Cubic.easeInOut',
-            onUpdate: tween => {
-                // Interpola el tamaño durante el vuelo
-                const progress = tween.progress;
-                const w = Phaser.Math.Linear(startW, discardW, progress);
-                const h = Phaser.Math.Linear(startH, discardH, progress);
-                temp.setDisplaySize(w, h);
-            },
-            onComplete: () => {
-                // Giro (scaleX: 1 -> 0) y cambio de textura
-                s.tweens.add({
-                    targets: temp,
-                    scaleX: 0,
-                    duration: 180,
-                    ease: 'Linear',
-                    onComplete: () => {
-                        temp.setTexture('cards', cardFrame);
+            // Vuelo al discard interpolando tamaño y posición de forma suave
+            s.tweens.add({
+                targets: temp,
+                x: discardX,
+                y: discardY,
+                duration: 700,
+                ease: 'Cubic.easeInOut',
+                onUpdate: tween => {
+                    // Interpola el tamaño durante el vuelo
+                    const progress = tween.progress;
+                    const w = Phaser.Math.Linear(startW, discardW, progress);
+                    const h = Phaser.Math.Linear(startH, discardH, progress);
+                    temp.setDisplaySize(w, h);
+                },
+                onComplete: () => {
+                    // Giro (scaleX: 1 -> 0) y cambio de textura
+                    s.tweens.add({
+                        targets: temp,
+                        scaleX: 0,
+                        duration: 180,
+                        ease: 'Linear',
+                        onComplete: () => {
+                            temp.setTexture('cards', cardFrame);
 
-                        // --- ACTUALIZA EL LAYOUT AQUÍ ---
-                        if (s.board && typeof s.board.updateDiscard === 'function') {
-                            s.board.updateDiscard();
-                        }
-
-                        // Toma el tamaño real del discard tras el update
-                        let finalW = discardW, finalH = discardH;
-                        if (s.discard) {
-                            finalW = s.discard.displayWidth;
-                            finalH = s.discard.displayHeight;
-                        }
-
-                        // Segunda parte: giro (scaleX: 0 -> 1) y resize a tamaño real del discard
-                        s.tweens.add({
-                            targets: temp,
-                            scaleX: 1,
-                            duration: 180,
-                            ease: 'Linear',
-                            onUpdate: tween => {
-                                // Interpola el tamaño desde el tamaño actual al final
-                                const progress = tween.progress;
-                                const w = Phaser.Math.Linear(temp.displayWidth, finalW, progress);
-                                const h = Phaser.Math.Linear(temp.displayHeight, finalH, progress);
-                                temp.setDisplaySize(w, h);
-                            },
-                            onComplete: () => {
-                                // Rebote final para integración visual y efecto de brillo
-                                s.tweens.add({
-                                    targets: temp,
-                                    scale: { from: 0.3, to: 0.4 },
-                                    duration: 140,
-                                    yoyo: true,
-                                    onStart: () => {
-                                        temp.setTint(0xffffcc);
-                                    },
-                                    onComplete: () => {
-                                        temp.clearTint();
-                                        setTimeout(() => {
-                                            temp.destroy();
-                                            if (s.discard) s.discard.setTexture('cards', cardFrame);
-                                            if (onComplete) onComplete();
-                                        }, 120);
-                                    }
-                                });
+                            // --- ACTUALIZA EL LAYOUT AQUÍ ---
+                            if (s.board && typeof s.board.updateDiscard === 'function') {
+                                s.board.updateDiscard();
                             }
-                        });
-                    }
-                });
-            }
-        });
-        return;
-    }
 
-    // Fallback: zoom sobre el discard (si no hay cartas rivales)
-    if (useFallback && s.discard) {
-        const originalScaleX = s.discard.scaleX;
-        const originalScaleY = s.discard.scaleY;
-        const zoomFactor = 1.08;
-        s.tweens.add({
-            targets: s.discard,
-            scaleX: originalScaleX * zoomFactor,
-            scaleY: originalScaleY * zoomFactor,
-            duration: 220,
-            yoyo: true,
-            repeat: 1,
-            onStart: () => s.discard.setTexture('cards', cardFrame),
-            onComplete: () => {
-                s.discard.setScale(originalScaleX, originalScaleY);
-                if (onComplete) onComplete();
-            }
-        });
-    } else if (onComplete) {
-        onComplete();
+                            // Toma el tamaño real del discard tras el update
+                            let finalW = discardW, finalH = discardH;
+                            if (s.discard) {
+                                finalW = s.discard.displayWidth;
+                                finalH = s.discard.displayHeight;
+                            }
+
+                            // Segunda parte: giro (scaleX: 0 -> 1) y resize a tamaño real del discard
+                            s.tweens.add({
+                                targets: temp,
+                                scaleX: 1,
+                                duration: 180,
+                                ease: 'Linear',
+                                onUpdate: tween => {
+                                    // Interpola el tamaño desde el tamaño actual al final
+                                    const progress = tween.progress;
+                                    const w = Phaser.Math.Linear(temp.displayWidth, finalW, progress);
+                                    const h = Phaser.Math.Linear(temp.displayHeight, finalH, progress);
+                                    temp.setDisplaySize(w, h);
+                                },
+                                onComplete: () => {
+                                    // Rebote final para integración visual y efecto de brillo
+                                    s.tweens.add({
+                                        targets: temp,
+                                        scale: { from: 0.3, to: 0.4 },
+                                        duration: 140,
+                                        yoyo: true,
+                                        onStart: () => {
+                                            temp.setTint(0xffffcc);
+                                        },
+                                        onComplete: () => {
+                                            temp.clearTint();
+                                            setTimeout(() => {
+                                                temp.destroy();
+                                                if (s.discard) s.discard.setTexture('cards', cardFrame);
+                                                if (onComplete) onComplete();
+                                            }, 120);
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+            return;
+        }
+
+        // Fallback: zoom sobre el discard (si no hay cartas rivales)
+        if (useFallback && s.discard) {
+            const originalScaleX = s.discard.scaleX;
+            const originalScaleY = s.discard.scaleY;
+            const zoomFactor = 1.08;
+            s.tweens.add({
+                targets: s.discard,
+                scaleX: originalScaleX * zoomFactor,
+                scaleY: originalScaleY * zoomFactor,
+                duration: 220,
+                yoyo: true,
+                repeat: 1,
+                onStart: () => s.discard.setTexture('cards', cardFrame),
+                onComplete: () => {
+                    s.discard.setScale(originalScaleX, originalScaleY);
+                    if (onComplete) onComplete();
+                }
+            });
+        } else if (onComplete) {
+            onComplete();
+        }
+        if (s.board && typeof s.board.updateDiscard === 'function') {
+            const angle = Phaser.Math.Between(-16, 16); // Ángulo aleatorio
+            s.board.updateDiscard(angle);
+        }
     }
-    if (s.board && typeof s.board.updateDiscard === 'function') {
-    const angle = Phaser.Math.Between(-16, 16); // Ángulo aleatorio
-    s.board.updateDiscard(angle);
-}
-}
 
     layout() {
         const s = this.scene;
         const d = s.debug;
         const { width } = s.scale;
         const { cardScale, cardOverlap, cardY, arrowMargin, arrowBaseGap, maxVisibleCards } = d;
-
+        if (!s.cardSprites) s.cardSprites = [];
+        if (!s.rivalSprites) s.rivalSprites = [];
         // ocultar todas las cartas primero
         s.cardSprites.forEach(spr => spr.setVisible(false));
 
@@ -343,25 +352,24 @@ export default class HandView {
 
         // --- AÑADE ESTO PARA LA MANO RIVAL ---
         if (s.rivalSprites.length) {
-        // Ajusta el overlap según el número de cartas rivales
-        const minOverlap = 40; // mínimo solapamiento (más cartas = más solapadas)
-        const maxOverlap = d.rivalOverlap; // valor base de overlap (pocas cartas)
-        const n = s.rivalSprites.length;
-        // Puedes ajustar el divisor para controlar la "compresión"
-        const dynamicOverlap = Math.max(minOverlap, maxOverlap - (n - 5) * 8);
+            // Ajusta el overlap según el número de cartas rivales
 
-        const rW = s.rivalSprites[0].frame.width * d.rivalScale;
-        const rH = s.rivalSprites[0].frame.height * d.rivalScale;
-        const totalRW = rW + (n - 1) * dynamicOverlap;
-        const rStartX = (width - totalRW) / 2 + rW / 2;
+            const maxOverlap = d.rivalOverlap; // valor base de overlap (pocas cartas)
+            const n = s.rivalSprites.length;
+            // Puedes ajustar el divisor para controlar la "compresión"
+            const dynamicOverlap = maxOverlap - (n - 5) * 8;
+            const rW = s.rivalSprites[0].frame.width * d.rivalScale;
+            const rH = s.rivalSprites[0].frame.height * d.rivalScale;
+            const totalRW = rW + (n - 1) * dynamicOverlap;
+            const rStartX = (width - totalRW) / 2 + rW / 2;
 
-        [...s.rivalSprites].reverse().forEach((spr, i) => {
-            spr
-                .setDisplaySize(rW, rH)
-                .setPosition(rStartX + i * dynamicOverlap, d.rivalY)
-                .setVisible(true);
-        });
-    }
+            [...s.rivalSprites].reverse().forEach((spr, i) => {
+                spr
+                    .setDisplaySize(rW, rH)
+                    .setPosition(rStartX + i * dynamicOverlap, d.rivalY)
+                    .setVisible(true);
+            });
+        }
         // posicionar flechas
         if (s.arrowLeft && s.arrowRight) {
             s.arrowLeft
@@ -422,88 +430,88 @@ export default class HandView {
 
     // Modifica animateDrawCard para aceptar cardFrame y callback
     animateDrawCard(cardFrame, by, onComplete) {
-    const s = this.scene;
-    const d = s.debug;
+        const s = this.scene;
+        const d = s.debug;
 
-    if (s.drawPileSprite) s.drawPileSprite.disableInteractive();
+        if (s.drawPileSprite) s.drawPileSprite.disableInteractive();
 
-    // Sprite del reverso en el mazo
-    const sprite = s.add.image(d.drawX, d.drawY, 'cards', 'Reverso_Carta.svg')
-        .setOrigin(0.5)
-        .setScale(d.drawScale)
-        .setDepth(5000);
+        // Sprite del reverso en el mazo
+        const sprite = s.add.image(d.drawX, d.drawY, 'cards', 'Reverso_Carta.svg')
+            .setOrigin(0.5)
+            .setScale(d.drawScale)
+            .setDepth(5000);
 
-    // Primera parte de la animación: vuelo al centro
-    s.tweens.add({
-        targets: sprite,
-        x: s.scale.width / 2,
-        y: d.cardY - 200,
-        duration: 700,
-        ease: 'Cubic.easeOut',
-        onComplete: () => {
-            // Giro
-            s.tweens.add({
-                targets: sprite,
-                scaleX: 0,
-                duration: 200,
-                ease: 'Linear',
-                onComplete: () => {
-                    sprite.setTexture('cards', cardFrame);
+        // Primera parte de la animación: vuelo al centro
+        s.tweens.add({
+            targets: sprite,
+            x: s.scale.width / 2,
+            y: d.cardY - 200,
+            duration: 700,
+            ease: 'Cubic.easeOut',
+            onComplete: () => {
+                // Giro
+                s.tweens.add({
+                    targets: sprite,
+                    scaleX: 0,
+                    duration: 200,
+                    ease: 'Linear',
+                    onComplete: () => {
+                        sprite.setTexture('cards', cardFrame);
 
-                    // --- ACTUALIZA EL LAYOUT AQUÍ ---
-                    // Simula que la carta ya está en la mano y actualiza el layout
-                    // (puedes forzar updateHandsAndLayout o layout aquí si es seguro)
-                    if (s.handView && typeof s.handView.layout === 'function') {
-                        s.handView.layout();
-                    }
-
-                    // Ahora toma el tamaño real de la última carta de la mano
-                    let finalW, finalH;
-                    if (s.cardSprites && s.cardSprites.length > 0) {
-                        const last = s.cardSprites[s.cardSprites.length - 1];
-                        finalW = last.displayWidth;
-                        finalH = last.displayHeight;
-                    } else {
-                        // Fallback
-                        const tex = s.textures.get('cards').get(cardFrame);
-                        finalW = tex.width * d.cardScale;
-                        finalH = tex.height * d.cardScale;
-                    }
-
-                    // Segunda parte de la animación: giro y resize a tamaño real
-                    s.tweens.add({
-                        targets: sprite,
-                        scaleX: 0.6,
-                        duration: 400,
-                        ease: 'Linear',
-                        onUpdate: tween => {
-                            // Interpola el tamaño desde el tamaño actual al final
-                            const progress = tween.progress;
-                            const w = Phaser.Math.Linear(sprite.displayWidth, finalW, progress);
-                            const h = Phaser.Math.Linear(sprite.displayHeight, finalH, progress);
-                            sprite.setDisplaySize(w, h);
-                        },
-                        onComplete: () => {
-                            // Vuelo final a la mano
-                            s.tweens.add({
-                                targets: sprite,
-                                x: s.scale.width / 2,
-                                y: d.cardY,
-                                duration: 700,
-                                ease: 'Cubic.easeIn',
-                                onComplete: () => {
-                                    sprite.destroy();
-                                    if (s.drawPileSprite) s.drawPileSprite.setInteractive({ cursor: 'pointer' });
-                                    if (onComplete) onComplete();
-                                }
-                            });
+                        // --- ACTUALIZA EL LAYOUT AQUÍ ---
+                        // Simula que la carta ya está en la mano y actualiza el layout
+                        // (puedes forzar updateHandsAndLayout o layout aquí si es seguro)
+                        if (s.handView && typeof s.handView.layout === 'function') {
+                            s.handView.layout();
                         }
-                    });
-                }
-            });
-        }
-    });
-}
+
+                        // Ahora toma el tamaño real de la última carta de la mano
+                        let finalW, finalH;
+                        if (s.cardSprites && s.cardSprites.length > 0) {
+                            const last = s.cardSprites[s.cardSprites.length - 1];
+                            finalW = last.displayWidth;
+                            finalH = last.displayHeight;
+                        } else {
+                            // Fallback
+                            const tex = s.textures.get('cards').get(cardFrame);
+                            finalW = tex.width * d.cardScale;
+                            finalH = tex.height * d.cardScale;
+                        }
+
+                        // Segunda parte de la animación: giro y resize a tamaño real
+                        s.tweens.add({
+                            targets: sprite,
+                            scaleX: 0.6,
+                            duration: 400,
+                            ease: 'Linear',
+                            onUpdate: tween => {
+                                // Interpola el tamaño desde el tamaño actual al final
+                                const progress = tween.progress;
+                                const w = Phaser.Math.Linear(sprite.displayWidth, finalW, progress);
+                                const h = Phaser.Math.Linear(sprite.displayHeight, finalH, progress);
+                                sprite.setDisplaySize(w, h);
+                            },
+                            onComplete: () => {
+                                // Vuelo final a la mano
+                                s.tweens.add({
+                                    targets: sprite,
+                                    x: s.scale.width / 2,
+                                    y: d.cardY,
+                                    duration: 700,
+                                    ease: 'Cubic.easeIn',
+                                    onComplete: () => {
+                                        sprite.destroy();
+                                        if (s.drawPileSprite) s.drawPileSprite.setInteractive({ cursor: 'pointer' });
+                                        if (onComplete) onComplete();
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
 
     setupLiftDrop(sprite, card, idx) {
         const s = this.scene;
@@ -648,74 +656,158 @@ export default class HandView {
     }
     showHandModal() {
         const s = this.scene;
-        // Si ya existe, no lo crees de nuevo
+        const width = s.scale.width;
+        const isTouch = s.isTouch;
+        console.log('showHandModal: isTouch =', isTouch, 'width =', s.scale.width);
+        s.modalLock = false;
+
+        // Si ya existe el modal, no lo crees de nuevo
         if (s.handModal) return;
 
-        // Fondo semitransparente
-        const bg = s.add.rectangle(s.scale.width / 2, s.scale.height / 2, s.scale.width, s.scale.height, 0x000000, 0.7)
-            .setDepth(5000)
-            .setInteractive();
+        // 1. Fondo semitransparente (modal background)
+        const bg = s.add.rectangle(
+            s.scale.width / 2,
+            s.scale.height / 2,
+            s.scale.width,
+            s.scale.height,
+            0x000000,
+            0.7
+        ).setDepth(5000).setInteractive();
 
-        // Container para las cartas
+        // 2. Contenedor principal del modal
         const modal = s.add.container(s.scale.width / 2, s.scale.height / 2).setDepth(5001);
 
-        // Renderiza todas las cartas en grid
+        // 3. Calcula grid responsive para las cartas
         const cards = this.gameState.localHand;
-        const cols = s.isMobile ? 6 : 8;
-        const size = s.isMobile ? 90 : 110;
-        cards.forEach((card, i) => {
-            const x = (i % cols) * (size + 10) - ((cols - 1) * (size + 10)) / 2;
-            const y = Math.floor(i / cols) * (size + 20) - 300;
+        let cols = 8, size = 110;
+        if (width < 700) { cols = 6; size = 80; }
+        if (width < 500) { cols = 4; size = 60; }
+        if (width < 400) { cols = 3; size = 45; }
+
+        // 4. Renderiza cada carta en la grid
+        cards.forEach((card, gridIdx) => {
+            const x = (gridIdx % cols) * (size + 10) - ((cols - 1) * (size + 10)) / 2;
+            let yOffset = -300;
+            if (width < 700) yOffset = -180;
+            if (width < 500) yOffset = -80;
+            if (width < 400) yOffset = -30;
+            const y = Math.floor(gridIdx / cols) * (size + 20) + yOffset;
+
+            // 5. Sprite de la carta
             const img = s.add.image(x, y, 'cards', card.frame)
                 .setDisplaySize(size, size * 1.4)
-                .setInteractive({ cursor: 'pointer' })
-                .on('pointerup', () => {
-                    if (!this.gameState.isLocalTurn(this.scene.playerId)) {
-                        this.shakeSprite(img);
-                        return;
-                    }
-                    if (this.scene.isAnimating || img._isShaking) return;
-                    const pending = this.gameState.pendingPenalty;
-                    if (pending) {
-                        // ¿Tienes carta de penalización para encadenar?
-                        const hand = this.gameState.localHand;
-                        const hasPenaltyCard = hand.some(card2 => {
-                            const c2 = this.gameState.parseCardFrame(card2.frame);
-                            return (pending.type === '+2' && c2.type === '+2') ||
-                                (pending.type === '+4' && c2.type === '+4');
-                        });
-                        const c = this.gameState.parseCardFrame(card.frame);
-                        if (hasPenaltyCard) {
-                            // Solo puedes encadenar
-                            if (!((pending.type === '+2' && c.type === '+2') || (pending.type === '+4' && c.type === '+4'))) {
-                                this.shakeSprite(img);
-                                return;
-                            }
+                .setInteractive({ cursor: 'pointer' });
+
+            // 6. Handler para lanzar la carta desde el modal (touch o desktop)
+            const lanzarCartaModal = () => {
+                if (!this.gameState.isLocalTurn(this.scene.playerId)) {
+                    this.shakeSprite(img);
+                    return;
+                }
+                if (this.scene.isAnimating || img._isShaking) return;
+                const pending = this.gameState.pendingPenalty;
+                if (pending) {
+                    // ¿Tienes carta de penalización para encadenar?
+                    const hand = this.gameState.localHand;
+                    const hasPenaltyCard = hand.some(card2 => {
+                        const c2 = this.gameState.parseCardFrame(card2.frame);
+                        return (pending.type === '+2' && c2.type === '+2') ||
+                            (pending.type === '+4' && c2.type === '+4');
+                    });
+                    const c = this.gameState.parseCardFrame(card.frame);
+                    if (hasPenaltyCard) {
+                        // Solo puedes encadenar
+                        if (!((pending.type === '+2' && c.type === '+2') || (pending.type === '+4' && c.type === '+4'))) {
+                            this.shakeSprite(img);
+                            return;
                         }
-                        // Si NO tienes carta de penalización, puedes jugar cualquier carta válida
                     }
-                    // Validación normal
-                    const topDiscard = this.gameState.topDiscard;
-                    if (!this.gameState.isCardPlayable(card, topDiscard)) {
-                        this.shakeSprite(img);
-                        return;
-                    }
-                    this.animateToDiscard(img, card, i);
-                    // Cierra el modal
+                    // Si NO tienes carta de penalización, puedes jugar cualquier carta válida
+                }
+                const topDiscard = this.gameState.topDiscard;
+                if (!this.gameState.isCardPlayable(card, topDiscard)) {
+                    this.shakeSprite(img);
+                    return;
+                }
+
+                // --- FIX CRUCIAL: Calcula posición global antes de sacar del modal ---
+                let globalX = img.x, globalY = img.y;
+                if (img.parentContainer) {
+                    const mat = img.parentContainer.getWorldTransformMatrix();
+                    const global = mat.transformPoint(img.x, img.y);
+                    globalX = global.x;
+                    globalY = global.y;
+                    img.removeFromDisplayList();
+                    s.children.add(img);
+                    img.x = globalX;
+                    img.y = globalY;
+                }
+                // Si no, no es necesario
+
+                // Busca el índice REAL en la mano
+                const realIdx = this.gameState.localHand.findIndex(c => c === card);
+
+                // ANIMAR carta y cerrar modal SOLO cuando termine la animación
+                this.animateToDiscard(img, card, realIdx);
+
+                // Desactiva modal solo DESPUÉS de la animación (700ms)
+                s.isAnimating = true;
+                s.input.enabled = false;
+                if (bg && modal) {
+                    // Espera el tiempo de animación del tween antes de cerrar
                     setTimeout(() => {
-                        bg.destroy();
-                        modal.destroy();
+                        if (bg && bg.destroy) bg.destroy();
+                        if (modal && modal.destroy) modal.destroy();
                         s.handModal = null;
                         s.isAnimating = false;
                         s.input.enabled = true;
-                    }, 1000);
+                    }, 800);
+                }
+            };
+
+            // 7. Asigna handler según touch/desktop
+            if (isTouch) {
+                img._lifted = false;
+                img._baseY = y;
+                img.on('pointerdown', () => {
+                    s.modalLock = true;
+                    if (this.scene.isAnimating || img._isShaking) return;
+                    // Baja todas las demás cartas si estaban levantadas
+                    modal.iterate(child => {
+                        if (child !== img && child._lifted) {
+                            s.tweens.killTweensOf(child, 'y');
+                            s.tweens.add({
+                                targets: child,
+                                y: child._baseY,
+                                duration: 120,
+                                ease: 'Power1',
+                                onComplete: () => { child._lifted = false; }
+                            });
+                        }
+                    });
+                    s.tweens.killTweensOf(img, 'y');
+                    if (!img._lifted) {
+                        // Primer tap: levanta
+                        s.tweens.add({
+                            targets: img,
+                            y: img._baseY - 30,
+                            duration: 180,
+                            ease: 'Power1',
+                            onComplete: () => { img._lifted = true; }
+                        });
+                    } else {
+                        // Segundo tap: lanza carta
+                        lanzarCartaModal();
+                    }
                 });
-            // --- HOVER Y SHAKE ROBUSTOS EN MODAL ---
-            if (!s.isTouch) {
-                // Guardar baseY y baseX para cada carta del modal
+            } else {
+                img.on('pointerup', lanzarCartaModal);
+            }
+
+            // 8. Hover y shake visual para desktop
+            if (!isTouch) {
                 img._baseY = y;
                 img._shakeBaseX = x;
-
                 img.on('pointerover', () => {
                     s.tweens.killTweensOf(img, 'y');
                     s.tweens.add({
@@ -725,7 +817,6 @@ export default class HandView {
                         ease: 'Power1'
                     });
                 });
-
                 img.on('pointerout', () => {
                     s.tweens.killTweensOf(img, 'y');
                     s.tweens.add({
@@ -734,10 +825,8 @@ export default class HandView {
                         duration: 240,
                         ease: 'Power1'
                     });
-                    // Rescate por si el shake quedó bloqueado
                     if (img._isShaking) {
                         s.tweens.killTweensOf(img, 'x');
-                        // Devuelve a la posición original en X e Y de forma suave
                         s.tweens.add({
                             targets: img,
                             x: img._shakeBaseX ?? img.x,
@@ -751,16 +840,29 @@ export default class HandView {
                     }
                 });
             }
+
+            // 9. Añade el sprite al modal
             modal.add(img);
         });
 
-        // Cierra el modal al pulsar fuera
+        // 10. Cierre del modal al pulsar fuera, salvo que se esté tirando carta (modalLock)
         bg.on('pointerup', () => {
+            if (s.modalLock) {
+                s.modalLock = false;
+                return;
+            }
             bg.destroy();
             modal.destroy();
             s.handModal = null;
         });
 
+        // 11. Ajusta el tamaño del botón de abrir modal (opcional)
+        if (s.handModalBtn) {
+            s.handModalBtn.setFontSize(width < 500 ? 18 : 36);
+        }
+
+        // 12. Guarda la referencia al modal abierto en la escena
         s.handModal = modal;
     }
+
 }

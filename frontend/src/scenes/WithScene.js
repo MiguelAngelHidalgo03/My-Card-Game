@@ -40,14 +40,14 @@ export default class WinScene extends Phaser.Scene {
     const { width, height } = this.scale;
     socket.emit('set-where', this.code, 'withscene');
 
-    this.gameStartedListener = (payload) => {
-      this.scene.start('PlayScene', {
-        ...payload,
-        mySocketId: this.mySocketId,
-        debugMode: this.sys.game.config.physics.arcade?.debug || false,
-        isMobile: window.innerWidth < 1024 || navigator.maxTouchPoints > 0
-      });
-    };
+   this.gameStartedListener = (payload) => {
+  this.scene.start('LoadingScene', {
+    ...payload,
+    mySocketId: this.mySocketId,
+    debugMode: this.sys.game.config.physics.arcade?.debug || false,
+    isMobile: window.innerWidth < 1024 || navigator.maxTouchPoints > 0
+  });
+};
     socket.on('game-started', this.gameStartedListener);
 
     this.events.once('shutdown', () => {
@@ -161,6 +161,8 @@ this.updatePlayersPanel();
     else this.launchSoftParticles(width, height);
 
     this.scale.on('resize', this.handleResize, this);
+    window._phaserActiveScene = this.scene.key;
+window.dispatchEvent(new Event('phaser-scene-changed'));
   }
 
   updateScaleVars() {
@@ -352,10 +354,11 @@ this.avatarPanelY = y + avatarBlockH / 2 + avatarTopMargin;
         });
       });
       this.rematchBtn.on('pointerdown', () => {
-        if (this.withScenePlayers.length === 2) {
-          socket.emit('start-game', this.code, this.gameSettings);
-        }
-      });
+  if (this.withScenePlayers.length === 2) {
+    socket.emit('start-game', this.code, this.gameSettings);
+    window.location.reload(); // <-- Añade esto aquí
+  }
+});
       this.panelGroup.add(this.rematchBtn);
     } else if (this.withScenePlayers.length === 2) {
       this.waitMsg = this.add.text(0, this.lobbyBtnY - this.lobbyBtnFontSize - 13,
