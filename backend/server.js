@@ -48,6 +48,7 @@ app.use('/api',       recordRoutes);
 app.use('/api',       resetRoutes);
 
 // — HTTP + WS —
+const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: [
@@ -59,7 +60,6 @@ const io = new Server(server, {
     credentials: true
   }
 });
-
 
 // crea UNA sola instancia del service
 const gameService = initGameService(io);
