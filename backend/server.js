@@ -19,7 +19,13 @@ const app  = express();
 const port = process.env.PORT || 5000;
 
 // — Middleware —
-const allowedOrigins = ['http://localhost:3000', 'http://1pa1.xyz', 'http://www.1pa1.xyz'];
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://1pa1.xyz',
+  'https://www.1pa1.xyz',
+  'http://1pa1.xyz',
+  'http://www.1pa1.xyz'
+];
 
 app.use(cors({
   origin: function(origin, callback){
