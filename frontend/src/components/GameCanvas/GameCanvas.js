@@ -21,7 +21,10 @@ export default function GameCanvas() {
   const leftRef           = useRef();
   const endRef            = useRef();
   const resizeDebounceRef = useRef();
-  const debugMode = process.env.NODE_ENV === 'development';
+  const DEBUG_USER_ID = '58b4eb5f-e0db-4353-b530-84ca3d889854';
+  const savedLobby = JSON.parse(localStorage.getItem('lobbyState') || '{}');
+  const userId = savedLobby.userId || state?.userId || null;
+  const debugMode = process.env.NODE_ENV === 'development' || userId === DEBUG_USER_ID;
 
 
   // Persistir clientId para invitados
@@ -34,7 +37,6 @@ export default function GameCanvas() {
     }
     return id;
   }, []);
-  const savedLobby = JSON.parse(localStorage.getItem('lobbyState') || '{}');
   const chatUsername = state?.username || savedLobby.username;
   const chatAvatar   = state?.avatar   || savedLobby.avatar;
 
