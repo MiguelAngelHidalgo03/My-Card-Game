@@ -19,11 +19,22 @@ const app  = express();
 const port = process.env.PORT || 5000;
 
 // — Middleware —
+const allowedOrigins = ['http://localhost:3000', 'http://1pa1.xyz', 'http://www.1pa1.xyz'];
+
 app.use(cors({
-  origin:      'http://localhost:3000',
-  methods:     ['GET','POST','PUT','DELETE'],
+  origin: function(origin, callback){
+    // permitir solicitudes sin origen (como Postman)
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.indexOf(origin) === -1){
+      const msg = 'El CORS policy no permite este origen: ' + origin;
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  methods: ['GET','POST','PUT','DELETE'],
   credentials: true,
 }));
+
 app.use(express.json());
 
 // — Rutas REST genéricas —
@@ -76,6 +87,6 @@ app.get('/api/game/:code', (req, res) => {
 });
 
 // arranca servidor
-server.listen(port, () => {
-  console.log(`Servidor escuchando en http://localhost:${port}`);
+server.listen(port, '0.0.0.0', () => {
+  console.log(`Servidor escuchando en http://0.0.0.0:${port}`);
 });
