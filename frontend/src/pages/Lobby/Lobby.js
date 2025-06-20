@@ -248,7 +248,7 @@ socket.off('player-left', handlePlayersList);
     height="44"
     viewBox="0 0 44 44"
     fill="none"
-    xmlns="http://www.w3.org/2000/svg"
+    xmlns="https://www.w3.org/2000/svg"
     style={{ verticalAlign: 'middle' }}
   >
     {/* Sombra cartoon */}

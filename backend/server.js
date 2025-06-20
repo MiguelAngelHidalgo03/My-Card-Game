@@ -20,7 +20,6 @@ const port = process.env.PORT || 5000;
 
 // — Middleware —
 const allowedOrigins = [
-  'http://localhost:3000',
   'https://1pa1.xyz',
   'https://www.1pa1.xyz',
 ];
@@ -52,7 +51,6 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: [
-      'http://localhost:3000',
       'https://1pa1.xyz',
       'https://www.1pa1.xyz'
     ],
@@ -102,5 +100,5 @@ app.get('/api/game/:code', (req, res) => {
 
 // arranca servidor
 server.listen(port, '0.0.0.0', () => {
-  console.log(`Servidor escuchando en http://0.0.0.0:${port}`);
+  console.log(`Servidor escuchando en https://0.0.0.0:${port}`);
 });
