@@ -1,38 +1,37 @@
 import supabase from '../utils/supabaseClient.js';
 
 // Función para iniciar sesión de un usuario
-// Esta función se encarga de autenticar al usuario con su correo y contraseña
-// y devolver la sesión activa y los datos del usuario (sin contraseña)
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
-  // Validar que ambos campos estén presentes
   if (!email || !password) {
     console.log('Error: Email y contraseña son obligatorios');
     return res.status(400).json({ error: 'Email y contraseña son obligatorios' });
   }
 
-  // Autenticación con Supabase Auth
   try {
-    const { data, error } = await supabase.auth.signInWithPassword({
+    // Intentar autenticación con Supabase Auth
+    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
-    if (error) {
-      console.log('Error en autenticación con Supabase:', error);
+    if (authError) {
+      console.log('Error en autenticación con Supabase:', authError);
 
-      if (error.code === 'email_not_confirmed') {
-        return res.status(401).json({ error: 'Se ha enviado un correo electronico de confirmación a tu cuenta, es posible que este en el correo de spam.' });
+      if (authError.code === 'email_not_confirmed') {
+        return res.status(401).json({
+          error: 'Tu correo no ha sido confirmado. Revisa tu bandeja de entrada o spam.',
+        });
       }
 
       return res.status(401).json({ error: 'Credenciales incorrectas' });
     }
 
-    const { user, session } = data;
+    const { user, session } = authData;
 
-    // Obtener datos adicionales del usuario desde tu tabla 'users'
-    const { datarError } = await supabase
+    // Obtener datos adicionales del usuario desde la tabla 'users'
+    const { data: userData, error: userError } = await supabase
       .from('users')
       .select('*')
       .eq('user_id', user.id)
@@ -43,13 +42,17 @@ export const loginUser = async (req, res) => {
       return res.status(500).json({ error: 'Error al obtener los datos del usuario' });
     }
 
-    // Log para verificar los datos del usuario y la sesión
+    if (!userData) {
+      return res.status(404).json({ error: 'No se encontraron datos del usuario en la tabla "users"' });
+    }
+
+    // Log para verificar que todo ha salido bien
     console.log('Usuario autenticado con éxito:', user);
     console.log('Sesión activa:', session);
 
     return res.status(200).json({
       message: 'Inicio de sesión exitoso',
-      session, // Contiene el token JWT y otros datos útiles
+      session,
       user: {
         user_id: userData.user_id,
         username: userData.username,
@@ -58,11 +61,11 @@ export const loginUser = async (req, res) => {
       },
     });
   } catch (err) {
-    // Si ocurre un error en cualquier parte del proceso, capturamos el error general
     console.error('Error general en loginUser:', err);
     return res.status(500).json({ error: 'Error en el proceso de inicio de sesión' });
   }
 };
+
 
 // Función para cerrar sesión
 // Esta función se puede usar para cerrar sesión del usuario actual
