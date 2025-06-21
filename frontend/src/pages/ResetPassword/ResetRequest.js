@@ -8,7 +8,7 @@ const ResetRequest = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("https://www.1pa1.xyz/reset-password", {
+      const res = await fetch("https://www.1pa1.xyz/api/reset-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
