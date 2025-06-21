@@ -1,5 +1,6 @@
 #layer1 {
-  transform-box: fill-box;       /* Hace que el transform-origin se calcule sobre la caja del grupo */
+  /* transform-box: fill-box;        */
+  /* Hace que el transform-origin se calcule sobre la caja del grupo */
   transform-origin: center center; /* Centro exacto del grupo */
 }
 
@@ -21,6 +22,6 @@
 #Linea_1_grupo, #Linea_2_grupo, #Linea_3_grupo, #Linea_4_grupo,
 #Linea_5_grupo, #Linea_6_grupo, #Linea_7_grupo, #Linea_8_grupo,
 #Linea_10_grupo, #Linea_11_grupo {
-  transform-box: fill-box;
+  /* transform-box: fill-box; */
   transform-origin: center center;
 }

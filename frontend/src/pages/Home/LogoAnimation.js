@@ -7,6 +7,8 @@ const LogoAnimation = forwardRef((props, ref) => {
   const timelineRef = useRef(null);
   const cartasAnimsRef = useRef([]);
 
+  
+
   useEffect(() => {
     if (!svgRef.current) return;
 
@@ -115,8 +117,27 @@ const LogoAnimation = forwardRef((props, ref) => {
   }, []);
 
   // Método para detener la animación y resetear estilos
-
-  return <LogoGrande ref={svgRef} />;
+useEffect(() => {
+  if (svgRef.current) {
+    svgRef.current.style.display = 'none';
+    // Forzar reflow
+    void svgRef.current.offsetHeight;
+    svgRef.current.style.display = '';
+  }
+}, []);
+  return (
+  <span
+    className="logo-animation-wrapper"
+    ref={el => {
+      if (el) {
+        // Busca el SVG real dentro del wrapper
+        svgRef.current = el.querySelector('svg');
+      }
+    }}
+  >
+    <LogoGrande className={props.className || ''} />
+  </span>
+);
 });
 
 export default LogoAnimation;

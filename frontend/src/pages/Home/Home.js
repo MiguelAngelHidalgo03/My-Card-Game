@@ -16,6 +16,7 @@ const Home = ({ onPulse }) => {
 
     const logoRef = useRef(null);
 
+    
     /* ─────────────────── Intro + cleanup ─────────────────── */
     useEffect(() => {
       // 1. bloquea scroll mientras corre la intro
