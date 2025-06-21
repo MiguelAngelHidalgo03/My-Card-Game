@@ -85,43 +85,48 @@ useEffect(() => {
   };
 
   const handleProfileSubmit = async (e) => {
-    e.preventDefault();
-    const userFromStorage = localStorage.getItem('user');
-    const userId = userFromStorage ? JSON.parse(userFromStorage).userId : null;
+  e.preventDefault();
+  const userFromStorage = localStorage.getItem('user');
+  const userId = userFromStorage ? JSON.parse(userFromStorage).userId : null;
 
-    if (!username) {
-      setMessage('El nombre de usuario y el correo son obligatorios');
-      setMessageType('error');
-      setOpen(true);
-      return;
-    }
+  if (!username) {
+    setMessage('El nombre de usuario y el correo son obligatorios');
+    setMessageType('error');
+    setOpen(true);
+    return;
+  }
 
-    const updatedUserData = {
-      userId: userId,
-      username,
-      language,
-    };
-
-    try {
-      const { success, error } = await updateProfile(updatedUserData);
-
-      if (success) {
-        setMessage('Perfil actualizado correctamente');
-        setMessageType('success');
-        setOpen(true);
-        fetchUserData();
-      } else {
-        setMessage('Error: ' + error);
-        setMessageType('error');
-        setOpen(true);
-      }
-    } catch (error) {
-      console.error('Error al actualizar perfil:', error);
-      setMessage('Ocurrió un error al guardar los cambios');
-      setMessageType('error');
-      setOpen(true);
-    }
+  const updatedUserData = {
+    userId: userId,
+    username,
+    language,
   };
+
+  try {
+    const { success, error, user: updatedUser } = await updateProfile(updatedUserData);
+
+    if (success) {
+      // Actualiza el contexto y el localStorage
+      setUser(updatedUserData); // O usa updatedUser si tu backend lo devuelve
+      localStorage.setItem('user', JSON.stringify({ ...JSON.parse(userFromStorage), ...updatedUserData }));
+      setMessage('Perfil actualizado correctamente');
+      setMessageType('success');
+      setOpen(true);
+      fetchUserData();
+    } else {
+      setMessage('Error: ' + error);
+      setMessageType('error');
+      setOpen(true);
+    }
+  } catch (error) {
+    console.error('Error al actualizar perfil:', error);
+    setMessage('Ocurrió un error al guardar los cambios');
+    setMessageType('error');
+    setOpen(true);
+  }
+};
+
+
 
   const handlePasswordChange = async (e) => {
     e.preventDefault();

@@ -71,10 +71,6 @@ export default class LoadingScene extends Phaser.Scene {
     this.load.image('fondoMobile', '/assests/img/framegreen.png');
     this.load.image('fondoDesktop', '/assests/img/Background2.png');
     this.load.image('mesa', '/assests/img/Ring_Solo.png');
-    this.load.image('Persona', '/assests/img/Persona.png');
-    this.load.image('Persona2', '/assests/img/Persona2.png');
-    this.load.image('PersonaChica', '/assests/img/PersonaChica.png');
-    this.load.image('PersonaChica2', '/assests/img/PersonaChica2.png');
     this.load.image('avatar-def', '/assests/img/avatar-default.png');
 
     if (this.nextSceneData && this.nextSceneData.players) {

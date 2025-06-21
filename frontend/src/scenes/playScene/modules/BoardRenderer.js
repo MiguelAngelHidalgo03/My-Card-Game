@@ -7,12 +7,7 @@ export default class BoardRenderer {
         this.bg = null;
         this.mesa = null;
         this.discard = null;
-        this.drawPileSprite = null;
-        this.personaAnim1 = null;
-        this.personaAnim2 = null;
-        this.personaChica1 = null;
-        this.personaChica2 = null;
-        this._personaAnimTimer = null;
+        this.drawPileSprite = null
         this.lastDiscardAngle = 0;
         this.discardSprites = [];
         this.discardAngles = [];
@@ -30,15 +25,8 @@ export default class BoardRenderer {
 
         this.mesa = s.add.image(width / 2, height / 2, 'mesa').setOrigin(0.5);
 
-        // Después de crear mesa y bordes...
-        this.personaAnim1 = s.add.image(width / 2 + 100, height / 2, 'Persona').setOrigin(0.5);
-        this.personaAnim2 = s.add.image(width / 2 + 300, height / 2, 'Persona2').setOrigin(0.5);
-        this.personaChica1 = s.add.image(width / 2 - 100, height / 2, 'PersonaChica').setOrigin(0.5);
-        this.personaChica2 = s.add.image(width / 2 - 300, height / 2, 'PersonaChica2').setOrigin(0.5);
-
-
         // Empieza la animación
-        this.startPersonasAnimation();
+       
 
         // --- DESCARTE ---
         const topDiscard = s.gameState?.discardPile?.slice(-1)[0];
@@ -180,24 +168,6 @@ export default class BoardRenderer {
             onComplete: () => sprite.setX(sprite.x - 10)
         });
     }
-    startPersonasAnimation() {
-        let toggle = false;
-        if (this._personaAnimTimer) this.scene.time.removeEvent(this._personaAnimTimer);
-
-        this._personaAnimTimer = this.scene.time.addEvent({
-            delay: 400,
-            loop: true,
-            callback: () => {
-                toggle = !toggle;
-                if (this.personaAnim1 && this.personaAnim2) {
-                    this.personaAnim1.setTexture(toggle ? 'Persona2' : 'Persona');
-                    this.personaAnim2.setTexture(toggle ? 'Persona' : 'Persona2');
-                    this.personaChica1.setTexture(toggle ? 'PersonaChica2' : 'PersonaChica');
-                    this.personaChica2.setTexture(toggle ? 'PersonaChica' : 'PersonaChica2');
-                }
-            }
-        });
-    }
     applyLayout() {
         const s = this.scene;
         const d = s.debug;
@@ -216,19 +186,6 @@ export default class BoardRenderer {
                 .setPosition(d.discardX, d.discardY)
                 .setTint(d.discardTint);
             this.discard.setTint(d.discardTint);
-        }
-        if (this.personaAnim1) {
-            this.personaAnim1.setPosition(s.scale.width / 2 - 200, s.scale.height / 2);
-        }
-        if (this.personaAnim2) {
-            this.personaAnim2.setPosition(s.scale.width / 2 + 200, s.scale.height / 2);
-        }
-
-        if (this.personaChica1) {
-            this.personaChica1.setPosition(s.scale.width / 2 - 200, s.scale.height / 2);
-        }
-        if (this.personaChica2) {
-            this.personaChica2.setPosition(s.scale.width / 2 + 200, s.scale.height / 2);
         }
         if (this.drawPileSprite) {
             const frame = s.textures.get('cards').get('Reverso_Carta.svg');
