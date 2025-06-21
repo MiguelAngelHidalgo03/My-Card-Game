@@ -55,7 +55,7 @@ export default function Ranking() {
                     ...r,
                     win_ratio: r.total_games > 0 ? (r.wins / r.total_games) : 0,
                 }))
-                .sort((a, b) => b.win_ratio - a.win_ratio || b.wins - a.wins)
+                .sort((a, b) =>  b.wins - a.wins)
                 .slice(0, 10);
 
             setRanking(processed);
