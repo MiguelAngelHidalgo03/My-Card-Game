@@ -6,33 +6,15 @@ const LogoAnimation = forwardRef((props, ref) => {
   const svgRef = useRef(null);
   const timelineRef = useRef(null);
   const cartasAnimsRef = useRef([]);
-  const wrapperRef = useRef(null);
 
-  // Forzar reflow para máxima compatibilidad iOS/Android
-  useEffect(() => {
-    const trySetSVGRef = () => {
-      if (wrapperRef.current) {
-        const svg = wrapperRef.current.querySelector('svg');
-        if (svg) {
-          svgRef.current = svg;
-          svg.style.display = 'none';
-          void svg.offsetHeight;
-          svg.style.display = '';
-        }
-      }
-    };
-    trySetSVGRef();
-    if (!svgRef.current) {
-      setTimeout(trySetSVGRef, 50);
-    }
-  }, []);
+  
 
   useEffect(() => {
     if (!svgRef.current) return;
 
     const svg = svgRef.current;
 
-    // Animación de líneas (igual que antes)
+    // Selecciona los paths de las líneas por id
     const lineasIds = [
       '#Linea_1', '#Linea_2', '#Linea_3', '#Linea_4',
       '#Linea_5', '#Linea_6', '#Linea_7', '#Linea_8',
@@ -42,6 +24,7 @@ const LogoAnimation = forwardRef((props, ref) => {
       .map(id => svg.querySelector(id))
       .filter(Boolean);
 
+    // Prepara los paths para la animación de dibujo
     lineas.forEach(path => {
       const length = path.getTotalLength();
       path.style.strokeDasharray = length;
@@ -49,6 +32,7 @@ const LogoAnimation = forwardRef((props, ref) => {
       path.style.opacity = 1;
     });
 
+    // Animación de dibujo y desdibujo en loop
     const timeline = anime.timeline({ loop: true, direction: 'alternate', autoplay: true });
     timelineRef.current = timeline;
 
@@ -66,42 +50,34 @@ const LogoAnimation = forwardRef((props, ref) => {
 
     // Latido del logo (layer1)
     const layer1 = svg.querySelector('#layer1');
-    if (layer1) {
-      anime({
-        targets: layer1,
-        scale: [
-          { value: 1.1, duration: 400 },
-          { value: 1, duration: 400 }
-        ],
-        easing: 'easeInOutSine',
-        loop: true,
-        direction: 'alternate',
-        autoplay: true
-      });
-    }
+  if (layer1) {
+      // layer1.setAttribute('transform', 'scale(1)');
+    anime({
+      targets: layer1,
+      scale: [
+        { value: 1.1, duration: 400 },
+        { value: 1, duration: 400 }
+      ],
+      easing: 'easeInOutSine',
+      loop: true,
+      direction: 'alternate',
+      autoplay: true
+    });
+  }
 
     // Animación de cartas
-    const cartaIds = [
-      { id: '#Carta_0', fromX: 0, fromY: 500, delay: 0 },
-      { id: '#Carta_5', fromX: -500, fromY: 0, delay: 300 },
-      { id: '#Carta_2', fromX: 500, fromY: 0, delay: 600 },
-      { id: '#Carta_8', fromX: 0, fromY: -500, delay: 800 }
-    ];
+    const carta0 = svg.querySelector('#Carta_0');
+    const carta5 = svg.querySelector('#Carta_5');
+    const carta2 = svg.querySelector('#Carta_2');
+    const carta8 = svg.querySelector('#Carta_8');
 
+    // Guardar instancias de animaciones para poder detenerlas
     cartasAnimsRef.current = [];
 
     const animateCarta = (carta, fromX, fromY, delay) => {
       if (!carta) return;
-      // Guarda el transform original solo la primera vez
-      let originalTransform = carta.getAttribute('data-original-transform');
-      if (!originalTransform) {
-        originalTransform = carta.getAttribute('transform') || '';
-        carta.setAttribute('data-original-transform', originalTransform);
-      }
-      // Siempre restaura el transform original antes de animar
-      carta.setAttribute('transform', originalTransform);
+      const originalTransform = carta.getAttribute('transform') || '';
       carta.style.opacity = '0';
-
       const anim = anime({
         targets: { progress: 0 },
         progress: 1,
@@ -112,7 +88,6 @@ const LogoAnimation = forwardRef((props, ref) => {
           const p = anim.animations[0].currentValue;
           const translateX = fromX * (1 - p);
           const translateY = fromY * (1 - p);
-          // Aplica el translate ANTES del transform original
           carta.setAttribute(
             'transform',
             `translate(${translateX},${translateY}) ${originalTransform}`
@@ -127,35 +102,23 @@ const LogoAnimation = forwardRef((props, ref) => {
       cartasAnimsRef.current.push({ anim, carta, originalTransform });
     };
 
-    // Ejecuta la animación para cada carta
-    cartaIds.forEach(({ id, fromX, fromY, delay }) => {
-      const carta = svg.querySelector(id);
-      animateCarta(carta, fromX, fromY, delay);
-    });
+    animateCarta(carta0, 0, 500, 0);
+    animateCarta(carta5, -500, 0, 300);
+    animateCarta(carta2, 500, 0, 600);
+    animateCarta(carta8, 0, -500, 800);
 
     return () => {
       timeline.pause();
       timelineRef.current = null;
+      // Detener animaciones de cartas si el componente se desmonta
       cartasAnimsRef.current.forEach(({ anim }) => anim.pause());
       cartasAnimsRef.current = [];
     };
-  }, [svgRef.current]);
+  }, []);
 
-  useImperativeHandle(ref, () => ({
-    stopAnimation: () => {
-      if (timelineRef.current) timelineRef.current.pause();
-      cartasAnimsRef.current.forEach(({ anim }) => anim.pause());
-    }
-  }));
+  // Método para detener la animación y resetear estilos
 
-  return (
-    <span
-      className="logo-animation-wrapper"
-      ref={wrapperRef}
-    >
-      <LogoGrande className={props.className || ''} />
-    </span>
-  );
+  return <LogoGrande ref={svgRef} />;
 });
 
 export default LogoAnimation;
