@@ -1,36 +1,31 @@
-import React, { useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
+import React, { useEffect, useRef, forwardRef, useImperativeHandle, useCallback } from 'react';
 import anime from 'animejs';
 import { ReactComponent as LogoGrande } from '../../img/Logo_Grande2.svg';
 
 const LogoAnimation = forwardRef((props, ref) => {
+  const wrapperRef = useRef(null);
   const svgRef = useRef(null);
   const timelineRef = useRef(null);
   const cartasAnimsRef = useRef([]);
 
-  // Wrapper ref para acceder al SVG real
-  const wrapperRef = useRef(null);
-
-  // Forzar reflow para máxima compatibilidad iOS/Android
-  useEffect(() => {
-    // Espera hasta que el SVG esté en el DOM
-    const trySetSVGRef = () => {
-      if (wrapperRef.current) {
-        const svg = wrapperRef.current.querySelector('svg');
-        if (svg) {
-          svgRef.current = svg;
-          // Forzar reflow
-          svg.style.display = 'none';
-          void svg.offsetHeight;
-          svg.style.display = '';
-        }
+  // Asigna el ref al SVG real cuando el wrapper cambia
+  const setSVGRef = useCallback(() => {
+    if (wrapperRef.current) {
+      const svg = wrapperRef.current.querySelector('svg');
+      if (svg) {
+        svgRef.current = svg;
+        // Forzar reflow para iOS/Android
+        svg.style.display = 'none';
+        void svg.offsetHeight;
+        svg.style.display = '';
       }
-    };
-    trySetSVGRef();
-    // Si el SVG aún no está, intenta de nuevo en el siguiente tick
-    if (!svgRef.current) {
-      setTimeout(trySetSVGRef, 50);
     }
   }, []);
+
+  // Ejecuta setSVGRef cuando el wrapper cambia
+  useEffect(() => {
+    setSVGRef();
+  });
 
   // Animación principal, solo cuando el SVG está presente
   useEffect(() => {
