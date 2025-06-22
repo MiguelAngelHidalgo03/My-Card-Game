@@ -7,8 +7,32 @@ const LogoAnimation = forwardRef((props, ref) => {
   const timelineRef = useRef(null);
   const cartasAnimsRef = useRef([]);
 
-  
+  // Wrapper ref para acceder al SVG real
+  const wrapperRef = useRef(null);
 
+  // Forzar reflow para máxima compatibilidad iOS/Android
+  useEffect(() => {
+    // Espera hasta que el SVG esté en el DOM
+    const trySetSVGRef = () => {
+      if (wrapperRef.current) {
+        const svg = wrapperRef.current.querySelector('svg');
+        if (svg) {
+          svgRef.current = svg;
+          // Forzar reflow
+          svg.style.display = 'none';
+          void svg.offsetHeight;
+          svg.style.display = '';
+        }
+      }
+    };
+    trySetSVGRef();
+    // Si el SVG aún no está, intenta de nuevo en el siguiente tick
+    if (!svgRef.current) {
+      setTimeout(trySetSVGRef, 50);
+    }
+  }, []);
+
+  // Animación principal, solo cuando el SVG está presente
   useEffect(() => {
     if (!svgRef.current) return;
 
@@ -50,20 +74,19 @@ const LogoAnimation = forwardRef((props, ref) => {
 
     // Latido del logo (layer1)
     const layer1 = svg.querySelector('#layer1');
-  if (layer1) {
-      // layer1.setAttribute('transform', 'scale(1)');
-    anime({
-      targets: layer1,
-      scale: [
-        { value: 1.1, duration: 400 },
-        { value: 1, duration: 400 }
-      ],
-      easing: 'easeInOutSine',
-      loop: true,
-      direction: 'alternate',
-      autoplay: true
-    });
-  }
+    if (layer1) {
+      anime({
+        targets: layer1,
+        scale: [
+          { value: 1.1, duration: 400 },
+          { value: 1, duration: 400 }
+        ],
+        easing: 'easeInOutSine',
+        loop: true,
+        direction: 'alternate',
+        autoplay: true
+      });
+    }
 
     // Animación de cartas
     const carta0 = svg.querySelector('#Carta_0');
@@ -71,7 +94,6 @@ const LogoAnimation = forwardRef((props, ref) => {
     const carta2 = svg.querySelector('#Carta_2');
     const carta8 = svg.querySelector('#Carta_8');
 
-    // Guardar instancias de animaciones para poder detenerlas
     cartasAnimsRef.current = [];
 
     const animateCarta = (carta, fromX, fromY, delay) => {
@@ -110,34 +132,27 @@ const LogoAnimation = forwardRef((props, ref) => {
     return () => {
       timeline.pause();
       timelineRef.current = null;
-      // Detener animaciones de cartas si el componente se desmonta
       cartasAnimsRef.current.forEach(({ anim }) => anim.pause());
       cartasAnimsRef.current = [];
     };
-  }, []);
+  }, [svgRef.current]);
 
-  // Método para detener la animación y resetear estilos
-useEffect(() => {
-  if (svgRef.current) {
-    svgRef.current.style.display = 'none';
-    // Forzar reflow
-    void svgRef.current.offsetHeight;
-    svgRef.current.style.display = '';
-  }
-}, []);
+  // Exponer métodos al padre si lo necesitas
+  useImperativeHandle(ref, () => ({
+    stopAnimation: () => {
+      if (timelineRef.current) timelineRef.current.pause();
+      cartasAnimsRef.current.forEach(({ anim }) => anim.pause());
+    }
+  }));
+
   return (
-  <span
-    className="logo-animation-wrapper"
-    ref={el => {
-      if (el) {
-        // Busca el SVG real dentro del wrapper
-        svgRef.current = el.querySelector('svg');
-      }
-    }}
-  >
-    <LogoGrande className={props.className || ''} />
-  </span>
-);
+    <span
+      className="logo-animation-wrapper"
+      ref={wrapperRef}
+    >
+      <LogoGrande className={props.className || ''} />
+    </span>
+  );
 });
 
 export default LogoAnimation;
