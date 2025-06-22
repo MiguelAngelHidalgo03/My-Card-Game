@@ -25,6 +25,7 @@ import AuthCallback from './AuthCallback';
 import ScrollToTop from './utils/scrollReset';
 import GameCanvas from "./components/GameCanvas/GameCanvas";
 import Ranking from './pages/Ranking/Ranking';
+import TestLogo from "./pages/Home/test";
 import React, { useState  } from 'react';
 
 export default function App() {
@@ -62,7 +63,8 @@ function Main() {
         <Route path="/reset-request" element={<ResetRequest />} />
         <Route path="/reset-password" element={<VerifyOtpAndReset />} />
         <Route path="/auth/callback" element={<AuthCallback />} />
-        <Route path="*" element={<Navigate to="/" />} />
+        <Route path="/test" element={<TestLogo/>}/>
+       <Route path="*" element={<Navigate to="/" />} />
       </Routes>
 
       {/* sólo renderiza el Footer si NO estamos en /game */}
