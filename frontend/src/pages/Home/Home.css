@@ -282,7 +282,7 @@
 
   /* Reducir tamaño del logo */
   .logo-normal {
-    width: 70% !important;
+   max-width: 70% !important;
     max-width: 280px !important;
   }
 
@@ -314,7 +314,7 @@
 
   /* Tamaño normal logo en móvil */
   .logo-container {
-    width: 120px;
+  max-width: 120px;
   }
 
   /* Cuando se muestran opciones, logo MUY pequeño */
@@ -360,7 +360,7 @@
 
   /* Tamaño normal logo en móvil */
   .logo-container {
-    width: 120px;
+   max-width: 120px;
   }
 
   /* Cuando se muestran opciones, logo MUY pequeño */
@@ -432,12 +432,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 420px;
+  width: 100vw;
+  max-width: 420px;
   /* Más grande */
   height: 320px;
   /* Más alto */
   /* margin: 0 auto; */
   align-self: center;
+  margin: 0 auto;
+  position: relative;
   transition: width 0.5s, height 0.5s;
   transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), filter 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -459,8 +462,10 @@
 
 .logo-normal {
   width: 100%;
+  max-width: 400px;
   height: auto;
   display: block;
+  margin: 0 auto;
   user-select: none;
   pointer-events: none;
   border-radius: 10px;
@@ -575,7 +580,7 @@
   }
 
   .logo-normal {
-    width: 550px;
+    max-width: 550px;
     opacity: 1;
     margin-bottom: 10rem;
     /* transform: scale(2.5); */
@@ -598,7 +603,7 @@
   }
 
   .logo-normal {
-    width: 450px;
+    max-width: 450px;
     opacity: 1;
     margin-bottom: 10rem;
     /* transform: scale(2.5); */
@@ -628,7 +633,7 @@
   }
 
   .logo-normal {
-    width: 300px;
+   max-width: 300px;
     opacity: 1;
     margin-bottom: 10rem;
     /* transform: scale(2.5); */
@@ -795,7 +800,7 @@
 
   /* Tamaño normal logo en móvil */
   .logo-container {
-    width: 200px;
+   max-width: 200px;
   }
 
   /* Cuando se muestran opciones, logo MUY pequeño */

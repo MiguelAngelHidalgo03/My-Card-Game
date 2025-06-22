@@ -92,13 +92,11 @@ const LogoAnimation = forwardRef((props, ref) => {
 
     const animateCarta = (carta, fromX, fromY, delay) => {
       if (!carta) return;
-      // Guarda el transform original solo la primera vez
       let originalTransform = carta.getAttribute('data-original-transform');
       if (!originalTransform) {
         originalTransform = carta.getAttribute('transform') || '';
         carta.setAttribute('data-original-transform', originalTransform);
       }
-      // Siempre restaura el transform original antes de animar
       carta.setAttribute('transform', originalTransform);
       carta.style.opacity = '0';
 
@@ -112,7 +110,6 @@ const LogoAnimation = forwardRef((props, ref) => {
           const p = anim.animations[0].currentValue;
           const translateX = fromX * (1 - p);
           const translateY = fromY * (1 - p);
-          // Aplica el translate ANTES del transform original
           carta.setAttribute(
             'transform',
             `translate(${translateX},${translateY}) ${originalTransform}`
@@ -127,7 +124,6 @@ const LogoAnimation = forwardRef((props, ref) => {
       cartasAnimsRef.current.push({ anim, carta, originalTransform });
     };
 
-    // Ejecuta la animación para cada carta
     cartaIds.forEach(({ id, fromX, fromY, delay }) => {
       const carta = svg.querySelector(id);
       animateCarta(carta, fromX, fromY, delay);
@@ -145,6 +141,16 @@ const LogoAnimation = forwardRef((props, ref) => {
     stopAnimation: () => {
       if (timelineRef.current) timelineRef.current.pause();
       cartasAnimsRef.current.forEach(({ anim }) => anim.pause());
+    },
+    finishAnimation: () => {
+      // Fuerza todas las cartas a su estado final
+      cartasAnimsRef.current.forEach(({ anim, carta, originalTransform }) => {
+        if (anim) anim.seek(anim.duration);
+        if (carta && originalTransform !== undefined) {
+          carta.setAttribute('transform', originalTransform);
+          carta.style.opacity = '1';
+        }
+      });
     }
   }));
 

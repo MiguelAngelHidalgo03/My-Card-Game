@@ -72,18 +72,17 @@ const Home = ({ onPulse }) => {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleLogoClick = () => {
-    if (window.innerWidth < 700) {
-      setModalOpen(true);
-      return;
-    }
-    setShowOptions(prev => !prev);
+const handleLogoClick = () => {
+  if (window.innerWidth < 700) {
+    setModalOpen(true);
+    return;
+  }
+  setShowOptions(prev => !prev);
 
-    if (logoRef.current) {
-      logoRef.current.stopAnimation && logoRef.current.stopAnimation();
-      // console.log('Click detectado y animación detenida');
-    }
-  };
+  if (logoRef.current) {
+    logoRef.current.finishAnimation && logoRef.current.finishAnimation();
+  }
+};
 
   return (
     <>
