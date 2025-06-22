@@ -25,7 +25,7 @@ const Home = ({ onPulse }) => {
     // 2. lanza la animación y guarda la instancia del timeline
     const tl = animacionIntroGuantes(() => {
       // callback al terminar la intro+
-      setLogoOculto(false);
+       setLogoOculto(false);
       setIntroDone(true);
       document.body.style.overflow = 'auto';   // restaura scroll
     });
@@ -72,14 +72,14 @@ const Home = ({ onPulse }) => {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleLogoClick = () => {
-    if (window.innerWidth < 700) {
-      setModalOpen(true);
-      return;
-    }
-    setShowOptions(prev => !prev);
+const handleLogoClick = () => {
+  if (window.innerWidth < 700) {
+    setModalOpen(true);
+    return;
+  }
+  setShowOptions(prev => !prev);
 
-  };
+};
 
   return (
     <>
@@ -114,15 +114,11 @@ const Home = ({ onPulse }) => {
             aria-label="Toggle options"
           >
             {showLogo && (
-              <>
-                <div className="logo-wrapper">
-                  <LogoAnimation
-                    ref={logoRef}
-                    className={`logo-normal${logoOculto ? ' logo-oculto' : ''}`}
-                    aria-label="Logo"
-                    onPulse={onPulse}
-                  />
-                </div>
+              <div className="logo-wrapper">
+                <LogoAnimation ref={logoRef}
+                  className={`logo-normal${logoOculto ? ' logo-oculto' : ''}`}
+                  aria-label="Logo"
+                  onPulse={onPulse} />
                 <div className={`options-container${showOptions ? ' visible' : ''}`}>
                   <Link to="/create-lobby" className="option-button osu-style-button">
                     Crear Sala
@@ -131,7 +127,7 @@ const Home = ({ onPulse }) => {
                     Unirse a una Sala
                   </Link>
                 </div>
-              </>
+              </div>
             )}
           </div>
         </div>
