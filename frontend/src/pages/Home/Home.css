@@ -424,9 +424,8 @@
   gap: 1.5rem;
   /* Menos espacio entre logo y botones */
   position: relative;
-  padding: 0;
-  width: 100vw;
-  min-height: 100vh;
+  padding: 2rem 0;
+  min-height: 60vh;
 }
 
 .logo-container {
@@ -437,7 +436,8 @@
   max-width: 420px;
   /* Más grande */
   height: 320px;
-
+  /* Más alto */
+  /* margin: 0 auto; */
   align-self: center;
   margin: 0 auto;
   position: relative;
@@ -510,7 +510,7 @@
 
 /* Contenedor de opciones */
 .options-container {
-  position: static;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(0.7);
