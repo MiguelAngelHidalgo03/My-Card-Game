@@ -120,14 +120,6 @@ export function animacionIntroGuantes(callback) {
       }
     }, '-=720')
     .add({
-      targets: '.logo-normal',
-      opacity: [0, 1],
-      scale: [0, 1.45, 1.35],
-      duration: 1400,
-      easing: 'easeOutBack',
-      // complete: ... (esto también lo quitas)
-    }, '-=480')
-    .add({
       begin: () => {
         lanzarConfeti();
       }
