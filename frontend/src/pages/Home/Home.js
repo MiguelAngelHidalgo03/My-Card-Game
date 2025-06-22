@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef  } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './Home.css';
-import anime from 'animejs';  
+import anime from 'animejs';
 import { Link } from 'react-router-dom';
 import { animacionIntroGuantes } from './HomeAnimation.js';
 import { initScrollAnimations } from './ScrollAnimation.js';
@@ -13,50 +13,56 @@ const Home = ({ onPulse }) => {
   const [showOptions, setShowOptions] = useState(false);
   const [showLogo, setShowLogo] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [logoOculto, setLogoOculto] = useState(true);
+  const logoRef = useRef(null);
 
-    const logoRef = useRef(null);
 
-    
-    /* ─────────────────── Intro + cleanup ─────────────────── */
-    useEffect(() => {
-      // 1. bloquea scroll mientras corre la intro
-      document.body.style.overflow = 'hidden';
-  
-      // 2. lanza la animación y guarda la instancia del timeline
-      const tl = animacionIntroGuantes(() => {
-        // callback al terminar la intro
-        setIntroDone(true);
-        document.body.style.overflow = 'auto';   // restaura scroll
-      });
-      
-      // 3. función de limpieza: se ejecuta al desmontar Home (cambiar de ruta)
-      return () => {
-        if (tl) tl.pause();          // detiene el timeline para que no siga corriendo
-        anime.remove('*');  
-        document.body.style.overflow = 'auto';           // borra listeners que anime.js pudiera dejar
-      };
-    }, []);   
-    
-    useEffect(() => {
-      if (introDone) {
-        initScrollAnimations();  // inicializamos las scroll-animations
-      }
-    }, [introDone]);
-  
-    useEffect(() => {
-      if (!introDone) return;
-      anime({
-        targets: '#lineDrawing .lines path',
-        strokeDashoffset: [anime.setDashoffset, 0],
-        easing: 'easeInOutSine',
-        duration: 1000,
-        delay: (el, i) => i * 150,
-        direction: 'alternate',
-        loop: true
-      });
-    }, [introDone]);
+  /* ─────────────────── Intro + cleanup ─────────────────── */
+  useEffect(() => {
+    // 1. bloquea scroll mientras corre la intro
+    document.body.style.overflow = 'hidden';
 
-useEffect(() => {
+    // 2. lanza la animación y guarda la instancia del timeline
+    const tl = animacionIntroGuantes(() => {
+      // callback al terminar la intro+
+       setLogoOculto(false);
+      setIntroDone(true);
+      document.body.style.overflow = 'auto';   // restaura scroll
+    });
+
+    // 3. función de limpieza: se ejecuta al desmontar Home (cambiar de ruta)
+    return () => {
+      if (tl) tl.pause();          // detiene el timeline para que no siga corriendo
+      anime.remove('*');
+      document.body.style.overflow = 'auto';           // borra listeners que anime.js pudiera dejar
+    };
+  }, []);
+
+  useEffect(() => {
+    if (introDone) {
+      initScrollAnimations();  // inicializamos las scroll-animations
+    }
+  }, [introDone]);
+  useEffect(() => {
+    if (introDone) {
+      setLogoOculto(false);
+    }
+  }, [introDone]);
+
+  useEffect(() => {
+    if (!introDone) return;
+    anime({
+      targets: '#lineDrawing .lines path',
+      strokeDashoffset: [anime.setDashoffset, 0],
+      easing: 'easeInOutSine',
+      duration: 1000,
+      delay: (el, i) => i * 150,
+      direction: 'alternate',
+      loop: true
+    });
+  }, [introDone]);
+
+  useEffect(() => {
     // Espera 2 segundos para mostrar el logo
     const timer = setTimeout(() => {
       setShowLogo(true);
@@ -66,19 +72,19 @@ useEffect(() => {
     return () => clearTimeout(timer);
   }, []);
 
-const handleLogoClick = () => {
-  if (window.innerWidth < 700) {
-    setModalOpen(true);
-    return;
-  }
-  setShowOptions(prev => !prev);
+  const handleLogoClick = () => {
+    if (window.innerWidth < 700) {
+      setModalOpen(true);
+      return;
+    }
+    setShowOptions(prev => !prev);
 
-  if (logoRef.current) {
-    logoRef.current.stopAnimation && logoRef.current.stopAnimation();
-    // console.log('Click detectado y animación detenida');
-  }
-};
-  
+    if (logoRef.current) {
+      logoRef.current.stopAnimation && logoRef.current.stopAnimation();
+      // console.log('Click detectado y animación detenida');
+    }
+  };
+
   return (
     <>
       <div className="home">
@@ -104,16 +110,19 @@ const handleLogoClick = () => {
 
         <div id="confeti-container"></div>
 
-                    <div className={`container ${showOptions ? 'show-options' : ''}`}>
-                <div
-                  className={`logo-container ${showOptions ? 'moved-right' : ''}`}
-                  onClick={handleLogoClick}
-                  style={{ cursor: 'pointer' }}
-                  aria-label="Toggle options"
-                >
-                  {showLogo && (
-                  <div className="logo-wrapper">
-                <LogoAnimation ref={logoRef} className="logo-normal" aria-label="Logo" onPulse={onPulse} />
+        <div className={`container ${showOptions ? 'show-options' : ''}`}>
+          <div
+            className={`logo-container ${showOptions ? 'moved-right' : ''}`}
+            onClick={handleLogoClick}
+            style={{ cursor: 'pointer' }}
+            aria-label="Toggle options"
+          >
+            {showLogo && (
+              <div className="logo-wrapper">
+                <LogoAnimation ref={logoRef}
+                  className={`logo-normal${logoOculto ? ' logo-oculto' : ''}`}
+                  aria-label="Logo"
+                  onPulse={onPulse} />
                 <div className={`options-container${showOptions ? ' visible' : ''}`}>
                   <Link to="/create-lobby" className="option-button osu-style-button">
                     Crear Sala
@@ -123,8 +132,8 @@ const handleLogoClick = () => {
                   </Link>
                 </div>
               </div>
-                  )}
-                </div>
+            )}
+          </div>
         </div>
 
         {/* CONTENIDO PRINCIPAL (siempre en el DOM, oculto hasta introDone) */}
@@ -136,11 +145,11 @@ const handleLogoClick = () => {
           {/* ─── BLOQUE 3: Reglas ──────────────────────────── */}
 
           {/* ─── BLOQUE 4: Vídeo ───────────────────────────── */}
-          
+
 
         </div>
-         <OptionsModal visible={modalOpen} onClose={() => setModalOpen(false)} />
-   
+        <OptionsModal visible={modalOpen} onClose={() => setModalOpen(false)} />
+
       </div>
     </>
   );

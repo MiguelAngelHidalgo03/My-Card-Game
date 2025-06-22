@@ -125,12 +125,7 @@ export function animacionIntroGuantes(callback) {
       scale: [0, 1.45, 1.35],
       duration: 1400,
       easing: 'easeOutBack',
-      complete: () => {
-        // Fuerza la opacidad a 1 con !important para todos los logos visibles
-        document.querySelectorAll('.logo-normal').forEach(el =>
-          el.style.setProperty('opacity', '1', 'important')
-        );
-      }
+      // complete: ... (esto también lo quitas)
     }, '-=480')
     .add({
       begin: () => {
