@@ -424,20 +424,19 @@
   gap: 1.5rem;
   /* Menos espacio entre logo y botones */
   position: relative;
-  padding: 2rem 0;
-  min-height: 60vh;
+  padding: 0;
+  width: 100vw;
+  min-height: 100vh;
 }
 
 .logo-container {
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
-  width: 100vw;
+  width: 100%;
   max-width: 420px;
-  /* Más grande */
-  height: 320px;
-  /* Más alto */
-  /* margin: 0 auto; */
+  height: auto;
   align-self: center;
   margin: 0 auto;
   position: relative;
@@ -481,10 +480,8 @@
 
 /* Cuando se hace click (showOptions true), se desplaza a la izquierda */
 .logo-container.moved-right {
-  transform: translateX(-250px) scale(1);
-  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-  width: 500px;
-  /* mantén tamaño o ajusta */
+   margin-left: -120px;
+
 }
 
 .logo-container.moved-right:hover {
@@ -510,7 +507,7 @@
 
 /* Contenedor de opciones */
 .options-container {
-  position: absolute;
+  position: static;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(0.7);
@@ -536,7 +533,7 @@
 .options-container.visible {
   opacity: 1;
   pointer-events: auto;
-  transform: translate(-50%, -50%) scale(1) translateX(250px);
+  transform:none;
   /* Sale hacia la derecha */
 }
 
@@ -936,9 +933,11 @@
   }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 900px) {
   .options-container {
-    display: none !important;
+    margin-left: 0;
+    margin-top: 1.5rem;
+    min-width: 180px;
   }
 
   .option-button {
@@ -949,7 +948,16 @@
     background: linear-gradient(135deg, #24231e, #24231e);
     border: 2px solid #e8d9be;
   }
-
+    .logo-container,
+  .logo-container.moved-right {
+    flex-direction: column;
+    margin-left: 0;
+    gap: 1.5rem;
+    max-width: 100vw;
+  }
+.logo-normal {
+    max-width: 220px;
+  }
 }
 
 .modal-overlay {
