@@ -21,7 +21,7 @@ export default function GameCanvas() {
   const leftRef           = useRef();
   const endRef            = useRef();
   const resizeDebounceRef = useRef();
-  const DEBUG_USER_ID = '58b4eb5f-e0db-4353-b530-84ca3d889854';
+  const DEBUG_USER_ID = 'f411f9ca-f715-445e-a936-db1f22e07816';
   const savedLobby = JSON.parse(localStorage.getItem('lobbyState') || '{}');
   const userId = savedLobby.userId || state?.userId || null;
   const debugMode = process.env.NODE_ENV === 'development' || userId === DEBUG_USER_ID;
