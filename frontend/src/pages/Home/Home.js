@@ -157,7 +157,7 @@ function OptionsModal({ visible, onClose }) {
   if (!visible) return null;
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={e => e.stopPropagation()}>
+      <div className="modal-contentA" onClick={e => e.stopPropagation()}>
         <Link to="/create-lobby" className="option-button osu-style-button">
           Crear Sala
         </Link>
