@@ -43,8 +43,8 @@ const Rules = () => {
     },
     {
       nombre: "lgtb.svg",
-      alt: "Carta LGTB",
-      descripcion: "Carta “LGTB”: Cambia el color de todas las cartas normales de un jugador."
+      alt: "Carta Arcoiris",
+      descripcion: "Carta Arcoiris: Cambia el color de todas las cartas normales de un jugador."
     }
   ];
 

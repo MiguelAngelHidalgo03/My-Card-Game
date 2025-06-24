@@ -39,12 +39,12 @@ const About = () => {
           <h2>Nuestro equipo</h2>
           <div className="team">
             <div className="team-member">
-              <img src="/assets/team/member1.jpg" alt="Miembro 1" className="team-image" />
+              <img src="/img/Miguel.jpeg" alt="Miembro 1" className="team-image" />
               <h3>Miguel Ángel Hidalgo Martínez</h3>
               <p>Full Stack Web Developer</p>
             </div>
             <div className="team-member">
-              <img src="/assets/team/member2.jpg" alt="Miembro 2" className="team-image" />
+              <img src="/img/Juan.jpeg" alt="Miembro 2" className="team-image" />
               <h3>Juan Aleksander Chango Zaruma</h3>
               <p>Full Stack Web Developer</p>
             </div>
@@ -84,9 +84,11 @@ const About = () => {
           <ul>
             <li>React para el desarrollo frontend.</li>
             <li>Node.js y Express para el backend.</li>
-            <li>MongoDB para la base de datos.</li> {/* Aquí faltaba el nombre de la BD */}
+            <li>Supa para la base de datos.</li> {/* Aquí faltaba el nombre de la BD */}
             <li>Figma para el diseño de interfaces.</li>
             <li>GitHub para la colaboración y control de versiones.</li>
+            <li>Phaser.js  para el motor y lógica del juego.</li>
+            <li>Anime.js para las animaciones de la página</li>
           </ul>
         </div>
       )}
