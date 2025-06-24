@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './About.css';
-
+import MiguelImg from '../../img/Miguel.jpeg';
+import JuanImg from '../../img/Juan.jpeg';
+import KangImg from '../../img/Kang.jpg';
 const About = () => {
   const [seccion, setSeccion] = useState('nosotros');
 
@@ -17,11 +19,11 @@ const About = () => {
 
   return (
     <div className="about-page">
-  
+
 
       {seccion === 'nosotros' && (
         <div className="about-section">
-            {NavBotones}
+          {NavBotones}
           <h1>Sobre nosotros</h1>
           <p>
             Somos tres estudiantes apasionados por el desarrollo y los videojuegos. Este proyecto forma parte de nuestro Trabajo de Fin de Grado, y decidimos crearlo porque queríamos hacer algo que no solo fuese funcional, sino también divertido, visual y original.
@@ -35,21 +37,20 @@ const About = () => {
 
       {seccion === 'equipo' && (
         <div className="about-section">
-            {NavBotones}
+          {NavBotones}
           <h2>Nuestro equipo</h2>
           <div className="team">
             <div className="team-member">
-              <img src="../img/Miguel.jpeg" alt="Miembro 1" className="team-image" />
-              <h3>Miguel Ángel Hidalgo Martínez</h3>
+              <img src={MiguelImg} alt="Miembro 1" className="team-image" />              <h3>Miguel Ángel Hidalgo Martínez</h3>
               <p>Full Stack Web Developer</p>
             </div>
             <div className="team-member">
-              <img src="../img/Juan.jpeg" alt="Miembro 2" className="team-image" />
+              <img src={JuanImg} alt="Miembro 2" className="team-image" />
               <h3>Juan Aleksander Chango Zaruma</h3>
               <p>Full Stack Web Developer</p>
             </div>
             <div className="team-member">
-              <img src="../img/Kang.jpg" alt="Miembro 3" className="team-image" />
+              <img src={KangImg} alt="Miembro 3" className="team-image" />
               <h3>Kang Ping Ye</h3>
               <p>Full Stack Web Developer</p>
             </div>
@@ -59,7 +60,7 @@ const About = () => {
 
       {seccion === 'idea' && (
         <div className="about-section">
-            {NavBotones}
+          {NavBotones}
           <h2>Cómo surgió la idea</h2>
           <p>
             Estábamos en clase, una de esas famosas guardias en las que el tiempo parece ir más lento que el compilador de Java. Por aburrimiento (y por espíritu competitivo, no vamos a mentir), abrimos un UNO online para echar unas partidas rápidas. Entre risas, piques absurdos y frases tipo “¡no me lo puedo creer, otra +4!”, algo hizo clic.
@@ -79,7 +80,7 @@ const About = () => {
 
       {seccion === 'herramientas' && (
         <div className="about-section">
-            {NavBotones}
+          {NavBotones}
           <h2>Herramientas que Usamos</h2>
           <ul>
             <li>React para el desarrollo frontend.</li>
