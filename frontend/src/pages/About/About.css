@@ -140,9 +140,8 @@
   background-color: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 10px;
-  padding: 1rem;               
+  padding: 0.5rem;               
   text-align: center;
-  width: 170px;                 
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -154,27 +153,20 @@
 }
 
 .team-image {
-  width: 150px;           
-  height: 110px;         
-  border-radius: 18px;   
+  min-width: 150px;
+  min-height: 150px;         
+  border-radius: 14px;   
   object-fit: cover;
   margin-bottom: 1rem;
-  border: 2px solid #6450F5;
+  border: 1px solid #6450F5;
 }
 
 .team-member h3 {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   color: #F5A623;
   margin-bottom: 0.5rem;
 }
 
-.team-member p {
-  font-size: 1.1rem;
-  color: #DDD;
-  text-align: left;
-  margin-bottom: 1rem;
-  
-}
 
 .contact-info {
   display: flex;

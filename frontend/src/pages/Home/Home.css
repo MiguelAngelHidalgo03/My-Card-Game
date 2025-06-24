@@ -969,6 +969,7 @@
 .modal-content {
   background: rgba(27, 25, 25, 0.733) !important;
   padding: 1rem 10rem;
+  border:2px solid #e8d9be;
   border-radius: 14px;
   box-shadow: 0 4px 28px #111a;
   display: flex;
@@ -983,9 +984,10 @@
 .close-modal {
   background-color: var(--ink-black);
   border:2px solid #e8d9be;  color: #ffffff;
+  border-radius: 14px;
   font-weight: bold;
   font-size: 1rem;
-  padding: 1rem;
+  padding: 0.5rem;
   /* margin-top: 1.4rem; */
   cursor: pointer;
 }
