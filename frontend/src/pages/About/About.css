@@ -159,8 +159,8 @@
 
 .team-image {
   width: 100%;
-  max-width: 220px;   
-  height: 200px;
+  max-width: 270px;   
+  height: 220px;
   aspect-ratio: 1/1;  
   border-radius: 14px;
   object-fit: cover;
