@@ -959,6 +959,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  border:2px solid #e8d9be;
   z-index: 10000;
   animation: fadeIn .3s;
 }
@@ -981,10 +982,10 @@
 
 .close-modal {
   background-color: var(--ink-black);
-  border: none;
-  color: #ffffff;
+  border:2px solid #e8d9be;  color: #ffffff;
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1rem;
+  padding: 1rem;
   /* margin-top: 1.4rem; */
   cursor: pointer;
 }

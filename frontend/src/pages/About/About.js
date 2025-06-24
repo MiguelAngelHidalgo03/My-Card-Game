@@ -85,7 +85,7 @@ const About = () => {
           <ul>
             <li>React para el desarrollo frontend.</li>
             <li>Node.js y Express para el backend.</li>
-            <li>Supa para la base de datos.</li> {/* Aquí faltaba el nombre de la BD */}
+            <li>SupaBase para la base de datos.</li> {/* Aquí faltaba el nombre de la BD */}
             <li>Figma para el diseño de interfaces.</li>
             <li>GitHub para la colaboración y control de versiones.</li>
             <li>Phaser.js  para el motor y lógica del juego.</li>

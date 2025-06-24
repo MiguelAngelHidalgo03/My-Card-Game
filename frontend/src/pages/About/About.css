@@ -140,12 +140,13 @@
   background-color: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 10px;
-  padding: 1.5rem;
+  padding: 1rem;               
   text-align: center;
-  width: 250px;
+  width: 170px;                 
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
 
 .team-member:hover {
   transform: translateY(-10px);
@@ -153,12 +154,12 @@
 }
 
 .team-image {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
+  width: 150px;           
+  height: 110px;         
+  border-radius: 18px;   
   object-fit: cover;
   margin-bottom: 1rem;
-  border: 3px solid #6450F5;
+  border: 2px solid #6450F5;
 }
 
 .team-member h3 {
@@ -170,6 +171,7 @@
 .team-member p {
   font-size: 1.1rem;
   color: #DDD;
+  text-align: left;
   margin-bottom: 1rem;
   
 }
