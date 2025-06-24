@@ -39,17 +39,17 @@ const About = () => {
           <h2>Nuestro equipo</h2>
           <div className="team">
             <div className="team-member">
-              <img src="/img/Miguel.jpeg" alt="Miembro 1" className="team-image" />
+              <img src="../img/Miguel.jpeg" alt="Miembro 1" className="team-image" />
               <h3>Miguel Ángel Hidalgo Martínez</h3>
               <p>Full Stack Web Developer</p>
             </div>
             <div className="team-member">
-              <img src="/img/Juan.jpeg" alt="Miembro 2" className="team-image" />
+              <img src="../img/Juan.jpeg" alt="Miembro 2" className="team-image" />
               <h3>Juan Aleksander Chango Zaruma</h3>
               <p>Full Stack Web Developer</p>
             </div>
             <div className="team-member">
-              <img src="/assets/team/member3.jpg" alt="Miembro 3" className="team-image" />
+              <img src="../img/Kang.jpg" alt="Miembro 3" className="team-image" />
               <h3>Kang Ping Ye</h3>
               <p>Full Stack Web Developer</p>
             </div>

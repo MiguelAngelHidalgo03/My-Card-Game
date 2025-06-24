@@ -334,7 +334,7 @@
 
   .rules-section p, .special-card p {
     font-size: 1rem;
-    text-align: left;
+    text-align: left !important;
   }
 
   .mini-carousel {

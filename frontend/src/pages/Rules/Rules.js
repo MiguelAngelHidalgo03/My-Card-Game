@@ -42,7 +42,7 @@ const Rules = () => {
       descripcion: "Carta “Misteriosa”: Se elige una carta especial al azar para aplicar su efecto."
     },
     {
-      nombre: "lgtb.svg",
+      nombre: "Arcoiris.svg",
       alt: "Carta Arcoiris",
       descripcion: "Carta Arcoiris: Cambia el color de todas las cartas normales de un jugador."
     }
